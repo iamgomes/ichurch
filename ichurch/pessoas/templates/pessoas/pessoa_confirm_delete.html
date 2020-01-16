@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %} Confirmar DELETE {% endblock title %}
+
+
+{% block content %}    
+
+<form method="post">
+    <div class="alert alert-warning">
+        <h3 class="text-warning"><i class="fa fa-exclamation-triangle"></i> Atenção</h3>
+        {% csrf_token %}
+        <p>Você tem certeza que quer apagar a pessoa "{{ object.nome }}"?</p>
+    </div>
+    <input type="submit" value="Confirmar" class="btn btn-success">
+    <input type="button" value="Cancelar" onclick="window.history.back();" class="btn btn-inverse">
+
+</form>
+
+{% endblock content %}

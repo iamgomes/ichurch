@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% block title %} Formulário Pessoas {% endblock title %}
+
+
+{% block head %}
+
+    <!-- Date picker plugins css -->
+    <link href="{% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet" type="text/css" />
+
+{% endblock head %}
+    
+
+{% block content %}    
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Formulário de Pessoa</h4>
+                <h6 class="card-subtitle">Formulário para cadastro de pessoas.</h6>
+                <form method="POST" class="form-material m-t-40" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <h2 class="card-title">Informações Pessoais</h2>
+                    <hr>
+                    </br>
+                    <div class="form-group">
+                        <label for="{{ form.num_cpf.id_for_label }}">Número CPF </label>
+                        {% render_field form.num_cpf type="text" class="cpf form-control form-control-line" %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.nome.id_for_label }}">Nome <span class="help"> completo</span></label>
+                        {% render_field form.nome type="text" class="form-control form-control-line" %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.sexo.id_for_label }}">Sexo</label>
+                                {% render_field form.sexo type="text" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.data_nascimento.id_for_label }}">Data de nascimento </label>
+                                <div class="input-group">
+                                    {% render_field form.data_nascimento class="form-control mydatepicker" %}<span class="input-group-addon"> <span class="fa fa-clock-o"></span> </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.telefone.id_for_label }}">Telefone </label>
+                                {% render_field form.telefone type="text" class="telefone form-control form-control-line" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.celular.id_for_label }}">Celular </label>
+                                {% render_field form.celular type="text" class="celular form-control form-control-line" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}">E-mail </label>
+                        {% render_field form.email type="email" class="form-control form-control-line" %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.foto_perfil.id_for_label }}">Foto Perfil</label>
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"> <i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div> <span class="input-group-addon btn btn-default btn-file"> <span class="fileinput-new">Selecionar arquivo</span> <span class="fileinput-exists">Alterar</span>
+                            {% render_field form.foto_perfil type="file" name="..." %} </span> <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a> 
+                        </div>
+                    </div>
+                    </br>
+                    <h2 class="card-title">Endereço</h2>
+                    <hr>
+                    </br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.cep.id_for_label }}">CEP</label>
+                                {% render_field form.cep type="text" id="cep" onblur="pesquisacep(this.value)" class="cep form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.rua.id_for_label }}">Rua</label>
+                                {% render_field form.rua type="text" id="rua" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.numero.id_for_label }}">Número</label>
+                                {% render_field form.numero type="number" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.complemento.id_for_label }}">Complemento</label>
+                                {% render_field form.complemento type="text" id="complemento" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.bairro.id_for_label }}">Bairro</label>
+                                {% render_field form.bairro type="text" id="bairro" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.cidade.id_for_label }}">Cidade</label>
+                                {% render_field form.cidade type="text" id="cidade" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.uf.id_for_label }}">UF</label>
+                                {% render_field form.uf type="text" id="uf" size="2" class="form-control form-control-line" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.pais.id_for_label }}">País</label>
+                                {% render_field form.pais type="text" class="form-control form-control-line" value="Brasil" %}
+                            </div>
+                        </div>
+                    </div>
+                </br>
+                <h2 class="card-title">Informações Eclesiásticas</h2>
+                <hr>
+                </br>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.situacao.id_for_label }}">Situação</label>
+                            {% render_field form.situacao type="text" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.tipo_pessoa.id_for_label }}">Tipo Pessoa</label>
+                            {% render_field form.tipo_pessoa type="text" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.predio.id_for_label }}">Igreja Local</label>
+                            {% render_field form.predio type="text" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.funcao_liderancao.id_for_label }}">Função Liderança</label>
+                            {% render_field form.funcao_lideranca type="text" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.user.id_for_label }}">Usuário Sistema</label>
+                            {% render_field form.user|append_attr:"disabled:disabled" type="text" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Salvar</button>
+                    <button type="button" class="btn btn-inverse" onclick="window.history.back();">Cancelar</button>
+                </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% block static %}
+    <!-- ============================================================== -->
+    <!-- Plugins for this page -->
+    <!-- ============================================================== -->
+    <script src="{% static '/js/jasny-bootstrap.js' %}"></script>
+    <!-- Plugin JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/locales/bootstrap-datepicker.pt-BR.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+
+    <script src="{% static '/js/pesquisacep.js' %}"></script>
+
+<script type="text/javascript">
+    $('.cpf').mask('000.000.000-00');
+    $('.telefone').mask('(00) 0000-0000');
+    $('.celular').mask('(00) 0 0000-0000');
+    $('.dinheiro').mask('#.##0,00', {reverse: true});
+    $('.estado').mask('AA');
+    $('.cep').mask('00000-000');
+</script>
+
+<script>
+    jQuery('.mydatepicker, #datepicker').datepicker({
+        autoclose: true,
+        format: 'dd/mm/yyyy',
+        language: 'pt-BR',
+    });
+</script>
+
+
+{% endblock static %}
+    
+
+{% endblock content %}

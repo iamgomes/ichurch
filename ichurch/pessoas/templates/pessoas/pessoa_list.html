@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} Lista de Pessoas {% endblock title %}
+
+{% block head %}
+
+    <!-- Footable CSS -->
+    <link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
+
+{% endblock head %}
+    
+
+{% block content %}   
+
+{% if messages %}
+<div class="row page-titles">
+    <div class="col-md-12 col-12 align-self-center">
+    {% for message in messages %}
+
+        <div class="alert alert-success">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
+        <h3 class="text-success"><i class="fa fa-check-circle"></i> Sucesso</h3> {{ message }}
+        </div>
+
+    {% endfor %}
+    </div>
+</div>
+{% endif %}
+
+
+<div class="card">
+    <div class="card-block">
+        <h4 class="card-title">Lista de Pessoas</h4>
+        <h6 class="card-subtitle">Você pode pesquisar por nome no campo de pesquisa.</h6>
+        <table id="demo-foo-addrow2" class="table table-bordered table-hover toggle-circle" data-page-size="10">
+            <thead>
+                <tr>
+                    <th data-sort-initial="true" data-toggle="true">Nome</th>
+                    <th data-hide="phone, tablet">Celular</th>
+                    <th data-hide="phone, tablet">Tipo Pessoa</th>
+                    <th data-hide="phone, tablet">Prédio</th>
+                    <th data-hide="phone, tablet">Situação</th>
+                    <th data-sort-ignore="true" class="min-width">Ação</th>
+                </tr>
+            </thead>
+            <div class="m-t-40">
+                <div class="d-flex">
+                    
+                    <div class="ml-auto">
+                        <div class="form-group">
+                            <input id="demo-input-search2" type="text" placeholder="Pesquisar pessoa" class="form-control" autocomplete="off">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% if object_list %}
+            <tbody>
+                {% for p in object_list  %}
+                <tr>
+                    <td>
+                        <a href="{% url 'pessoa-perfil' p.id %}">
+                            {% if p.foto_perfil %}
+                                <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40" class="img-circle" /> 
+                            {% else %}
+                                <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                            {% endif %}
+                            {{ p.nome }}
+                        </a>
+                    </td>
+                    <td>{{ p.celular }}</td>
+                    <td>{{ p.get_tipo_pessoa_display }}</td>
+                    <td>{{ p.predio.nome }}</td>
+                    
+                    <td>
+                        {% if p.situacao == 'A' %}
+                        <div class="label label-table label-success">{{ p.get_situacao_display }}</div> 
+                        {% else %}
+                        <div class="label label-table label-danger">{{ p.get_situacao_display }}</div> 
+                        {% endif %}
+                    <td>
+
+                    <!-- sample modal content -->
+                    <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="myModalLabel">Modal Heading</h4>
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                </div>
+                                <div class="modal-body">
+                                    <h4>Overflowing text to show scroll behavior</h4>
+                                    <p>{{ p.nome }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-info waves-effect" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                            <!-- /.modal-content -->
+                        </div>
+                        <!-- /.modal-dialog -->
+                    </div>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn" href="{% url 'pessoa-delete' p.id %}" data-original-title="Apagar"><i class="ti-close" aria-hidden="true"></i></button>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i class="ti-pencil" aria-hidden="true"></i></a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            {% endif %}
+            <tfoot>
+                <tr>
+                    <td colspan="6">
+                        <div class="text-right">
+                            <ul class="pagination">
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</div>
+
+{% block static %}
+
+<!-- Footable -->
+    <script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
+    <script src="{% static '/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+    <!--FooTable init-->
+    <script src="{% static '/js/footable-init.js' %}"></script>
+
+{% endblock static %}
+    
+
+        
+{% endblock content %}
+    

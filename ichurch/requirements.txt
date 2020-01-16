@@ -1,0 +1,4 @@
+Django==3.0.1  
+django-widget-tweaks==1.4.5
+pillow==6.2.1
+googlemaps==4.0.0

@@ -1,0 +1,206 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block head %}
+
+<!--This page css - Morris CSS -->
+<link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+
+{% endblock head %}
+
+
+
+{% block content %}
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <a href="{% url 'pessoa-list' %}">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ total_pessoas }}</h1>
+                        <h6 class="text-muted">Pessoas</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div class="round align-self-center round-primary"><i class="mdi mdi-account-circle"
+                                style="font-size: 30px"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </a>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ total_predios }}</h1>
+                        <h6 class="text-muted">Prédios</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div class="round align-self-center round-success"><i class="mdi mdi-church"
+                                style="font-size: 30px"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">-</h1>
+                        <h6 class="text-muted">Células</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div class="round align-self-center round-info"><i class="mdi mdi-google-circles-extended"
+                                style="font-size: 30px"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-3 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ total_liderancas }}</h1>
+                        <h6 class="text-muted">Lideranças</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div class="round align-self-center round-warning"><i class="mdi mdi-account-card-details"
+                                style="font-size: 30px"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+
+<!-- Row -->
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Crescimento da Igreja</h4>
+                <div id="morris-line-chart"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Por tipo de pessoa</h4>
+                <div id="morris-donut-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Por prédio</h4>
+                <div id="morris-bar-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{% block static %}
+
+<!--Morris JavaScript -->
+<script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
+<script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart'
+        , data: [
+            {% for i in qtde_tipo_pessoa %}
+                {label: '{{ i.tipo_pessoa }}'
+                , value: '{{ i.qtdepessoas }}'}
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // LINE CHART
+    var line = new Morris.Line({
+        element: 'morris-line-chart'
+        , resize: true
+        , data: [
+            {% for item in crescimento_pessoas %}
+                { y: '{{ item.created__year }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , xkey: 'y'
+        , ykeys: ['a']
+            , labels: ['Total']
+                , gridLineColor: '#eef0f2'
+                    , lineColors: ['#009efb']
+                        , lineWidth: 1
+                            , hideHover: 'auto'
+    });
+</script>
+
+<script>
+    // Morris bar chart
+    Morris.Bar({
+        element: 'morris-bar-chart'
+        , data: [
+            {% for i in predio_pessoas %}
+                {
+            y: '{{ i.predio__nome }}'
+            , a: '{{ i.visitante }}'
+            , b: '{{ i.frequentador }}'
+            , c: '{{ i.membro }}'
+        }{% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , xkey: 'y'
+        , ykeys: ['a', 'b', 'c']
+            , labels: ['Visitantes', 'Frequentadores', 'Membros']
+                , barColors: ['#009efb', '#55ce63', '#2f3d4a']
+                    , hideHover: 'auto'
+                        , gridLineColor: '#eef0f2'
+                            , resize: true
+    });
+</script>
+{% endblock static %}
+
+
+{% endblock content %}

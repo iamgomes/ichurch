@@ -1,0 +1,61 @@
+{% extends 'registration/base_registration.html' %}
+{% load widget_tweaks %}
+
+{% block title %} Login {% endblock title %}
+
+{% block content %}
+
+{% if form.errors and not form.non_field_errors %}
+<div class="alert alert-danger">
+    {% if form.errors.items|length == 1 %}
+        Please correct the error below. 
+    {% else %}
+        Please correct the errors below.
+    {% endif %}
+</div>
+{% endif %}
+
+{% if form.non_field_errors %}
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+    {% endfor %}
+{% endif %}
+
+<div id="content-main">
+
+{% if user.is_authenticated %}
+<div class="alert alert-warning">
+    Você está autenticado como <strong>{{ user }}</strong>, mas não está autorizado a
+    acessar esta página. Deseja fazer login em uma conta diferente?
+</div>
+{% endif %}
+
+<form class="form-horizontal form-material" method="POST" id="loginform">
+    {% csrf_token %}
+
+    <h3 class="box-title m-b-20">iChurch Login</h3>
+    <div class="form-group ">
+        <div class="col-xs-12">
+            {% render_field form.username class="form-control" type="text" placeholder="Usuário" %}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-12">
+            {% render_field form.password class="form-control" type="password" placeholder="Senha" %}
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-12">
+            <a href="{% url 'password_reset' %}" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Esqueceu a senha?</a> 
+        </div>
+    </div>
+    <div class="form-group text-center m-t-20">
+        <div class="col-xs-12">
+            <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Entrar</button>
+        </div>
+    </div>
+</form>
+{% endblock content %}
+           
