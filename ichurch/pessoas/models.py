@@ -116,9 +116,6 @@ class Pessoa(models.Model):
     @property
     def geocoding(self):
         address = self.rua + str(self.numero) + self.bairro + self.cidade + self.uf
-
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
-
         geocode_result = gmaps.geocode(address)
-
         return geocode_result[0]['geometry']['location']

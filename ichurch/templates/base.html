@@ -68,25 +68,17 @@
                 <div class="navbar-header">
                     <a class="navbar-brand" href="{% url 'home' %}">
                         <!-- Logo icon -->
-                        <b>
+                        <b class="light-logo">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
-                            <!-- Dark Logo icon 
-                            <img src="{% static '/assets/images/logo-icon.png' %}" alt="homepage" class="dark-logo" />
-                            <!-- Light Logo icon 
-                            <img src="{% static '/assets/images/logo-light-icon.png' %}" alt="homepage" class="light-logo" />
-                        -->
-                        <strong><span style="color: aliceblue;">iChurch</span></strong> 
+                            <!-- Dark Logo icon -->
+                            <i class="wi wi-sunset"></i>
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
-                        <span> 
-                         <!-- dark Logo text 
-                         <img src="{% static '/assets/images/logo-text.png' %}" alt="homepage" class="dark-logo" />
-                         <!-- Light Logo text 
-                         <img src="{% static '/assets/images/logo-light-text.png' %}" class="light-logo" alt="homepage" />
-                        -->
-                        </span> 
-                        </a>
+                        <span class="light-logo" >
+                            iChurch
+                        </span>
+                    </a>
                 </div>
                 <!-- ============================================================== -->
                 <!-- End Logo -->
@@ -96,6 +88,9 @@
                     <!-- toggle and nav items -->
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto mt-md-0 ">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="icon-arrow-left-circle"></i></a> </li>
                     </ul>
                     <!-- ============================================================== -->
                     <!-- User profile and search -->
@@ -160,6 +155,13 @@
                                     <ul aria-expanded="false" class="collapse">
                                         <li><a href="{% url 'pessoa-list' %}">Lista de Pessoas</a></li>
                                         <li><a href="{% url 'search-cpf' %}">Cadastrar nova Pessoa</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a class="has-arrow" href="#" aria-expanded="false">Prédios</a>
+                                    <ul aria-expanded="false" class="collapse">
+                                        <li><a href="{% url 'predio-list' %}">Lista de Prédios</a></li>
+                                        <li><a href="{% url 'predio-create' %}">Cadastrar novo Prédio</a></li>
                                     </ul>
                                 </li>
                             </ul>

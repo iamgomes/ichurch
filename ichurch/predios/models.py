@@ -1,6 +1,7 @@
 from django.db import models
 from django.template.defaultfilters import date
 import datetime
+import googlemaps
 
 
 class Predio(models.Model):
@@ -48,4 +49,11 @@ class Predio(models.Model):
             return dias.days // 365
         else:
             return 'Sem informação'
+
+    @property
+    def geocoding(self):
+        address = self.rua + str(self.numero) + self.bairro + self.cidade + self.uf
+        gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
+        geocode_result = gmaps.geocode(address)
+        return geocode_result[0]['geometry']['location']
 

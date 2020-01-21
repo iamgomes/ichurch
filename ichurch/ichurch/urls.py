@@ -20,6 +20,7 @@ from django.conf.urls.static import static
 from django.contrib.auth import urls
 from home import urls as home_urls
 from pessoas import urls as pessoas_urls
+from predios import urls as predios_urls
 
 
 urlpatterns = [
@@ -27,4 +28,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('pessoas/', include(pessoas_urls)),
+    path('predios/', include(predios_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

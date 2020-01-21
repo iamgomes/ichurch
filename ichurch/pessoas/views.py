@@ -11,26 +11,15 @@ from django.contrib import messages
 import requests
 import json
 import re
+from django.views.decorators.csrf import csrf_exempt
 
 
 class PessoaList(ListView):
     model = Pessoa
     ordering = ['nome']
 
-
 class PessoaPerfil(DetailView):
     model = Pessoa
-
-"""
-class PessoaCreate(SuccessMessageMixin, CreateView):
-    model = Pessoa
-    fields = '__all__'
-    success_url =  reverse_lazy('pessoa-list')
-    success_message = 'Pessoa "%(nome)s" adicionada com sucesso.'
-
-    def get_success_message(self, cleaned_data):
-        return self.success_message % dict(cleaned_data, nome=self.object.nome)
-"""
 
 class PessoaDelete(SuccessMessageMixin, DeleteView):
     model = Pessoa
@@ -84,3 +73,10 @@ def pessoa_create(request):
         'form': form
     }
     return render(request, 'pessoas/pessoa_form.html', context)
+
+
+@csrf_exempt
+def pessoa_delete(request, pk):
+    pessoa = get_object_or_404(Pessoa, pk=pk)
+    pessoa.delete()
+    return redirect('pessoa-list')
