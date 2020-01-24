@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Lista de Prédios {% endblock title %}
+{% block title %} Lista de Células {% endblock title %}
 
 {% block head %}
 
@@ -34,7 +34,7 @@
 
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
-        <h3 class="text-themecolor m-b-0 m-t-0">Lista de Prédios</h3>
+        <h3 class="text-themecolor m-b-0 m-t-0">Lista de Células</h3>
     </div>
 </div>
 
@@ -44,11 +44,9 @@
             <thead>
                 <tr>
                     <th data-sort-initial="true" data-toggle="true">Nome</th>
-                    <th data-hide="phone, tablet">Cidade</th>
-                    <th data-hide="phone, tablet">Estado</th>
-                    <th data-hide="phone, tablet">Pastor</th>
-                    <th data-hide="phone, tablet">Tipo Igreja</th>
-                    <th data-hide="phone, tablet">Idade</th>
+                    <th data-hide="phone, tablet">Tipo</th>
+                    <th data-hide="phone, tablet">Líder</th>
+                    <th data-hide="phone, tablet">Prédio</th>
                     <th data-hide="phone, tablet">Situação</th>
                     <th data-sort-ignore="true" class="min-width">Ação</th>
                 </tr>
@@ -68,11 +66,9 @@
                 {% for p in object_list  %}
                 <tr id="{{ p.id }}">
                     <td><a href="{% url 'predio-perfil' p.id %}">{{ p.nome }}</a></td>
-                    <td>{{ p.cidade }}</td>
-                    <td>{{ p.uf }}</td>
-                    <td>{{ p.pastor.nome }}</td>
-                    <td>{{ p.get_tipo_igreja_display }}</td>
-                    <td>{{ p.idade }} anos</td>
+                    <td>{{ p.get_tipo_celula_display }}</td>
+                    <td>{{ p.lider.nome }}</td>
+                    <td>{{ p.predio.nome }}</td>
                     <td>
                         {% if p.situacao == 'A' %}
                         <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
@@ -82,7 +78,7 @@
                     </td>
                     <td>
                         <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="ti-close" aria-hidden="true"></i></a>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-original-title="Editar"><i class="ti-pencil" aria-hidden="true"></i></a>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'celula-update' p.id %}" data-original-title="Editar"><i class="ti-pencil" aria-hidden="true"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -90,7 +86,7 @@
             {% endif %}
             <tfoot>
                 <tr>
-                    <td colspan="7">
+                    <td colspan="6">
                         <div class="text-right">
                             <ul class="pagination">
                             </ul>
@@ -105,7 +101,7 @@
 <div class="row">
     <nav class="container-botao">
 
-        <a href="{% url 'predio-create' %}" class="buttons-botao btn-success" tooltip="Add Prédio"><i class="fa fa-plus my-float"></i></a>
+        <a href="{% url 'celula-create' %}" class="buttons-botao btn-success" tooltip="Add Célula"><i class="fa fa-plus my-float"></i></a>
         
       </nav>
 </div>

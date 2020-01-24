@@ -80,13 +80,17 @@
                         <div class="col-md-6">
                             <label for="{{ form.sexo.id_for_label }}"><strong>Sexo</strong></label>
                             <select name="sexo" id="id_sexo" class="form-control" required>
-                                <option value="{{ result_cpf.0.IND_SEXO }}" selected>  
-                                    {% if result_cpf.0.IND_SEXO == 'M' %}
-                                        Masculino
-                                    {% else %}
-                                        Feminino
-                                    {% endif %}
-                                </option>
+                                
+                                {% if result_cpf.0.IND_SEXO %}
+                                    <option value="{{ result_cpf.0.IND_SEXO }}" selected>  
+                                        {% if result_cpf.0.IND_SEXO == 'M' %}
+                                            Masculino
+                                        {% else %}
+                                            Feminino
+                                        {% endif %}
+                                    </option>
+                                {% endif %}
+                                
                                 <option value="M">Masculino</option>
                                 <option value="F">Feminino</option>
                             </select>

@@ -60,12 +60,13 @@
     <!-- Column -->
     <!-- Column -->
     <div class="col-lg-3 col-md-6">
+        <a href="{% url 'celula-list' %}">
         <div class="card">
             <div class="card-block">
                 <div class="row p-t-10 p-b-10">
                     <!-- Column -->
                     <div class="col p-r-0">
-                        <h1 class="font-light">-</h1>
+                        <h1 class="font-light">{{ total_celulas }}</h1>
                         <h6 class="text-muted">Células</h6>
                     </div>
                     <!-- Column -->
@@ -76,6 +77,7 @@
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <!-- Column -->
     <!-- Column -->
@@ -166,7 +168,7 @@
         , resize: true
         , data: [
             {% for item in crescimento_pessoas %}
-                { y: '{{ item.created__year }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
+                { y: '{{ item.created__month }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
     {% endfor %}
         ]
         , xkey: 'y'

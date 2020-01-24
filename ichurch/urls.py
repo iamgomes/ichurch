@@ -21,6 +21,7 @@ from django.contrib.auth import urls
 from home import urls as home_urls
 from pessoas import urls as pessoas_urls
 from predios import urls as predios_urls
+from pequenos_grupos import urls as grupos_urls
 
 
 urlpatterns = [
@@ -29,4 +30,5 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),
     path('pessoas/', include(pessoas_urls)),
     path('predios/', include(predios_urls)),
+    path('grupos/', include(grupos_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

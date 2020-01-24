@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -14,11 +16,11 @@ import re
 from django.views.decorators.csrf import csrf_exempt
 
 
-class PessoaList(ListView):
+class PessoaList(LoginRequiredMixin,ListView):
     model = Pessoa
     ordering = ['nome']
 
-class PessoaPerfil(DetailView):
+class PessoaPerfil(LoginRequiredMixin,DetailView):
     model = Pessoa
 
 class PessoaDelete(SuccessMessageMixin, DeleteView):
@@ -31,7 +33,7 @@ class PessoaDelete(SuccessMessageMixin, DeleteView):
         messages.success(self.request, self.success_message % obj.__dict__)
         return super(PessoaDelete, self).delete(request, *args, **kwargs)
 
-class PessoaUpdate(SuccessMessageMixin, UpdateView):
+class PessoaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Pessoa
     fields = ['num_cpf','nome','sexo', 'data_nascimento', 'telefone', 'celular', 'email', 'cep', 'rua', 'numero',
     'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_pessoa', 'situacao', 'foto_perfil', 'predio',
@@ -43,11 +45,11 @@ class PessoaUpdate(SuccessMessageMixin, UpdateView):
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(cleaned_data, nome=self.object.nome)
 
-
+@login_required
 def form_cpf(request):
     return render(request, 'cpf_form.html')
 
-
+@login_required
 def pessoa_create(request):
     if request.method == 'POST':
         form = PessoaForm(request.POST or None, request.FILES or None)
@@ -74,7 +76,7 @@ def pessoa_create(request):
     }
     return render(request, 'pessoas/pessoa_form.html', context)
 
-
+@login_required
 @csrf_exempt
 def pessoa_delete(request, pk):
     pessoa = get_object_or_404(Pessoa, pk=pk)

@@ -4,19 +4,20 @@
 {% load i18n static %}
 
 
-{% block title %} Formulário Prédios {% endblock title %}
+{% block title %} Formulário Células {% endblock title %}
 
 
 {% block head %}
 
-<!-- Date picker plugins css -->
-<link href="{% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet"
-    type="text/css" />
+
+    <!-- Page plugins css -->
+    <link href="{% static '/assets/plugins/clockpicker/dist/jquery-clockpicker.min.css' %}" rel="stylesheet">
+    <!-- Color picker plugins css -->
+    <link href="{% static '/assets/plugins/jquery-asColorPicker-master/css/asColorPicker.css' %}" rel="stylesheet">
 
 
 <style>
-.errorlist
-    {
+    .errorlist {
         list-style: none;
         color: red;
         margin: 0px;
@@ -37,7 +38,7 @@
             <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span
                     aria-hidden="true">&times;</span> </button>
             <h3 class="text-danger"><i class="fa fa-times-rectangle"></i> Erro</h3>
-{% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
+            {% if form.errors.items|length == 1 %}{% trans "Please correct the error below." %}{% else %}{% trans "Please correct the errors below." %}{% endif %}
         </div>
     </div>
 </div>
@@ -47,67 +48,79 @@
     <div class="col-12">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Formulário de Prédio</h4>
-                <h6 class="card-subtitle">Formulário para cadastro de prédios.</h6>
+                <h4 class="card-title">Formulário de Células</h4>
+                <h6 class="card-subtitle">Formulário para cadastro de células.</h6>
                 <form method="POST" class="form-material m-t-40" enctype='multipart/form-data'>
                     {% csrf_token %}
-                    <h2 class="card-title">Informações do Prédio</h2>
+                    <h2 class="card-title">Informações da Célula</h2>
                     <hr>
                     </br>
-                    <div class="form-group">
-                        <label for="{{ form.num_cnpj.id_for_label }}">Número CNPJ</label>
-                        {% render_field form.num_cnpj type="text" class="cnpj form-control form-control-line" %}
-                    </div>
-                    <div class="form-group">
-                        <label for="{{ form.nome.id_for_label }}"><strong>Nome</strong></label>
-                        {{ form.nome.errors }}
-                        {% render_field form.nome type="text" class="form-control form-control-line" %}
-                    </div>
                     <div class="row">
                         <div class="col-md-6">
-                            <label for="{{ form.tipo_igreja.id_for_label }}"><strong>Tipo Igreja</strong></label>
-                            {% render_field form.tipo_igreja class="form-control" %}  
+                            <div class="form-group">
+                                <label for="{{ form.nome.id_for_label }}"><strong>Nome da Célula</strong></label>
+                                {{ form.nome.errors }}
+                                {% render_field form.nome type="text" class="form-control form-control-line" %}
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="{{ form.data_abertura.id_for_label }}">Data de abertura</label>
-                                <div class="input-group">
-                                    {% render_field form.data_abertura class="form-control mydatepicker" %}
-                                    <span class="input-group-addon"> <span class="fa fa-clock-o"></span> </span>
+                                <label for="{{ form.tipo_celula.id_for_label }}"><strong>Tipo Célula</strong></label>
+                                {% render_field form.tipo_celula class="form-control" %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.dia_semana_reuniao.id_for_label }}"><strong>Dia semana da
+                                        Reunião</strong></label>
+                                {% render_field form.dia_semana_reuniao class="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.hora_reuniao.id_for_label }}"><strong>Horário da reunião</strong></label>
+                                <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
+                                    {% render_field form.hora_reuniao class="form-control" %}
+                                    <span class="input-group-addon"> <span class="fa fa-clock-o"></span></span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.telefone.id_for_label }}">Telefone </label>
-                                {% render_field form.telefone type="text" class="telefone form-control form-control-line" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.email.id_for_label }}">E-mail </label>
-                                {% render_field form.email type="email" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                    <div class="col-md-6">
                     <div class="form-group">
-                        <label for="{{ form.pastor.id_for_label }}">Pastor</label>
-                        {{ form.pastor.errors }}
-                        {% render_field form.pastor type="text" class="form-control" %}
+                        <label for="{{ form.predio.id_for_label }}"><strong>Prédio</strong></label>
+                        {% render_field form.predio class="form-control" %}
                     </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="{{ form.situacao.id_for_label }}">Situação</label>
-                            {% render_field form.situacao type="text" class="form-control" %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.lider.id_for_label }}"><strong>Líder da Célula</strong></label>
+                                {% render_field form.lider type="text" class="form-control form-control-line" %}
+                            </div>
                         </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.discipulador.id_for_label }}"><strong>Discipulador</strong></label>
+                                {% render_field form.discipulador type="text" class="form-control form-control-line" %}
+                            </div>
                         </div>
                     </div>
-                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.supervisor.id_for_label }}"><strong>Supervisor</strong></label>
+                                {% render_field form.supervisor type="text" class="form-control" %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="{{ form.situacao.id_for_label }}"><strong>Situação</strong></label>
+                                {% render_field form.situacao type="text" class="form-control" %}
+                            </div>
+                        </div>
+                    </div>
+
                     </br>
                     <h2 class="card-title">Endereço</h2>
                     <hr>
@@ -168,7 +181,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form-actions">
                         <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Salvar</button>
                         <button type="button" class="btn btn-inverse" onclick="window.history.back();">Cancelar</button>
@@ -186,28 +199,49 @@
 <!-- Plugins for this page -->
 <!-- ============================================================== -->
 <script src="{% static '/js/jasny-bootstrap.js' %}"></script>
-<!-- Plugin JavaScript -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/js/bootstrap-datepicker.min.js"></script>
-<script
-    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.1/locales/bootstrap-datepicker.pt-BR.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
-<script src="{% static '/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script src="{% static '/js/pesquisacep.js' %}"></script>
+<!-- Clock Plugin JavaScript -->
+<script src="{% static '/assets/plugins/clockpicker/dist/jquery-clockpicker.min.js' %}"></script>
+<!-- Color Picker Plugin JavaScript -->
+<script src="{% static '/assets/plugins/jquery-asColorPicker-master/libs/jquery-asColor.js' %}"></script>
+<script src="{% static '/assets/plugins/jquery-asColorPicker-master/libs/jquery-asGradient.js' %}"></script>
+<script src="{% static '/assets/plugins/jquery-asColorPicker-master/dist/jquery-asColorPicker.min.js' %}"></script>
 <script src="{% static '/js/pesquisacep.js' %}"></script>
 
 <script type="text/javascript">
-    $('.cnpj').mask('00.000.000/0000-00');
-    $('.telefone').mask('(00) 0000-0000');
-    $('.celular').mask('(00) 0 0000-0000');
-    $('.dinheiro').mask('#.##0,00', { reverse: true });
     $('.estado').mask('AA');
     $('.cep').mask('00000-000');
 </script>
 
 <script>
-    jQuery('.mydatepicker, #datepicker').datepicker({
+    // Clock pickers
+    $('#single-input').clockpicker({
+        placement: 'bottom',
+        align: 'left',
         autoclose: true,
-        format: 'dd/mm/yyyy',
-        language: 'pt-BR',
+        'default': 'now'
+    });
+    $('.clockpicker').clockpicker({
+        donetext: 'Done',
+    }).find('input').change(function() {
+        console.log(this.value);
+    });
+    $('#check-minutes').click(function(e) {
+        // Have to stop propagation here
+        e.stopPropagation();
+        input.clockpicker('show').clockpicker('toggleView', 'minutes');
+    });
+    if (/mobile/i.test(navigator.userAgent)) {
+        $('input').prop('readOnly', true);
+    }
+    // Colorpicker
+    $(".colorpicker").asColorPicker();
+    $(".complex-colorpicker").asColorPicker({
+        mode: 'complex'
+    });
+    $(".gradient-colorpicker").asColorPicker({
+        mode: 'gradient'
     });
 </script>
 

@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from pessoas.models import Pessoa
 from predios.models import Predio
+from pequenos_grupos.models import Celula
 from django.db.models import F, Q, Count, Sum
 import json
 from django.utils.encoding import force_text
@@ -11,6 +12,7 @@ from django.utils.encoding import force_text
 def home(request):
     total_pessoas = Pessoa.objects.count()
     total_predios = Predio.objects.count()
+    total_celulas = Celula.objects.count()
     total_liderancas = Pessoa.objects.filter(funcao_lideranca__isnull=False).count()
     
     # calcula a quantidade de pessoas por tipo
@@ -22,7 +24,7 @@ def home(request):
 
 
     #extrai dados para gráfico novas pessoas
-    crescimento_pessoas = Pessoa.objects.values('created__year').annotate(qtdepessoas=Count('id'))
+    crescimento_pessoas = Pessoa.objects.values('created__month').annotate(qtdepessoas=Count('id'))
 
     #extrai dados para gráfico novas pessoas
     predio_pessoas = Pessoa.objects.values('predio__nome')\
@@ -33,6 +35,7 @@ def home(request):
     context = {
         'total_pessoas':total_pessoas,
         'total_predios':total_predios,
+        'total_celulas':total_celulas,
         'total_liderancas':total_liderancas,
         'qtde_tipo_pessoa':qtde_tipo_pessoa,
         'crescimento_pessoas': crescimento_pessoas,

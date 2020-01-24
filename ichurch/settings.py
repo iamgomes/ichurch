@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'home',
     'pessoas',
     'predios',
+    'pequenos_grupos',
 ]
 
 MIDDLEWARE = [

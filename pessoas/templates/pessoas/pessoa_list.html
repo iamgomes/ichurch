@@ -9,6 +9,8 @@
 <link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
 <!--alerts CSS -->
 <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+
 
 {% endblock head %}
 
@@ -88,8 +90,8 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline delete-row-btn remove"
-                            data-nome="{{ p.nome }}"><i class="ti-close" aria-hidden="true"></i></a>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}"><i
+                                class="ti-close" aria-hidden="true"></i></a>
                         <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
                             href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i class="ti-pencil"
                                 aria-hidden="true"></i></a>
@@ -112,6 +114,15 @@
     </div>
 </div>
 
+<div class="row">
+    <nav class="container-botao">
+
+        <a href="{% url 'search-cpf' %}" class="buttons-botao btn-success" tooltip="Add Pessoa"><i class="fa fa-plus my-float"></i></a>
+        
+      </nav>
+</div>
+
+
 {% block static %}
 
 <!-- Footable -->
@@ -122,33 +133,43 @@
 <!-- Sweet-Alert  -->
 <script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 
-<script>
-    $(".remove").click(function () {
-        var id = $(this).parents("tr").attr("id");
-        var nome = $(this).data("nome");
+<script> 
+    $('.remove').click(function() {
+    var id = $(this).parents("tr").attr("id");
+    var nome = $(this).data("nome");
+    deleteMember(id, nome);
+  });
+
+  function deleteMember(id, nome) {
+    swal({
+      title: "Você tem certeza?", 
+      text: "Você não poderá mais recuperar o cadastro de " + nome, 
+      type: "warning",
+      showCancelButton: true,
+      showLoaderOnConfirm: true,
+      closeOnConfirm: false,
+      confirmButtonText: "Sim, apagar",
+      confirmButtonColor: "#f62d51",
+      cancelButtonText: "Cancelar"
+    }, function() {
+      $.ajax({
+        url: '/pessoas/delete/' + id,
+        type: "POST"
+      })
+      .done(function(data) {
         swal({
-            title: "Você tem certeza?",
-            text: "Você não poderá mais recuperar o cadastro de " + nome,
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#DD6B55",
-            confirmButtonText: "Sim, apagar",
-            cancelButtonText: "Cancelar",
-            closeOnConfirm: false
-        }, function (isConfirm) {
-            if (!isConfirm) return;
-            $.ajax({
-                url: '/pessoas/delete/' + id,
-                type: 'POST',
-                success: function (data) {
-                    swal("Apagado!", "O cadastro de " + nome + " foi apagado!", "success");
-                },
-                error: function (xhr, ajaxOptions, thrownError) {
-                    swal("Erro ao apagar!", "Tente de novo", "error");
-                }
-            });
+            title: "Apagado!", 
+            text: "O cadastro de " + nome + " foi apagado!", 
+            type: "success"
+        },function() {
+            location.href = "/pessoas/list/";
         });
+      })
+      .fail(function(xhr, ajaxOptions, thrownError) {
+        swal("Oops", "Alguma coisa deu errada. Tente novamente!", "error");
+      });
     });
+  }
 </script>
 
 {% endblock static %}
