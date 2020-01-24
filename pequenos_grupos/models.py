@@ -1,6 +1,9 @@
 from django.db import models
 from predios.models import Predio
 from pessoas.models import Pessoa
+from django.template.defaultfilters import date
+import googlemaps
+
 
 class Celula(models.Model):
     TIPOCELULA_CHOICES = (
@@ -47,3 +50,14 @@ class Celula(models.Model):
 
     def __str__(self):
         return self.nome
+
+    @property
+    def formata_data_cadastro(self):
+        return '{}'.format(date(self.created, "d/m/Y"))
+
+    @property
+    def geocoding(self):
+        address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
+        gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
+        geocode_result = gmaps.geocode(address)
+        return geocode_result[0]['geometry']['location']

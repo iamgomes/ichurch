@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Perfil Prédio {% endblock title %}
+{% block title %} Perfil Célula {% endblock title %}
 
 {% block head %}
     <!--This page css - Morris CSS -->
@@ -23,67 +23,27 @@
 <!-- Row -->
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
-        <h3 class="text-themecolor m-b-0 m-t-0">Perfil de Prédio</h3>
-    </div>
-</div>
-
-<div class="row">
-    <!-- Column -->
-    <div class="col-md-6 col-lg-4 col-xlg-2">
-        <div class="card card-primary">
-            <div class="box bg-info text-center">
-                <h1 class="font-light text-white">{{ total_pessoas }}</h1>
-                <h6 class="text-white">Pessoas</h6>
-            </div>
-        </div>
-    </div>
-    <!-- Column -->
-    <div class="col-md-6 col-lg-4 col-xlg-2">
-        <div class="card card-info">
-            <div class="box text-center">
-                <h1 class="font-light text-white">{{ total_celulas }}</h1>
-                <h6 class="text-white">Células</h6>
-            </div>
-        </div>
-    </div>
-    <!-- Column -->
-    <div class="col-md-6 col-lg-4 col-xlg-2">
-        <div class="card card-inverse card-warning">
-            <div class="box text-center">
-                <h1 class="font-light text-white">{{ total_lideranças }}</h1>
-                <h6 class="text-white">Lideranças</h6>
-            </div>
-        </div>
+        <h3 class="text-themecolor m-b-0 m-t-0">Perfil de Célula</h3>
     </div>
 </div>
 
 
 <div class="row">
+
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
         <div class="card">
             <div class="card-block">
-                <center class="m-t-30">
-                    {% if object.foto_perfil %}
-                    <img src="{{ object.foto_perfil_url }}" class="img-circle" width="150" height="150" />
-                    {% else %}
-                    <img src="{% static 'img/perfil.png' %}" class="img-circle" width="150" />
-                    {% endif %}
-                    <h4 class="card-title m-t-10">{{ object.nome }}</h4>
-                </center>
-            </div>
-            <div>
-                <hr>
-            </div>
-            <div class="card-block"> <small class="text-muted">Pastor </small>
-                <h6>{{ object.pastor }}</h6> <small class="text-muted p-t-30 db">Telefone da igreja</small>
-                <h6>{{ object.telefone }}</h6>
-
-                <small class="text-muted p-t-30 db">Redes Sociais</small>
-                <br />
-                <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
-                <button class="btn btn-circle btn-secondary"><i class="fa fa-twitter"></i></button>
-                <button class="btn btn-circle btn-secondary"><i class="fa fa-youtube"></i></button>
+                <div class="alert alert-info">
+                    <h6 class="text-muted"><i class="mdi mdi-google-circles-extended"></i> Nome da Célula</h6>
+                    <h5>{{ object.nome }}</h5>
+                </div>
+                <small class="text-muted p-t-30 db">Líder da Célula</small>
+                <h6>{{ object.lider }}</h6> 
+                <small class="text-muted p-t-30 db">Discipulador</small>
+                <h6>{{ object.discipulador }}</h6>
+                <small class="text-muted p-t-30 db">Supervisor</small>
+                <h6>{{ object.supervisor }}</h6>
             </div>
         </div>
     </div>
@@ -96,7 +56,7 @@
             <ul class="nav nav-tabs profile-tab" role="tablist">
                 <!--<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#home" role="tab">Timeline</a> </li>-->
                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">Dados
-                        da Igreja</a> </li>
+                        da Célula</a> </li>
                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
                 </li>
             </ul>
@@ -193,17 +153,17 @@
                 <div class="tab-pane active" id="profile" role="tabpanel">
                     <div class="card-block">
                         <div class="row">
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Código Igreja</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Código Célula</strong>
                                 <br>
                                 <p class="text-muted">{{ object.id }}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>CNPJ</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Dia da Semana</strong>
                                 <br>
-                                <p class="text-muted">{{ object.num_cnpj }}</p>
+                                <p class="text-muted">{{ object.get_dia_semana_reuniao_display }}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Tipo igreja</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Hora da Reunião</strong>
                                 <br>
-                                <p class="text-muted">{{ object.get_tipo_igreja_display }}</p>
+                                <p class="text-muted">{{ object.hora_reuniao }}</p>
                             </div>
                             <div class="col-md-3 col-xs-6"> <strong>Situação</strong>
                                 <br>
@@ -215,17 +175,17 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Data de Abertura</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Tipo Célula</strong>
                                 <br>
-                                <p class="text-muted">{{ object.formata_data_multiplicacao }}</p>
+                                <p class="text-muted">{{ object.get_tipo_celula_display }}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>Idade</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Prédio</strong>
                                 <br>
-                                <p class="text-muted">{{ object.idade }} anos</p>
+                                <p class="text-muted">{{ object.predio.nome }}</p>
                             </div>
-                            <div class="col-md-3 col-xs-6 b-r"> <strong>E-mail</strong>
+                            <div class="col-md-3 col-xs-6 b-r"> <strong>Data Abertura</strong>
                                 <br>
-                                <p class="text-muted">{{ object.email }}</p>
+                                <p class="text-muted">{{ object.formata_data_cadastro }}</p>
                             </div>
                         </div>
 
@@ -360,26 +320,7 @@
 </div>
 
 <!-- Row -->
-<div class="row">
-    <!-- Column -->
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-block">
-                <h4 class="card-title">Crescimento da Igreja</h4>
-                <div id="morris-line-chart"></div>
-            </div>
-        </div>
-    </div>
-    <!-- Column -->
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-block">
-                <h4 class="card-title">Por tipo de pessoa</h4>
-                <div id="morris-donut-chart"></div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <div class="row">
     <div class="col-12">
@@ -395,14 +336,14 @@
 <div class="row">
     <nav class="container-botao">
   
-        <a class="btn buttons-botao btn-danger remove" tooltip="Excluir Prédio" 
+        <a class="btn buttons-botao btn-danger remove" tooltip="Excluir Célula" 
             data-id="{{ object.id }}" data-nome="{{ object.nome }}">
             <i class="fa fa-times my-float"></i>
         </a>
         
-        <a href="{% url 'predio-update' object.id %}" class="buttons-botao btn-warning" tooltip="Editar Prédio"><i class="fa fa-pencil my-float"></i></a>
+        <a href="{% url 'celula-update' object.id %}" class="buttons-botao btn-warning" tooltip="Editar Célula"><i class="fa fa-pencil my-float"></i></a>
         
-        <a href="{% url 'predio-create' %}" class="buttons-botao btn-success" tooltip="Add Prédio"><i class="fa fa-plus my-float"></i></a>
+        <a href="{% url 'celula-create' %}" class="buttons-botao btn-success" tooltip="Add Célula"><i class="fa fa-plus my-float"></i></a>
     
         <a class="buttons-botao btn-primary"><i class="fa fa-list my-float"></i></a>
     
@@ -442,70 +383,6 @@
                 content: '<p>{{ object.nome }}</p>'
             }
         });
-    });
-</script>
-
-<script>
-    // Morris donut chart
-
-    Morris.Donut({
-        element: 'morris-donut-chart'
-        , data: [
-            {% for i in qtde_tipo_pessoa %}
-                {
-            label: '{{ i.tipo_pessoa }}'
-            , value: '{{ i.qtdepessoas }}'
-        }
-            {% if not forloop.last %}, {% endif %}
-    {% endfor %}
-        ]
-        , resize: true
-        , colors: ['#009efb', '#55ce63', '#2f3d4a']
-    });
-
-</script>
-
-<script>
-    // LINE CHART
-    var line = new Morris.Line({
-        element: 'morris-line-chart'
-        , resize: true
-        , data: [
-            {% for item in crescimento_pessoas %}
-                { y: '{{ item.created__month }}' + '/' + '{{ item.created__year }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-        ]
-        , xkey: 'y'
-        , ykeys: ['a']
-            , labels: ['Total']
-                , gridLineColor: '#eef0f2'
-                    , lineColors: ['#009efb']
-                        , lineWidth: 1
-                            , hideHover: 'auto'
-    });
-</script>
-
-<script>
-    // Morris bar chart
-    Morris.Bar({
-        element: 'morris-bar-chart'
-        , data: [
-            {% for i in predio_pessoas %}
-                {
-            y: '{{ i.predio__nome }}'
-            , a: '{{ i.visitante }}'
-            , b: '{{ i.frequentador }}'
-            , c: '{{ i.membro }}'
-        }{% if not forloop.last %}, {% endif %}
-    {% endfor %}
-        ]
-        , xkey: 'y'
-        , ykeys: ['a', 'b', 'c']
-            , labels: ['Visitantes', 'Frequentadores', 'Membros']
-                , barColors: ['#009efb', '#55ce63', '#2f3d4a']
-                    , hideHover: 'auto'
-                        , gridLineColor: '#eef0f2'
-                            , resize: true
     });
 </script>
 

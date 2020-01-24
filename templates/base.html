@@ -125,7 +125,7 @@
                                     <li><a href="{% url 'pessoa-update' user.pessoa.id %}"><i class="ti-user"></i> Editar Perfil</a></li>
                                     <li><a href="#"><i class="ti-email"></i> Mensagens</a></li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="#"><i class="ti-settings"></i> Configurações da Conta</a></li>
+                                    <li><a href="{% url 'password_change' %}"><i class="ti-key"></i> Senha de acesso</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Sair</a></li>
                                 </ul>

@@ -24,7 +24,7 @@ def home(request):
 
 
     #extrai dados para gráfico novas pessoas
-    crescimento_pessoas = Pessoa.objects.values('created__month').annotate(qtdepessoas=Count('id'))
+    crescimento_pessoas = Pessoa.objects.values('created__month','created__year').annotate(qtdepessoas=Count('id'))
 
     #extrai dados para gráfico novas pessoas
     predio_pessoas = Pessoa.objects.values('predio__nome')\

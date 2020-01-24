@@ -59,7 +59,7 @@ class Predio(models.Model):
 
     @property
     def geocoding(self):
-        address = self.rua + str(self.numero) + self.bairro + self.cidade + self.uf
+        address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
         geocode_result = gmaps.geocode(address)
         return geocode_result[0]['geometry']['location']

@@ -65,7 +65,7 @@
             <tbody>
                 {% for p in object_list  %}
                 <tr id="{{ p.id }}">
-                    <td><a href="{% url 'predio-perfil' p.id %}">{{ p.nome }}</a></td>
+                    <td><a href="{% url 'celula-perfil' p.id %}">{{ p.nome }}</a></td>
                     <td>{{ p.get_tipo_celula_display }}</td>
                     <td>{{ p.lider.nome }}</td>
                     <td>{{ p.predio.nome }}</td>

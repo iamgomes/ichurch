@@ -31,7 +31,7 @@ class PredioPerfil(LoginRequiredMixin,DetailView):
 
         #extrai dados para gráfico novas pessoas
         context['crescimento_pessoas'] = Pessoa.objects.filter(predio_id=self.object.pk).\
-            values('created__month').annotate(qtdepessoas=Count('id'))
+            values('created__month','created__year').annotate(qtdepessoas=Count('id'))
 
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_pessoa = Pessoa.objects.filter(predio_id=self.object.pk).\
