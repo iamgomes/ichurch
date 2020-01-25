@@ -18,3 +18,4 @@ sqlparse==0.3.0
 static3==0.7.0
 sweetify==2.0.0
 urllib3==1.25.7
+psycopg2
