@@ -469,9 +469,13 @@
         element: 'morris-line-chart'
         , resize: true
         , data: [
-            {% for item in crescimento_pessoas %}
-                { y: '{{ item.created__month }}' + '/' + '{{ item.created__year }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
-    {% endfor %}
+            {% for i in totais_mes_ano.items %}
+               {
+                y: '{{ i.0 }}',
+                a: '{{ i.1 }}'
+                } 
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
         ]
         , xkey: 'y'
         , ykeys: ['a']

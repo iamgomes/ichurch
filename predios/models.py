@@ -40,7 +40,11 @@ class Predio(models.Model):
 
     class Meta:
         verbose_name_plural = 'Prédios'
-
+    
+    @property
+    def mes_ano(self):
+        return '{}'.format(date(self.created, "Y-M"))
+        
     @property
     def formata_data_cadastro(self):
         return '{}'.format(date(self.created, "d/m/Y"))

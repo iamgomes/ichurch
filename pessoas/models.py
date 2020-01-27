@@ -91,7 +91,7 @@ class Pessoa(models.Model):
 
     @property
     def mes_ano(self):
-        return '{}'.format(date(self.created, "Y-m"))
+        return '{}'.format(date(self.created, "Y-M"))
 
     @property
     def formata_data_cadastro(self):
