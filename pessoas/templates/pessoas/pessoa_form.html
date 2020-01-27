@@ -74,7 +74,7 @@
                     </div>
                     <div class="form-group">
                         <label for="{{ form.nome.id_for_label }}"><strong>Nome</strong></label>
-                        {% render_field form.nome type="text" value=result_cpf.0.NOME class="form-control form-control-line" %}
+                        {% render_field form.nome style="text-transform: uppercase;" type="text" value=result_cpf.0.NOME class="form-control form-control-line" %}
                     </div>
                     <div class="row">
                         <div class="col-md-6">
@@ -98,9 +98,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="{{ form.data_nascimento.id_for_label }}"><strong>Data de nascimento</strong></label>
-                                <div class="input-group">
-                                    {% render_field form.data_nascimento value=result_cpf.0.DATA_NASCIMENTO class="form-control mydatepicker" %}<span
-                                        class="input-group-addon"> <span class="fa fa-clock-o"></span> </span>
+                                <div class="input-group" >
+                                    {% render_field form.data_nascimento value=result_cpf.0.DATA_NASCIMENTO class="mydatepicker form-control" %}
+                                    <span class="input-group-addon"> <span class="fa fa-clock-o"></span> </span>
                                 </div>
                             </div>
                         </div>
