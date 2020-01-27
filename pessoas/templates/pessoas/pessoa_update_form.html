@@ -29,6 +29,7 @@
                     <div class="form-group">
                         <label for="{{ form.num_cpf.id_for_label }}">Número CPF </label>
                         {% render_field form.num_cpf type="text" class="cpf form-control form-control-line" %}
+                        {{ form.num_cpf.errors }}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.nome.id_for_label }}">Nome <span class="help"> completo</span></label>
@@ -167,14 +168,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="{{ form.user.id_for_label }}">Usuário Sistema</label>
-                            {% render_field form.user|append_attr:"disabled:disabled" type="text" class="form-control form-control-line" %}
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="form-actions">
                     <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Salvar</button>
                     <button type="button" class="btn btn-inverse" onclick="window.history.back();">Cancelar</button>

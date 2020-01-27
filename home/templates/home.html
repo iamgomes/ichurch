@@ -135,7 +135,8 @@
     </div>
 </div>
 
-
+{{ total_mes_label}}
+{{ total_mes_valor }}
 
 {% block static %}
 
@@ -162,13 +163,16 @@
 </script>
 
 <script>
-    // LINE CHART
     var line = new Morris.Line({
         element: 'morris-line-chart'
         , resize: true
         , data: [
-            {% for item in crescimento_pessoas %}
-                { y: '{{ item.created__month }}' + '/' + '{{ item.created__year }}', a: '{{ item.qtdepessoas }}' }{% if not forloop.last %}, {% endif %}
+            {% for i in totais_mes_ano.items %}
+               {
+                y: '{{ i.0 }}',
+                a: '{{ i.1 }}'
+                } 
+            {% if not forloop.last %}, {% endif %}
             {% endfor %}
         ]
         , xkey: 'y'

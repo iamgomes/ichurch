@@ -24,6 +24,16 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
+<style>
+    .errorlist
+        {
+        list-style: none;
+        color: red;
+        margin: 0px;
+        padding: 0px;
+        font-weight: bolder;
+        }
+    </style>   
 </head>
 
 <body>
@@ -40,15 +50,13 @@
     <section id="wrapper">
         <div class="login-register" style="background-image:url({% static '/assets/images/background/login-register' %}.jpg);">        
             <div class="login-box card">
-            <div class="card-block">
-                
+                <div class="card-block">  
                 {% block content %}
                     
                 {% endblock content %}
-                    
-            </div>
-          </div>
         </div>
+    </div>
+</div>
         
     </section>
     <!-- ============================================================== -->

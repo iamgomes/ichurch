@@ -4,6 +4,7 @@ import datetime
 from predios.models import Predio
 from django.contrib.auth.models import User
 import googlemaps
+from django.urls import reverse
 
 
 class FuncaoLideranca(models.Model):
@@ -69,7 +70,9 @@ class Pessoa(models.Model):
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
     updated = models.DateField(u'Data Atualização', auto_now=True, auto_now_add=False)
 
-
+    def get_absolute_url(self):
+        return reverse('pessoa-list')
+    
     def __str__(self):
         return self.nome
 
@@ -85,6 +88,10 @@ class Pessoa(models.Model):
     @property
     def formata_data_nascimento(self):
         return '{}'.format(date(self.data_nascimento, "d/m/Y"))
+
+    @property
+    def mes_ano(self):
+        return '{}'.format(date(self.created, "Y-m"))
 
     @property
     def formata_data_cadastro(self):

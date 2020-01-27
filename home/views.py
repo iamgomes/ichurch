@@ -6,6 +6,7 @@ from pequenos_grupos.models import Celula
 from django.db.models import F, Q, Count, Sum
 import json
 from django.utils.encoding import force_text
+import collections
 
 
 @login_required
@@ -23,8 +24,9 @@ def home(request):
         entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
 
 
-    #extrai dados para gráfico novas pessoas
-    crescimento_pessoas = Pessoa.objects.values('created__month','created__year').annotate(qtdepessoas=Count('id'))
+    #extrai dados para gráfico novas pessoas utilizando property do model
+    mes_ano = [p.mes_ano for p in Pessoa.objects.all()]
+    totais_mes_ano = {x:mes_ano.count(x) for x in set(mes_ano)}
 
     #extrai dados para gráfico novas pessoas
     predio_pessoas = Pessoa.objects.values('predio__nome')\
@@ -38,8 +40,8 @@ def home(request):
         'total_celulas':total_celulas,
         'total_liderancas':total_liderancas,
         'qtde_tipo_pessoa':qtde_tipo_pessoa,
-        'crescimento_pessoas': crescimento_pessoas,
         'predio_pessoas':predio_pessoas,
+        'totais_mes_ano':totais_mes_ano
     }
 
     return render(request, 'home.html', context)

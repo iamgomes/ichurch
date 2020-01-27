@@ -69,8 +69,8 @@
                     </br>
                     <div class="form-group">
                         <label for="{{ form.num_cpf.id_for_label }}"><strong>Número CPF</strong></label>
-                        {{ form.num_cpf.errors }}
                         {% render_field form.num_cpf type="text" value=result_cpf.0.NUM_CPF class="cpf form-control form-control-line" %}
+                        {{ form.num_cpf.errors }}
                     </div>
                     <div class="form-group">
                         <label for="{{ form.nome.id_for_label }}"><strong>Nome</strong></label>

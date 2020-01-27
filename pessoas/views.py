@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Pessoa
 from .forms import PessoaForm
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse
 from django.contrib import messages
@@ -37,7 +37,7 @@ class PessoaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Pessoa
     fields = ['num_cpf','nome','sexo', 'data_nascimento', 'telefone', 'celular', 'email', 'cep', 'rua', 'numero',
     'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_pessoa', 'situacao', 'foto_perfil', 'predio',
-    'funcao_lideranca','user']
+    'funcao_lideranca']
     template_name = 'pessoas/pessoa_update_form.html'
     success_url = reverse_lazy('pessoa-list')
     success_message = 'Pessoa "%(nome)s" atualizada com sucesso.'
