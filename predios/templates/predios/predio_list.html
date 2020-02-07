@@ -10,7 +10,8 @@
     <!--alerts CSS -->
     <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static '/css/botoes.css' %}" rel="stylesheet">
-
+    <!--This page css - Morris CSS -->
+    <link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
 {% endblock head %}
     
@@ -102,6 +103,28 @@
     </div>
 </div>
 
+<!-- Row -->
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Prédios por tipo</h4>
+                <div class="text-center">
+                    <div id="morris-donut-chart"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Localização das igrejas</h4>
+                <div id="gmaps-simple" class="gmaps"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
     <nav class="container-botao">
 
@@ -112,11 +135,15 @@
 {% block static %}
 
 <!-- Footable -->
-    <script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
+<script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
     <!--FooTable init-->
     <script src="{% static '/js/footable-init.js' %}"></script>
     <!-- Sweet-Alert  -->
     <script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+    <!--Morris JavaScript -->
+    <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
+    <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
 
     <script> 
         $('.remove').click(function() {
@@ -156,6 +183,128 @@
         });
       }
     </script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart'
+        , data: [
+            {% for i in qtde_tipo_igreja %}
+                {
+            label: '{{ i.tipo_igreja }}'
+            , value: '{{ i.qtdepredios }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+            {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+// VÃ¡riÃ¡veis necessÃ¡rias
+var map;
+var infoWindow;
+
+// A variÃ¡vel markersData guarda a informaÃ§Ã£o necessÃ¡ria a cada marcador
+// Para utilizar este cÃ³digo basta alterar a informaÃ§Ã£o contida nesta variÃ¡vel
+var markersData = [{% for i in object_list %}
+   {
+      lat: {{ i.lat }},
+      lng: {{ i.lng }},
+      nome: "{{ i.nome }}",
+      pastor: "{{ i.pastor.nome }}",
+      cidade: "{{ i.cidade }}",
+      uf: "{{ i.uf }}",
+   }{% if not forloop.last %}, {% endif %}{% endfor %}
+];
+
+
+function initialize() {
+   var mapOptions = {
+      center: new google.maps.LatLng(40.601203,-8.668173),
+      zoom: 9,
+      mapTypeId: 'roadmap',
+   };
+
+   map = new google.maps.Map(document.getElementById('gmaps-simple'), mapOptions);
+
+   // cria a nova Info Window com referÃªncia Ã  variÃ¡vel infowindow
+   // o conteÃºdo da Info Window serÃ¡ atribuÃ­do mais tarde
+   infoWindow = new google.maps.InfoWindow();
+
+   // evento que fecha a infoWindow com click no mapa
+   google.maps.event.addListener(map, 'click', function() {
+      infoWindow.close();
+   });
+
+   // Chamada para a funÃ§Ã£o que vai percorrer a informaÃ§Ã£o
+   // contida na variÃ¡vel markersData e criar os marcadores a mostrar no mapa
+   displayMarkers();
+}
+google.maps.event.addDomListener(window, 'load', initialize);
+
+// Esta funÃ§Ã£o vai percorrer a informaÃ§Ã£o contida na variÃ¡vel markersData
+// e cria os marcadores atravÃ©s da funÃ§Ã£o createMarker
+function displayMarkers(){
+
+   // esta variÃ¡vel vai definir a Ã¡rea de mapa a abranger e o nÃ­vel do zoom
+   // de acordo com as posiÃ§Ãµes dos marcadores
+   var bounds = new google.maps.LatLngBounds();
+   
+   // Loop que vai estruturar a informaÃ§Ã£o contida em markersData
+   // para que a funÃ§Ã£o createMarker possa criar os marcadores 
+   for (var i = 0; i < markersData.length; i++){
+
+      var latlng = new google.maps.LatLng(markersData[i].lat, markersData[i].lng);
+      var nome = markersData[i].nome;
+      var pastor = markersData[i].pastor;
+      var cidade = markersData[i].cidade;
+      var uf = markersData[i].uf;
+
+      createMarker(latlng, nome, pastor, cidade, uf);
+
+      // Os valores de latitude e longitude do marcador sÃ£o adicionados Ã 
+      // variÃ¡vel bounds
+      bounds.extend(latlng);  
+   }
+
+   // Depois de criados todos os marcadores
+   // a API atravÃ©s da sua funÃ§Ã£o fitBounds vai redefinir o nÃ­vel do zoom
+   // e consequentemente a Ã¡rea do mapa abrangida.
+   map.fitBounds(bounds);
+}
+
+// FunÃ§Ã£o que cria os marcadores e define o conteÃºdo de cada Info Window.
+function createMarker(latlng, nome, morada1, morada2, codPostal){
+   var marker = new google.maps.Marker({
+      map: map,
+      position: latlng,
+      title: nome
+   });
+
+   // Evento que dÃ¡ instruÃ§Ã£o Ã  API para estar alerta ao click no marcador.
+   // Define o conteÃºdo e abre a Info Window.
+   google.maps.event.addListener(marker, 'click', function() {
+      
+      // VariÃ¡vel que define a estrutura do HTML a inserir na Info Window.
+      var iwContent = '<div id="iw_container">' +
+            '<div class="iw_title">' + nome + '</div>' +
+         '<div class="iw_content">' + morada1 + '<br />' +
+         morada2 + '<br />' +
+         codPostal + '</div></div>';
+      
+      // O conteÃºdo da variÃ¡vel iwContent Ã© inserido na Info Window.
+      infoWindow.setContent(iwContent);
+
+      // A Info Window Ã© aberta.
+      infoWindow.open(map, marker);
+   });
+}
+</script>
 
 {% endblock static %}
     

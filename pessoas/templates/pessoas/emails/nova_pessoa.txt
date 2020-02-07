@@ -1,0 +1,17 @@
+{% autoescape off %}
+
+Olá, {{ pessoa }}
+
+Você foi cadastrado no sistema iChurch, na igreja local {{ predio }} como {{ tipo_pessoa }}.
+
+Seu login de acesso é: {{ username }}
+
+Sua senha provisória é: 12345senha
+
+Para sua segurança, você deve atualizar sua senha. Clique no link abaixo para fazer seu primeiro login:
+
+http://localhost:8000{% url 'login' %}
+
+Obrigado por usar o iChurch!
+
+{% endautoescape %}

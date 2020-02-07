@@ -18,6 +18,19 @@ class PredioList(LoginRequiredMixin,ListView):
     model = Predio
     ordering = ['nome']
 
+    def get_context_data(self, **kwargs):
+        """ get_context_data let you fill the template context """
+        context = super(PredioList, self).get_context_data(**kwargs)
+        # calcula a quantidade de pessoas por tipo
+        qtde_tipo_igreja = Predio.objects.values('tipo_igreja').annotate(qtdepredios=Count('id'))
+        # aplica o get_display no campo tipo_pessoa
+        choices = dict(Predio._meta.get_field('tipo_igreja').flatchoices)
+        for entry in qtde_tipo_igreja:
+            entry['tipo_igreja'] = force_text(choices[entry['tipo_igreja']], strings_only=True)
+        context['qtde_tipo_igreja'] = qtde_tipo_igreja
+
+        return context
+
 class PredioPerfil(LoginRequiredMixin,DetailView):
     model = Predio
 
@@ -37,7 +50,6 @@ class PredioPerfil(LoginRequiredMixin,DetailView):
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_pessoa = Pessoa.objects.filter(predio_id=self.object.pk).\
             values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
-
         # aplica o get_display no campo tipo_pessoa
         choices = dict(Pessoa._meta.get_field('tipo_pessoa').flatchoices)
         for entry in qtde_tipo_pessoa:

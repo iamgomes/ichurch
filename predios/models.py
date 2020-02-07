@@ -2,6 +2,8 @@ from django.db import models
 from django.template.defaultfilters import date
 import datetime
 import googlemaps
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Predio(models.Model):
@@ -28,6 +30,8 @@ class Predio(models.Model):
     cidade = models.CharField(max_length=50, blank=True, null=True)
     uf = models.CharField(max_length=50, blank=True, null=True)
     pais = models.CharField(max_length=50, null=True,blank=True)
+    lat = models.CharField(max_length=20, null=True,blank=True)
+    lng = models.CharField(max_length=20, null=True,blank=True)
     tipo_igreja = models.CharField(max_length=1, choices=TIPOIGREJA_CHOICES, default='P')
     situacao = models.CharField(max_length=1, choices=SITUACAO_CHOICES, default='A')
     pastor = models.OneToOneField(to='pessoas.Pessoa', 
@@ -61,10 +65,14 @@ class Predio(models.Model):
         else:
             return 'Sem informação'
 
-    @property
     def geocoding(self):
         address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
         geocode_result = gmaps.geocode(address)
-        return geocode_result[0]['geometry']['location']
+        codigo = geocode_result[0]['geometry']['location']
+        return codigo
 
+@receiver(post_save, sender=Predio)
+def update_geocoding(sender, instance, **kwargs):
+    codigo = instance.geocoding()
+    Predio.objects.filter(id=instance.id).update(lat=codigo['lat'], lng=codigo['lng'])

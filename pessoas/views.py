@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.db.models import F, Q, Count, Sum
 from .models import Pessoa
 from .forms import PessoaForm
 from django.urls import reverse_lazy, reverse
@@ -14,11 +15,31 @@ import requests
 import json
 import re
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
+from django.utils.encoding import force_text
+
 
 
 class PessoaList(LoginRequiredMixin,ListView):
     model = Pessoa
     ordering = ['nome']
+
+    def get_context_data(self, **kwargs):
+        """ get_context_data let you fill the template context """
+        context = super(PessoaList, self).get_context_data(**kwargs)
+        context['total_ativos'] = Pessoa.objects.filter(situacao='A').count()
+        context['total_inativos'] = Pessoa.objects.filter(situacao='I').count()
+
+        # calcula a quantidade de pessoas por tipo
+        qtde_tipo_pessoa = Pessoa.objects.values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
+        # aplica o get_display no campo tipo_pessoa
+        choices = dict(Pessoa._meta.get_field('tipo_pessoa').flatchoices)
+        for entry in qtde_tipo_pessoa:
+            entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
+        context['qtde_tipo_pessoa'] = qtde_tipo_pessoa
+
+        return context
 
 class PessoaPerfil(LoginRequiredMixin,DetailView):
     model = Pessoa
@@ -55,6 +76,10 @@ def pessoa_create(request):
         form = PessoaForm(request.POST or None, request.FILES or None)
         if form.is_valid():
             f = form.save(commit=False)
+            username = f.num_cpf
+            firstname = f.nome.split(' ')[0]
+            senha = make_password('12345senha')
+            f.user = User.objects.create(username=username, first_name=firstname, password=senha)
             f.save()
             messages.success(request, 'Pessoa "{}" inserida com sucesso!'.format(f.nome))
             return redirect('pessoa-list')

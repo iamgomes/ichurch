@@ -42,7 +42,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django_session_timeout.middleware.SessionTimeoutMiddleware',
 ]
@@ -126,8 +125,8 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'login'
 
-SESSION_EXPIRE_SECONDS = 300  # 300 seconds = 5 minutes
-SESSION_EXPIRE_AFTER_LAST_ACTIVITY  =  True
+#SESSION_EXPIRE_SECONDS = 300  # 300 seconds = 5 minutes
+#SESSION_EXPIRE_AFTER_LAST_ACTIVITY  =  True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

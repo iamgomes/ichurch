@@ -105,7 +105,7 @@
 <!-- Row -->
 <div class="row">
     <!-- Column -->
-    <div class="col-lg-6">
+    <div class="col-lg-8">
         <div class="card">
             <div class="card-block">
                 <h4 class="card-title">Crescimento da Igreja</h4>
@@ -114,10 +114,10 @@
         </div>
     </div>
     <!-- Column -->
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Por tipo de pessoa</h4>
+                <h4 class="card-title">Pessoas por sexo</h4>
                 <div id="morris-donut-chart"></div>
             </div>
         </div>
@@ -125,10 +125,20 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-12">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Por prédio</h4>
+                <h4 class="card-title">Pessoas por faixa etária</h4>
+                <div>
+                    <canvas id="chart3" height="291%"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Pessoas por prédio</h4>
                 <div id="morris-bar-chart"></div>
             </div>
         </div>
@@ -143,6 +153,9 @@
 <!--Morris JavaScript -->
 <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
 <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+
 
 <script>
     // Morris donut chart
@@ -151,7 +164,7 @@
         element: 'morris-donut-chart'
         , data: [
             {% for i in qtde_tipo_pessoa %}
-                {label: '{{ i.tipo_pessoa }}'
+                {label: '{{ i.sexo }}'
                 , value: '{{ i.qtdepessoas }}'}
             {% if not forloop.last %}, {% endif %}
             {% endfor %}
@@ -171,7 +184,7 @@
                {
                 y: '{{ i.0 }}',
                 a: '{{ i.1 }}'
-                } 
+                }
             {% if not forloop.last %}, {% endif %}
             {% endfor %}
         ]
@@ -180,7 +193,7 @@
             , labels: ['Total']
                 , gridLineColor: '#eef0f2'
                     , lineColors: ['#009efb']
-                        , lineWidth: 1
+                        , lineWidth: 3
                             , hideHover: 'auto'
     });
 </script>
@@ -206,6 +219,33 @@
                     , hideHover: 'auto'
                         , gridLineColor: '#eef0f2'
                             , resize: true
+    });
+</script>
+
+<script>
+var ctx = document.getElementById("chart4");
+var data3 = [{% for i in totais_grupo_idade.items %}'{{ i.1 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+</script>
+
+<script>
+var ctx = document.getElementById("chart3");
+var total_faixa_d = [{% for i in totais_grupo_idade.items %}'{{ i.0 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+var total_faixa_v = [{% for i in totais_grupo_idade.items %}'{{ i.1 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
+    var faixaChart = new Chart(ctx, {
+    type: 'pie',
+    data: {
+        labels: total_faixa_d,
+        datasets: [{
+        label: 'Número de pessoas',
+        backgroundColor: ['#009efb', '#55ce63', '#2f3d4a'],
+        borderColor: 'rgba(0, 0, 0, 0.1)',
+        data: total_faixa_v,
+        borderWidth: 1
+        }]
+    },
+    options: {
+        legend: {display: false},
+    }
     });
 </script>
 {% endblock static %}

@@ -17,16 +17,20 @@ def home(request):
     total_liderancas = Pessoa.objects.filter(funcao_lideranca__isnull=False).count()
     
     # calcula a quantidade de pessoas por tipo
-    qtde_tipo_pessoa = Pessoa.objects.values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
+    qtde_tipo_pessoa = Pessoa.objects.values('sexo').annotate(qtdepessoas=Count('id'))
     # aplica o get_display no campo tipo_pessoa
-    choices = dict(Pessoa._meta.get_field('tipo_pessoa').flatchoices)
+    choices = dict(Pessoa._meta.get_field('sexo').flatchoices)
     for entry in qtde_tipo_pessoa:
-        entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
+        entry['sexo'] = force_text(choices[entry['sexo']], strings_only=True)
 
 
-    #extrai dados para gráfico novas pessoas utilizando property do model
+    #extrai dados para gráfico novas pessoas utilizando property do model mes e ano
     mes_ano = [p.mes_ano for p in Pessoa.objects.all()]
     totais_mes_ano = {x:mes_ano.count(x) for x in set(mes_ano)}
+
+    #extrai dados para gráfico novas pessoas utilizando property do model grupo idade
+    grupo_idade = [p.grupo_idade for p in Pessoa.objects.all()]
+    totais_grupo_idade = {x:grupo_idade.count(x) for x in set(grupo_idade)}
 
     #extrai dados para gráfico novas pessoas
     predio_pessoas = Pessoa.objects.values('predio__nome')\
@@ -41,7 +45,8 @@ def home(request):
         'total_liderancas':total_liderancas,
         'qtde_tipo_pessoa':qtde_tipo_pessoa,
         'predio_pessoas':predio_pessoas,
-        'totais_mes_ano':totais_mes_ano
+        'totais_mes_ano':totais_mes_ano,
+        'totais_grupo_idade':totais_grupo_idade
     }
 
     return render(request, 'home.html', context)

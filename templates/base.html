@@ -116,7 +116,7 @@
                                                 {% endif %}
                                             </div>
                                             <div class="u-text">
-                                                <h3>Olá, {{ user.pessoa.pega_nome_perfil }}</h3>
+                                                <h3>Olá, {{ user.first_name }}</h3>
                                                 <h6>{{ user.pessoa.predio.nome }}</h6>
                                                 <a href="{% url 'pessoa-perfil' user.pessoa.id %}" class="btn btn-rounded btn-danger btn-sm">Ver Perfil</a></div>
                                         </div>

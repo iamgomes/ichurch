@@ -5,6 +5,10 @@ from predios.models import Predio
 from django.contrib.auth.models import User
 import googlemaps
 from django.urls import reverse
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class FuncaoLideranca(models.Model):
@@ -60,11 +64,13 @@ class Pessoa(models.Model):
     cidade = models.CharField(max_length=50, null=True,blank=True)
     uf = models.CharField(max_length=2, null=True,blank=True)
     pais = models.CharField(max_length=50, null=True,blank=True)
+    lat = models.CharField(max_length=20, null=True,blank=True)
+    lng = models.CharField(max_length=20, null=True,blank=True)
     tipo_pessoa = models.CharField(max_length=1, choices=TIPOPESSOA_CHOICES, default='M')
     situacao = models.CharField(max_length=1, choices=SITUACAO_CHOICES, default='A')
     foto_perfil = models.FileField(upload_to='foto_perfil', blank=True, null=True)
     predio = models.ForeignKey(Predio, on_delete=models.PROTECT, verbose_name='Prédio')
-    user = models.OneToOneField(User, on_delete=models.PROTECT, blank=True, null=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     funcao_lideranca = models.ForeignKey(FuncaoLideranca, 
             on_delete=models.PROTECT, verbose_name='Função Liderança', blank=True, null=True)
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
@@ -75,6 +81,20 @@ class Pessoa(models.Model):
     
     def __str__(self):
         return self.nome
+
+    def save(self, *args, **kwargs):
+        super(Pessoa, self).save(*args,**kwargs)
+        data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
+            'password': self.user.password, 'tipo_pessoa': self.get_tipo_pessoa_display}
+        plain_text = render_to_string('pessoas/emails/nova_pessoa.txt', data)
+
+        send_mail(
+            'Novo cadastro',
+            plain_text,
+            'pibimperial@gmail.com',
+            [self.email],
+            fail_silently=False,
+        )
 
     @property
     def foto_perfil_url(self):
@@ -91,7 +111,7 @@ class Pessoa(models.Model):
 
     @property
     def mes_ano(self):
-        return '{}'.format(date(self.created, "Y-M"))
+        return '{}'.format(date(self.created, "Y-m"))
 
     @property
     def formata_data_cadastro(self):
@@ -115,14 +135,14 @@ class Pessoa(models.Model):
         elif self.idade >= 60:
             return u'Idoso'
 
-    @property
-    def pega_nome_perfil(self):
-        nome = self.nome.lower().capitalize().split()
-        return nome[0]
-
-    @property
     def geocoding(self):
         address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
         geocode_result = gmaps.geocode(address)
-        return geocode_result[0]['geometry']['location']
+        codigo = geocode_result[0]['geometry']['location']
+        return codigo
+
+@receiver(post_save, sender=Pessoa)
+def update_geocoding(sender, instance, **kwargs):
+    codigo = instance.geocoding()
+    Pessoa.objects.filter(id=instance.id).update(lat=codigo['lat'], lng=codigo['lng'])

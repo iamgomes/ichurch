@@ -421,8 +421,8 @@
 <script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 
 <script>
-    var latitude = JSON.parse('{{ object.geocoding.lat|safe }}');
-    var longitude = JSON.parse('{{ object.geocoding.lng|safe }}');
+    var latitude = JSON.parse('{{ object.lat|safe }}');
+    var longitude = JSON.parse('{{ object.lng|safe }}');
 
     $(document).ready(function () {
         map = new GMaps({

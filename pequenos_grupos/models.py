@@ -3,6 +3,8 @@ from predios.models import Predio
 from pessoas.models import Pessoa
 from django.template.defaultfilters import date
 import googlemaps
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class Celula(models.Model):
@@ -45,6 +47,8 @@ class Celula(models.Model):
     cidade = models.CharField(max_length=50, blank=True, null=True)
     uf = models.CharField(max_length=50, blank=True, null=True)
     pais = models.CharField(max_length=50, null=True,blank=True)
+    lat = models.CharField(max_length=20, null=True,blank=True)
+    lng = models.CharField(max_length=20, null=True,blank=True)
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
     updated = models.DateField(u'Data Atualização', auto_now=True, auto_now_add=False)
 
@@ -55,9 +59,14 @@ class Celula(models.Model):
     def formata_data_cadastro(self):
         return '{}'.format(date(self.created, "d/m/Y"))
 
-    @property
     def geocoding(self):
         address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
         geocode_result = gmaps.geocode(address)
-        return geocode_result[0]['geometry']['location']
+        codigo = geocode_result[0]['geometry']['location']
+        return codigo
+
+@receiver(post_save, sender=Celula)
+def update_geocoding(sender, instance, **kwargs):
+    codigo = instance.geocoding()
+    Celula.objects.filter(id=instance.id).update(lat=codigo['lat'], lng=codigo['lng'])
