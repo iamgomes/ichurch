@@ -1,41 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %} Lista de Prédios {% endblock title %}
+{% block title %} Lista de Lideranças {% endblock title %}
 
 {% block head %}
 
-    <!-- Footable CSS -->
-    <link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
-    <!--alerts CSS -->
-    <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static '/css/botoes.css' %}" rel="stylesheet">
-    <!--This page css - Morris CSS -->
-    <link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+<!-- Footable CSS -->
+<link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
+<!--alerts CSS -->
+<link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+<!--This page css - Morris CSS -->
+<link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+
 
 {% endblock head %}
-    
+
 
 {% block content %}
 
 {% if messages %}
 <div class="row page-titles">
     <div class="col-md-12 col-12 align-self-center">
-    {% for message in messages %}
+        {% for message in messages %}
 
         <div class="alert alert-success">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
-        <h3 class="text-success"><i class="fa fa-check-circle"></i> Sucesso</h3> {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span
+                    aria-hidden="true">&times;</span> </button>
+            <h3 class="text-success"><i class="fa fa-check-circle"></i> Sucesso</h3> {{ message }}
         </div>
 
-    {% endfor %}
+        {% endfor %}
     </div>
 </div>
 {% endif %}
 
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
-        <h3 class="text-themecolor m-b-0 m-t-0">Lista de Prédios</h3>
+        <h3 class="text-themecolor m-b-0 m-t-0">Lista de lideranças</h3>
     </div>
 </div>
 
@@ -45,7 +46,7 @@
         <div class="card card-success">
             <div class="box text-center">
                 <h1 class="font-light text-white">{{ total_ativos }}</h1>
-                <h6 class="text-white">Prédios ativos</h6>
+                <h6 class="text-white">Lideranças ativas</h6>
             </div>
         </div>
     </div>
@@ -54,7 +55,7 @@
         <div class="card card-danger">
             <div class="box text-center">
                 <h1 class="font-light text-white">{{ total_inativos }}</h1>
-                <h6 class="text-white">Prédios inativos</h6>
+                <h6 class="text-white">Lideranças inativas</h6>
             </div>
         </div>
     </div>
@@ -66,21 +67,20 @@
             <thead>
                 <tr>
                     <th data-sort-initial="true" data-toggle="true">Nome</th>
-                    <th data-hide="phone, tablet">Cidade</th>
-                    <th data-hide="phone, tablet">Estado</th>
-                    <th data-hide="phone, tablet">Pastor</th>
-                    <th data-hide="phone, tablet">Tipo Igreja</th>
-                    <th data-hide="phone, tablet">Idade</th>
+                    <th data-hide="phone, tablet">Celular</th>
+                    <th data-hide="phone, tablet">Categoria</th>
+                    <th data-hide="phone, tablet">Função</th>
+                    <th data-hide="phone, tablet">Prédio</th>
                     <th data-hide="phone, tablet">Situação</th>
-                    <th data-sort-ignore="true" class="min-width">Ação</th>
                 </tr>
             </thead>
             <div class="m-t-10">
                 <div class="d-flex">
-                    
+
                     <div class="ml-auto">
                         <div class="form-group">
-                            <input id="demo-input-search2" type="text" placeholder="Pesquisar" class="form-control" autocomplete="off">
+                            <input id="demo-input-search2" type="text" placeholder="Pesquisar" class="form-control"
+                                autocomplete="off">
                         </div>
                     </div>
                 </div>
@@ -89,12 +89,21 @@
             <tbody>
                 {% for p in object_list  %}
                 <tr id="{{ p.id }}">
-                    <td><a href="{% url 'predio-perfil' p.id %}">{{ p.nome }}</a></td>
-                    <td>{{ p.cidade }}</td>
-                    <td>{{ p.uf }}</td>
-                    <td>{{ p.pastor.nome }}</td>
-                    <td>{{ p.get_tipo_igreja_display }}</td>
-                    <td>{{ p.idade }} anos</td>
+                    <td>
+                        <a href="{% url 'pessoa-perfil' p.id %}">
+                            {% if p.foto_perfil %}
+                            <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40" class="img-circle" />
+                            {% else %}
+                            <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                            {% endif %}
+                            <span>{{ p.nome }}</span>
+                        </a>
+                    </td>
+                    <td>{{ p.celular }}</td>
+                    <td>{{ p.funcao_lideranca.get_categoria_display }}</td>
+                    <td>{{ p.funcao_lideranca.descricao }}</td>
+                    <td>{{ p.predio.nome }}</td>
+
                     <td>
                         {% if p.situacao == 'A' %}
                         <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
@@ -102,17 +111,13 @@
                         <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
                         {% endif %}
                     </td>
-                    <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="ti-close" aria-hidden="true"></i></a>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-original-title="Editar"><i class="ti-pencil" aria-hidden="true"></i></a>
-                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
             {% endif %}
             <tfoot>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="6">
                         <div class="text-right">
                             <ul class="pagination">
                             </ul>
@@ -129,7 +134,7 @@
     <div class="col-lg-4">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Prédios por tipo</h4>
+                <h4 class="card-title">Lideranças por tipo</h4>
                 <div class="text-center">
                     <div id="morris-donut-chart"></div>
                 </div>
@@ -139,7 +144,7 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Localização das igrejas</h4>
+                <h4 class="card-title">Localização das lideranças</h4>
                 <div id="gmaps-simple" class="gmaps"></div>
             </div>
         </div>
@@ -149,61 +154,23 @@
 <div class="row">
     <nav class="container-botao">
 
-        <a href="{% url 'predio-create' %}" class="buttons-botao btn-success" tooltip="Add Prédio"><i class="fa fa-plus my-float"></i></a>
+        <a href="{% url 'search-cpf' %}" class="buttons-botao btn-success" tooltip="Add Pessoa"><i class="fa fa-plus my-float"></i></a>
         
       </nav>
 </div>
+
+
 {% block static %}
 
-<!-- Footable -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
+<!-- Footable -->
 <script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
-    <!--FooTable init-->
-    <script src="{% static '/js/footable-init.js' %}"></script>
-    <!-- Sweet-Alert  -->
-    <script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+<script src="{% static '/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<!--FooTable init-->
+<script src="{% static '/js/footable-init.js' %}"></script>
     <!--Morris JavaScript -->
     <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
     <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
-
-    <script> 
-        $('.remove').click(function() {
-        var id = $(this).parents("tr").attr("id");
-        var nome = $(this).data("nome");
-        deleteMember(id, nome);
-      });
-    
-      function deleteMember(id, nome) {
-        swal({
-          title: "Você tem certeza?", 
-          text: "Você não poderá mais recuperar o cadastro de " + nome, 
-          type: "warning",
-          showCancelButton: true,
-          showLoaderOnConfirm: true,
-          closeOnConfirm: false,
-          confirmButtonText: "Sim, apagar",
-          confirmButtonColor: "#f62d51",
-          cancelButtonText: "Cancelar"
-        }, function() {
-          $.ajax({
-            url: '/predios/delete/' + id,
-            type: "POST"
-          })
-          .done(function(data) {
-            swal({
-                title: "Apagado!", 
-                text: "O cadastro de " + nome + " foi apagado!", 
-                type: "success"
-            },function() {
-                location.href = "/predios/list/";
-            });
-          })
-          .fail(function(xhr, ajaxOptions, thrownError) {
-            swal("Oops", "Alguma coisa deu errada. Tente novamente!", "error");
-          });
-        });
-      }
-    </script>
 
 <script>
     // Morris donut chart
@@ -211,10 +178,10 @@
     Morris.Donut({
         element: 'morris-donut-chart'
         , data: [
-            {% for i in qtde_tipo_igreja %}
+            {% for i in qtde_tipo_lideranca%}
                 {
-            label: '{{ i.tipo_igreja }}'
-            , value: '{{ i.qtdepredios }}'
+            label: '{{ i.funcao_lideranca__categoria }}'
+            , value: '{{ i.qtdeliderancas }}'
         }
             {% if not forloop.last %}, {% endif %}
             {% endfor %}
@@ -237,10 +204,9 @@ var markersData = [{% for i in object_list %}
       lat: {{ i.lat }},
       lng: {{ i.lng }},
       nome: "{{ i.nome }}",
-      pastor: "{{ i.pastor.nome }}",
-      cidade: "{{ i.cidade }}",
-      uf: "{{ i.uf }}",
-   }{% if not forloop.last %}, {% endif %}{% endfor %}
+      predio: "{{ i.predio.nome }}",
+      tipo: "{{ i.funcao_lideranca.descricao }}"
+    }{% if not forloop.last %}, {% endif %}{% endfor %}
 ];
 
 
@@ -282,11 +248,10 @@ function displayMarkers(){
 
       var latlng = new google.maps.LatLng(markersData[i].lat, markersData[i].lng);
       var nome = markersData[i].nome;
-      var pastor = markersData[i].pastor;
-      var cidade = markersData[i].cidade;
-      var uf = markersData[i].uf;
+      var predio = markersData[i].predio;
+      var tipo = markersData[i].tipo;
 
-      createMarker(latlng, nome, pastor, cidade, uf);
+      createMarker(latlng, nome, predio, tipo);
 
       // Os valores de latitude e longitude do marcador sÃ£o adicionados Ã 
       // variÃ¡vel bounds
@@ -316,7 +281,7 @@ function createMarker(latlng, nome, morada1, morada2, codPostal){
             '<div class="iw_title">' + nome + '</div>' +
          '<div class="iw_content">' + morada1 + '<br />' +
          morada2 + '<br />' +
-         codPostal + '</div></div>';
+         '</div></div>';
       
       // O conteÃºdo da variÃ¡vel iwContent Ã© inserido na Info Window.
       infoWindow.setContent(iwContent);
@@ -328,8 +293,7 @@ function createMarker(latlng, nome, morada1, morada2, codPostal){
 </script>
 
 {% endblock static %}
-    
 
-        
+
+
 {% endblock content %}
-    

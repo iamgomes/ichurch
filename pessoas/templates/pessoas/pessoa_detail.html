@@ -42,10 +42,11 @@
             </div>
         </div>
         <div class="card">
-            <div class="card-block"> <small class="text-muted">Igreja Local </small>
-                <h6>{{ object.predio }}</h6> <small class="text-muted p-t-30 db">Grupo Liderança</small>
+            <div class="card-block"> 
+                <small class="text-muted">Igreja Local </small>
+                <h6>{{ object.predio }}</h6> 
+                <small class="text-muted p-t-30 db">Categoria Liderança</small>
                 <h6>{{ object.funcao_lideranca.get_categoria_display }}</h6>
-
                 <small class="text-muted p-t-30 db">Redes Sociais</small>
                 <br />
                 <button class="btn btn-circle btn-secondary"><i class="fa fa-facebook"></i></button>
@@ -280,16 +281,6 @@
                             <!--/span-->
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <h4 class="card-title">Mapa</h4>
-                                    <div id="gmaps-simple" class="gmaps"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="tab-pane" id="settings" role="tabpanel">
                     <div class="card-block">
@@ -317,9 +308,19 @@
 </div>
 
 <div class="row">
-    <nav class="container-botao">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Mapa</h4>
+                <div id="gmaps-simple" class="gmaps"></div>
+            </div>
+        </div>
+    </div>
+</div>
 
-    
+
+<div class="row">
+    <nav class="container-botao">
         <a class="btn buttons-botao btn-danger remove" tooltip="Excluir Pessoa" 
             data-id="{{ object.id }}" data-nome="{{ object.nome }}">
             <i class="fa fa-times my-float"></i>

@@ -67,7 +67,7 @@
                     {% if object.foto_perfil %}
                     <img src="{{ object.foto_perfil_url }}" class="img-circle" width="150" height="150" />
                     {% else %}
-                    <img src="{% static 'img/perfil.png' %}" class="img-circle" width="150" />
+                    <img src="{% static 'img/church.png' %}" class="img-circle" width="150" />
                     {% endif %}
                     <h4 class="card-title m-t-10">{{ object.nome }}</h4>
                 </center>
@@ -362,7 +362,7 @@
 <!-- Row -->
 <div class="row">
     <!-- Column -->
-    <div class="col-lg-6">
+    <div class="col-lg-8">
         <div class="card">
             <div class="card-block">
                 <h4 class="card-title">Crescimento da Igreja</h4>
@@ -371,11 +371,53 @@
         </div>
     </div>
     <!-- Column -->
-    <div class="col-lg-6">
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Por tipo de pessoa</h4>
+                <h4 class="card-title">Pessoas por tipo</h4>
                 <div id="morris-donut-chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Row -->
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Pessoas por faixa etária</h4>
+                <div>
+                    <div id="morris-donut-chart1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Pessoas por sexo</h4>
+                <div id="morris-donut-chart2"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Células por tipo</h4>
+                <div id="morris-donut-chart3"></div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <div class="col-lg-3">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">Lideranças por tipo</h4>
+                <div id="morris-donut-chart4"></div>
             </div>
         </div>
     </div>
@@ -453,6 +495,86 @@
                 {
             label: '{{ i.tipo_pessoa }}'
             , value: '{{ i.qtdepessoas }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart1'
+        , data: [
+            {% for i in totais_grupo_idade.items %}
+                {
+            label: '{{ i.0 }}'
+            , value: '{{ i.1 }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart2'
+        , data: [
+            {% for i in qtde_tipo_sexo %}
+                {
+            label: '{{ i.sexo }}'
+            , value: '{{ i.qtdesexos }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart3'
+        , data: [
+            {% for i in qtde_tipo_celula %}
+                {
+            label: '{{ i.tipo_celula }}'
+            , value: '{{ i.qtdecelulas }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+    {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart4'
+        , data: [
+            {% for i in qtde_tipo_lideranca %}
+                {
+            label: '{{ i.funcao_lideranca__categoria }}'
+            , value: '{{ i.qtdeliderancas }}'
         }
             {% if not forloop.last %}, {% endif %}
     {% endfor %}

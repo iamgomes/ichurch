@@ -47,7 +47,7 @@ class Predio(models.Model):
     
     @property
     def mes_ano(self):
-        return '{}'.format(date(self.created, "Y-M"))
+        return '{}'.format(date(self.created, "Y-m"))
         
     @property
     def formata_data_cadastro(self):

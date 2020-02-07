@@ -82,6 +82,7 @@
     <!-- Column -->
     <!-- Column -->
     <div class="col-lg-3 col-md-6">
+        <a href="{% url 'lideranca-list' %}">
         <div class="card">
             <div class="card-block">
                 <div class="row p-t-10 p-b-10">
@@ -98,6 +99,7 @@
                 </div>
             </div>
         </div>
+        </a>
     </div>
     <!-- Column -->
 </div>
@@ -129,9 +131,7 @@
         <div class="card">
             <div class="card-block">
                 <h4 class="card-title">Pessoas por faixa etária</h4>
-                <div>
-                    <canvas id="chart3" height="291%"></canvas>
-                </div>
+                <div id="morris-donut-chart1"></div>
             </div>
         </div>
     </div>
@@ -145,17 +145,11 @@
     </div>
 </div>
 
-{{ total_mes_label}}
-{{ total_mes_valor }}
-
 {% block static %}
 
 <!--Morris JavaScript -->
 <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
 <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-
-
 
 <script>
     // Morris donut chart
@@ -168,6 +162,26 @@
                 , value: '{{ i.qtdepessoas }}'}
             {% if not forloop.last %}, {% endif %}
             {% endfor %}
+        ]
+        , resize: true
+        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+    });
+
+</script>
+
+<script>
+    // Morris donut chart
+
+    Morris.Donut({
+        element: 'morris-donut-chart1'
+        , data: [
+            {% for i in totais_grupo_idade.items %}
+                {
+            label: '{{ i.0 }}'
+            , value: '{{ i.1 }}'
+        }
+            {% if not forloop.last %}, {% endif %}
+    {% endfor %}
         ]
         , resize: true
         , colors: ['#009efb', '#55ce63', '#2f3d4a']
@@ -220,11 +234,6 @@
                         , gridLineColor: '#eef0f2'
                             , resize: true
     });
-</script>
-
-<script>
-var ctx = document.getElementById("chart4");
-var data3 = [{% for i in totais_grupo_idade.items %}'{{ i.1 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
 </script>
 
 <script>
