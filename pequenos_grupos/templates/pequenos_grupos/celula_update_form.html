@@ -94,17 +94,17 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="{{ form.lider.id_for_label }}"><strong>Líder da Célula</strong></label>
-                                <input id="id_lider" type="text" class="hide" name="lider"/>
-                                <input id="lider_autocomplete" type="text" class="form-control"/>
+                                <input id="id_lider" type="text" value="{{ object.lider.id }}" class="hide" name="lider"/>
+                                <input id="lider_autocomplete" value="{{ object.lider }}" type="text" class="form-control"/>
                                 {{ form.lider.errors }}
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="{{ form.discipulador.id_for_label }}"><strong>Discipulador</strong></label>
-                                <input id="id_discipulador" type="text" class="hide" name="discipulador"/>
-                                <input id="discipulador_autocomplete" type="text" class="form-control"/>
-                                {{ form.discipulador.errors }}                            
+                                <input id="id_discipulador" type="text" value="{{ object.discipulador.id }}" class="hide" name="discipulador"/>
+                                <input id="discipulador_autocomplete" value="{{ object.discipulador }}" type="text" class="form-control"/>
+                                {{ form.discipulador.errors }}   
                             </div>
                         </div>
                     </div>
@@ -112,9 +112,9 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="{{ form.supervisor.id_for_label }}"><strong>Supervisor</strong></label>
-                                <input id="id_supervisor" type="text" class="hide" name="supervisor"/>
-                                <input id="supervisor_autocomplete" type="text" class="form-control"/>
-                                {{ form.supervisor.errors }}                            
+                                <input id="id_supervisor" type="text" value="{{ object.supervisor.id }}" class="hide" name="supervisor"/>
+                                <input id="supervisor_autocomplete" value="{{ object.supervisor }}" type="text" class="form-control"/>
+                                {{ form.supervisor.errors }} 
                             </div>
                         </div>
                         <div class="col-md-6">

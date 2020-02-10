@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import PessoaList, PessoaPerfil, PessoaUpdate, pessoa_delete, PessoaCreate
-from .views import form_cpf, LiderancaList
+from .views import form_cpf, LiderancaList, PessoaAutoCompleteView
 
 urlpatterns = [
     path('list/', PessoaList.as_view(), name='pessoa-list'),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('perfil/<int:pk>', PessoaPerfil.as_view(), name='pessoa-perfil'),
     path('update/<int:pk>', PessoaUpdate.as_view(), name='pessoa-update'),
     path('search_cpf/', form_cpf, name='search-cpf'),
-    path('lideranca-list/', LiderancaList.as_view(), name='lideranca-list'),
+    path('lideranca_list/', LiderancaList.as_view(), name='lideranca-list'),
+    path('list_autocomplete/', PessoaAutoCompleteView.as_view(), name='pessoa-autocomplete'),
 ]

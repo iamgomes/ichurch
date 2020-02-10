@@ -44,7 +44,7 @@ class CelulaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Celula
     fields = ['nome', 'tipo_celula', 'dia_semana_reuniao', 'hora_reuniao', 'predio', 'lider', 'discipulador', 
     'supervisor', 'situacao', 'cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf', 'pais',] 
-    template_name = 'pequenos_grupos/celula_form.html'
+    template_name = 'pequenos_grupos/celula_update_form.html'
     success_url = reverse_lazy('celula-list')
     success_message = 'Célula "%(nome)s" atualizada com sucesso.'
 

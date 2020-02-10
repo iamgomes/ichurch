@@ -12,7 +12,8 @@
 <!-- Date picker plugins css -->
 <link href="{% static '/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css' %}" rel="stylesheet"
     type="text/css" />
-
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <style>
 .errorlist
@@ -96,7 +97,8 @@
                     <div class="col-md-6">
                     <div class="form-group">
                         <label for="{{ form.pastor.id_for_label }}">Pastor</label>
-                        {% render_field form.pastor type="text" class="form-control" %}
+                        <input id="id_pastor" type="text" value="{{ object.pastor.id }}" class="hide" name="pastor"/>
+                        <input id="pastor_autocomplete" value="{{ object.pastor }}" type="text" class="form-control"/>
                         {{ form.pastor.errors }}
                     </div>
                     </div>
@@ -211,7 +213,19 @@
     });
 </script>
 
-
+<script type="text/javascript">
+    var pessoas = "{% url 'pessoa-autocomplete' %}";
+  
+    $("#pastor_autocomplete").autocomplete({
+      minLength: 2,
+      delay: 100,
+      autoFocus: true,
+      source: pessoas,
+      select: function(event, ui) {
+        $('#id_pastor').val(ui.item.id);
+      },
+    });
+  </script>
 
 {% endblock static %}
 

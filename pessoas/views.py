@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.db.models import F, Q, Count, Sum
 from .models import Pessoa, FuncaoLideranca
 from .forms import PessoaForm
@@ -131,3 +131,24 @@ class LiderancaList(LoginRequiredMixin,ListView):
             entry['funcao_lideranca__categoria'] = force_text(choices[entry['funcao_lideranca__categoria']], strings_only=True)
         context['qtde_tipo_lideranca'] = qtde_tipo_lideranca
         return context
+
+class PessoaAutoCompleteView(LoginRequiredMixin,FormView):
+    def get(self,request,*args,**kwargs):
+        data = request.GET
+        nome = data.get("term")
+        if nome:
+            pessoas = Pessoa.objects.filter(nome__icontains=nome)
+        else:
+            pessoas = Pessoa.objects.all()
+
+        results = []
+        for p in pessoas:
+            p_json = {}
+            p_json['id'] = p.id
+            p_json['label'] = p.nome
+            p_json['value'] = p.nome
+            results.append(p_json)
+        data = json.dumps(results)
+        mimetype = 'application/json'
+
+        return HttpResponse(data, mimetype)
