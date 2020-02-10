@@ -83,19 +83,19 @@ class Pessoa(models.Model):
         return self.nome
 
     def save(self, *args, **kwargs):
-  
-        data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
-            'password': self.user.password, 'tipo_pessoa': self.get_tipo_pessoa_display}
-        plain_text = render_to_string('pessoas/emails/nova_pessoa.txt', data)
-
-        send_mail(
-            'Novo cadastro',
-            plain_text,
-            'ichurch@pibimperial.com.br',
-            [self.email],
-            fail_silently=False,)
-
         super(Pessoa, self).save(*args, **kwargs)
+
+        if self._state.adding is True:
+            data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
+                'password': self.user.password, 'tipo_pessoa': self.get_tipo_pessoa_display}
+            plain_text = render_to_string('pessoas/emails/nova_pessoa.txt', data)
+
+            send_mail(
+                'Novo cadastro',
+                plain_text,
+                'ichurch@pibimperial.com.br',
+                [self.email],
+                fail_silently=False,)
 
     @property
     def foto_perfil_url(self):
