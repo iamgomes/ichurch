@@ -129,8 +129,8 @@ SESSION_EXPIRE_SECONDS = 300  # 300 seconds = 5 minutes
 SESSION_EXPIRE_AFTER_LAST_ACTIVITY  =  True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.pibimperial.com.br'
-EMAIL_HOST_USER = 'ichurch@pibimperial.com.br'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'wgomes100@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 25
+EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
