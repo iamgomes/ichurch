@@ -68,36 +68,37 @@ class PessoaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
 def form_cpf(request):
     return render(request, 'cpf_form.html')
 
-@login_required
-def pessoa_create(request):
-    if request.method == 'POST':
-        form = PessoaForm(request.POST or None, request.FILES or None)
-        if form.is_valid():
-            f = form.save(commit=False)
-            username = f.num_cpf
-            firstname = f.nome.split(' ')[0]
-            senha = make_password('12345senha')
-            f.user = User.objects.create(username=username, first_name=firstname, password=senha)
-            f.save()
-            messages.success(request, 'Pessoa "{}" inserida com sucesso!'.format(f.nome))
-            return redirect('pessoa-list')
-        else:
-            print(form.errors)
-    else:
-        form = PessoaForm()
+class PessoaCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
+    model = Pessoa
+    fields = '__all__'
+    success_url =  reverse_lazy('pessoa-list')
+    success_message = 'Pessoa "%(nome)s" adicionada com sucesso.'
 
-    cpf_input = request.GET.get('search-cpf') 
-    cpf = re.sub('[^0-9]', '', cpf_input)
-    if cpf_input is not None:
-        r = requests.get('https://api-receita-cpf.herokuapp.com/cpf/{}/?format=json'.format(cpf))
-    if r.status_code == 200:
-        json = r.json()
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(cleaned_data, nome=self.object.nome)
 
-    context = {
-        'result_cpf': json,
-        'form': form
-    }
-    return render(request, 'pessoas/pessoa_form.html', context)
+    def get_context_data(self, **kwargs):
+        context = super(PessoaCreate, self).get_context_data(**kwargs)
+        cpf_input = self.request.GET.get('search-cpf') 
+        cpf = re.sub('[^0-9]', '', cpf_input)
+        if cpf_input is not None:
+            r = requests.get('https://api-receita-cpf.herokuapp.com/cpf/{}/?format=json'.format(cpf))
+        if r.status_code == 200:
+            json = r.json()
+        context['result_cpf'] = json
+        return context
+
+    def form_valid(self, form):
+        f = form.save(commit=False)
+        username = f.num_cpf
+        firstname = f.nome.split(' ')[0]
+        lastname = f.nome.split(' ')[-1]
+        senha = make_password('12345senha')
+        email = f.email or None
+        f.user = User.objects.create(username=username, first_name=firstname, password=senha,\
+            email=email, last_name=lastname)
+        f.save()
+        return super(PessoaCreate, self).form_valid(form)
 
 @login_required
 @csrf_exempt
@@ -105,7 +106,6 @@ def pessoa_delete(request, pk):
     pessoa = get_object_or_404(Pessoa, pk=pk)
     pessoa.delete()
     return redirect('pessoa-list')
-
 
 class LiderancaList(LoginRequiredMixin,ListView):
     model = Pessoa
