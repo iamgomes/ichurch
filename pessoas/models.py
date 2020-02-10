@@ -83,8 +83,6 @@ class Pessoa(models.Model):
         return self.nome
 
     def save(self, *args, **kwargs):
-        super(Pessoa, self).save(*args, **kwargs)
-
         if self._state.adding is True:
             data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
                 'password': self.user.password, 'tipo_pessoa': self.get_tipo_pessoa_display}
@@ -96,6 +94,10 @@ class Pessoa(models.Model):
                 'ichurch@pibimperial.com.br',
                 [self.email],
                 fail_silently=False,)
+            super(Pessoa, self).save(*args, **kwargs)
+
+        else:
+            super(Pessoa, self).save(*args, **kwargs)
 
     @property
     def foto_perfil_url(self):
