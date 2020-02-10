@@ -83,7 +83,6 @@ class Pessoa(models.Model):
         return self.nome
 
     def save(self, *args, **kwargs):
-        super(Pessoa, self).save(*args,**kwargs)
   
         data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
             'password': self.user.password, 'tipo_pessoa': self.get_tipo_pessoa_display}
