@@ -134,4 +134,3 @@ EMAIL_HOST_USER = 'ichurch@pibimperial.com.br'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = 25
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = 'iChurch Team'

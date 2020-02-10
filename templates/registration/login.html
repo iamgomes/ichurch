@@ -36,7 +36,7 @@
             <h3 class="box-title m-b-20">iChurch Login</h3>
             <div class="form-group ">
                 <div class="col-xs-12">
-                    {% render_field form.username class="form-control" type="text" placeholder="Usuário" %}
+                    {% render_field form.username class="cpf form-control" type="text" placeholder="CPF" %}
                 </div>
             </div>
             <div class="form-group">
@@ -57,4 +57,15 @@
                 </div>
             </div>
         </form>
+
+
+{% block static %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+
+    <script type="text/javascript">
+        $('.cpf').mask('000.000.000-00');
+    </script>
+
+{% endblock static %}
+    
 {% endblock content %}
