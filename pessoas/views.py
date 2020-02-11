@@ -94,7 +94,7 @@ class PessoaCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
         firstname = f.nome.split(' ')[0]
         lastname = f.nome.split(' ')[-1]
         senha = make_password('12345senha')
-        email = f.email or None
+        email = f.email or 0
         f.user = User.objects.create(username=username, first_name=firstname, password=senha,\
             email=email, last_name=lastname)
         f.save()
