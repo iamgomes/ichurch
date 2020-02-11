@@ -15,7 +15,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ['homologa-ichurch.herokuapp.com','localhost']
+ALLOWED_HOSTS = ['homologa-ichurch.herokuapp.com','localhost','sistemaichurch.com.br','www.sistemaichurch.com.br']
 
 # Application definition
 
