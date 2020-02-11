@@ -1,7 +1,7 @@
 {% extends 'registration/base_registration.html' %}
 {% load widget_tweaks %}
 
-{% block title %} Login {% endblock title %}
+{% block title %} iChurch | Login {% endblock title %}
 
 {% block content %}
 
@@ -33,7 +33,7 @@
         <form class="form-horizontal form-material" method="POST" id="loginform">
             {% csrf_token %}
 
-            <h3 class="box-title m-b-20">iChurch Login</h3>
+            <h3 class="box-title m-b-20"><i class="wi wi-sunset"></i> iChurch</h3>
             <div class="form-group ">
                 <div class="col-xs-12">
                     {% render_field form.username class="cpf form-control" type="text" placeholder="CPF" %}
