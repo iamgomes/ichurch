@@ -17,9 +17,6 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['homologa-ichurch.herokuapp.com','localhost','sistemaichurch.com.br','www.sistemaichurch.com.br']
 
-SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT')
-SECURE_PROXY_SSL_HEADER = (‘HTTP_X_FORWARDED_PROTO’, ‘https’)
-
 # Application definition
 
 INSTALLED_APPS = [
