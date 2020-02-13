@@ -6,12 +6,12 @@
 {% block head %}
 
 <!-- Footable CSS -->
-<link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
+<link href="{% static 'js/footable/css/footable.core.css' %}" rel="stylesheet">
 <!--alerts CSS -->
-<link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
-<link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'css/botoes.css' %}" rel="stylesheet">
 <!--This page css - Morris CSS -->
-<link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
 
 {% endblock head %}
@@ -113,11 +113,11 @@
                     </td>
 
                     <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}"><i
-                                class="ti-close" aria-hidden="true"></i></a>
                         <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
-                            href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i class="ti-pencil"
+                            href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil"
                                 aria-hidden="true"></i></a>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}"><i
+                            class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -172,15 +172,15 @@
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
 <!-- Footable -->
-<script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
-<script src="{% static '/assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/footable/js/footable.all.min.js' %}"></script>
+<script src="{% static 'assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
 <!--FooTable init-->
-<script src="{% static '/js/footable-init.js' %}"></script>
+<script src="{% static 'js/footable-init.js' %}"></script>
 <!-- Sweet-Alert  -->
-<script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+<script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
     <!--Morris JavaScript -->
-    <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
-    <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+    <script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
+    <script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
 
 <script> 
     $('.remove').click(function() {

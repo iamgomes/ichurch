@@ -21,12 +21,12 @@ $(function () {
             if (width < 1170) {
                 $("body").addClass("mini-sidebar");
                 $('.navbar-brand span').hide();
-                $(".sidebartoggler i").addClass("ti-menu");
+                $(".sidebartoggler i").addClass("fa fa-navicon");
             }
             else {
                 $("body").removeClass("mini-sidebar");
                 $('.navbar-brand span').show();
-                $(".sidebartoggler i").removeClass("ti-menu");
+                $(".sidebartoggler i").removeClass("fa fa-navicon");
             }
             
             var height = ((window.innerHeight > 0) ? window.innerHeight : this.screen.height) - 1;
@@ -48,14 +48,14 @@ $(function () {
             
             $("body").removeClass("mini-sidebar");
             $('.navbar-brand span').show();
-            $(".sidebartoggler i").addClass("ti-menu");
+            $(".sidebartoggler i").addClass("fa fa-navicon");
         }
         else {
             $("body").trigger("resize");
             
             $("body").addClass("mini-sidebar");
             $('.navbar-brand span').hide();
-            $(".sidebartoggler i").removeClass("ti-menu");
+            $(".sidebartoggler i").removeClass("fa fa-navicon");
         }
     });
     // topbar stickey on scroll
@@ -68,8 +68,8 @@ $(function () {
     // this is for close icon when navigation open in mobile view
     $(".nav-toggler").click(function () {
         $("body").toggleClass("show-sidebar");
-        $(".nav-toggler i").toggleClass("ti-menu");
-        $(".nav-toggler i").addClass("ti-close");
+        $(".nav-toggler i").toggleClass("fa fa-navicon");
+        $(".nav-toggler i").addClass("fa fa-window-close");
     });
         
     // ============================================================== 

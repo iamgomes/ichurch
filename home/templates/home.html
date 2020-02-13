@@ -5,7 +5,7 @@
 {% block head %}
 
 <!--This page css - Morris CSS -->
-<link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+<link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
 {% endblock head %}
 
@@ -28,8 +28,10 @@
                     </div>
                     <!-- Column -->
                     <div class="col text-right align-self-center">
-                        <div class="round align-self-center round-primary"><i class="mdi mdi-account-circle"
-                                style="font-size: 30px"></i></div>
+                        <div class="round align-self-center round-primary">
+                            <i class="material-icons" style="font-size: 36px; margin-top: 27%;
+                            ">people_alt</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -50,8 +52,10 @@
                     </div>
                     <!-- Column -->
                     <div class="col text-right align-self-center">
-                        <div class="round align-self-center round-success"><i class="mdi mdi-church"
-                                style="font-size: 30px"></i></div>
+                        <div class="round align-self-center round-success">
+                            <i class="material-icons" style="font-size: 36px; margin-top: 27%;
+                            ">account_balance</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -71,9 +75,11 @@
                         <h6 class="text-muted">Células</h6>
                     </div>
                     <!-- Column -->
-                    <div class="col text-right align-self-center">
-                        <div class="round align-self-center round-info"><i class="mdi mdi-google-circles-extended"
-                                style="font-size: 30px"></i></div>
+                    <div class="col text-right">
+                        <div class="round round-info">
+                            <i class="material-icons" style="font-size: 36px; margin-top: 27%;
+                            ">supervised_user_circle</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -94,8 +100,10 @@
                     </div>
                     <!-- Column -->
                     <div class="col text-right align-self-center">
-                        <div class="round align-self-center round-warning"><i class="mdi mdi-account-card-details"
-                                style="font-size: 30px"></i></div>
+                        <div class="round align-self-center round-warning">
+                            <i class="material-icons" style="font-size: 36px; margin-top: 27%;
+                            ">assignment_ind</i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -149,8 +157,8 @@
 {% block static %}
 
 <!--Morris JavaScript -->
-<script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
-<script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+<script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
+<script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
 
 <script>
     // Morris donut chart
@@ -185,7 +193,7 @@
     {% endfor %}
         ]
         , resize: true
-        , colors: ['#009efb', '#55ce63', '#2f3d4a']
+        , colors: ['#009efb', '#55ce63', '#2f3d4a','#7460ee','#ffbc34']
     });
 
 </script>
@@ -230,32 +238,10 @@
         , xkey: 'y'
         , ykeys: ['a', 'b', 'c']
             , labels: ['Visitantes', 'Frequentadores', 'Membros']
-                , barColors: ['#009efb', '#55ce63', '#2f3d4a']
+                , barColors: ['#009efb', '#55ce63', '#2f3d4a',]
                     , hideHover: 'auto'
                         , gridLineColor: '#eef0f2'
                             , resize: true
-    });
-</script>
-
-<script>
-var ctx = document.getElementById("chart3");
-var total_faixa_d = [{% for i in totais_grupo_idade.items %}'{{ i.0 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
-var total_faixa_v = [{% for i in totais_grupo_idade.items %}'{{ i.1 }}'{% if not forloop.last %}, {% endif %}{% endfor %}];
-    var faixaChart = new Chart(ctx, {
-    type: 'pie',
-    data: {
-        labels: total_faixa_d,
-        datasets: [{
-        label: 'Número de pessoas',
-        backgroundColor: ['#009efb', '#55ce63', '#2f3d4a'],
-        borderColor: 'rgba(0, 0, 0, 0.1)',
-        data: total_faixa_v,
-        borderWidth: 1
-        }]
-    },
-    options: {
-        legend: {display: false},
-    }
     });
 </script>
 {% endblock static %}

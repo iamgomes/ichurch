@@ -9,16 +9,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Sistema de Gerenciamento de Igrejas">
     <meta name="author" content="William Gomes">
-    <!-- Favicon icon 
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static '/assets/images/favicon.png' %}">-->
     <title>iChurch | {% block title %} Home {% endblock title %}</title>
     <!-- Bootstrap Core CSS -->
-    <link href="{% static '/assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
-    <link href="{% static '/css/style-unminify.css' %}" rel="stylesheet">
+    <link href="{% static 'css/style-unminify.css' %}" rel="stylesheet">
     <!-- You can change the theme colors from here -->
-    <link href="{% static '/css/colors/blue.css' %}" id="theme" rel="stylesheet">
+    <link href="{% static 'css/colors/blue.css' %}" id="theme" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.9/css/weather-icons.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://use.fontawesome.com/e1ab322909.js"></script>
     
     {% block head %}
         
@@ -86,8 +87,8 @@
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto mt-md-0 ">
                         <!-- This is  -->
-                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
-                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="icon-arrow-left-circle"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="fa fa-navicon"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="fa fa-arrow-circle-o-left"></i></a> </li>
                     </ul>
                     <!-- ============================================================== -->
                     <!-- User profile and search -->
@@ -99,7 +100,7 @@
                                 {% if user.pessoa.foto_perfil %}
                                 <img src="{{ user.pessoa.foto_perfil_url }}" alt="user" class="profile-pic" /></a>
                                 {% else %}
-                                <img src="{% static '/img/perfil.png' %}" alt="user" class="profile-pic" />
+                                <img src="{% static 'img/perfil.png' %}" alt="user" class="profile-pic" />
                                 {% endif %}
                             <div class="dropdown-menu dropdown-menu-right animated flipInY">
                                 <ul class="dropdown-user">
@@ -109,7 +110,7 @@
                                                 {% if user.pessoa.foto_perfil %}
                                                 <img src="{{ user.pessoa.foto_perfil_url }}" alt="user" class="img-circle" /> 
                                                 {% else %}
-                                                <img src="{% static '/img/perfil.png' %}" alt="user" class="img-circle" />
+                                                <img src="{% static 'img/perfil.png' %}" alt="user" class="img-circle" />
                                                 {% endif %}
                                             </div>
                                             <div class="u-text">
@@ -119,10 +120,10 @@
                                         </div>
                                     </li>
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="{% url 'pessoa-update' user.pessoa.id %}"><i class="ti-user"></i> Editar Perfil</a></li>
+                                    <li><a href="{% url 'pessoa-update' user.pessoa.id %}"><i class="fa fa-user-circle"></i> Editar Perfil</a></li>
                                     <!--<li><a href="#"><i class="ti-email"></i> Mensagens</a></li>-->
                                     <li role="separator" class="divider"></li>
-                                    <li><a href="{% url 'password_change' %}"><i class="ti-key"></i> Senha de acesso</a></li>
+                                    <li><a href="{% url 'password_change' %}"><i class="fa fa-key"></i> Senha de acesso</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li><a href="{% url 'logout' %}"><i class="fa fa-power-off"></i> Sair</a></li>
                                 </ul>
@@ -145,7 +146,8 @@
                 <nav class="sidebar-nav">
                     <ul id="sidebarnav">                        
                         <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-archive"></i><span class="hide-menu">Secretaria</span></a>
+                            <a class="has-arrow " href="#" aria-expanded="false"><i class="material-icons">archive</i>
+                                <span class="hide-menu">Secretaria</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
                                     <a class="has-arrow" href="#" aria-expanded="false">Pessoas</a>
@@ -165,7 +167,8 @@
                         </li>
                         
                         <li>
-                            <a class="has-arrow " href="#" aria-expanded="false"><i class="mdi mdi-google-circles-extended"></i><span class="hide-menu">Grupos</span></a>
+                            <a class="has-arrow " href="#" aria-expanded="false"><i class="material-icons">supervised_user_circle</i>
+                                <span class="hide-menu">Grupos</span></a>
                             <ul aria-expanded="false" class="collapse">
                                 <li>
                                     <a class="has-arrow " href="#" aria-expanded="false">Células</a>
@@ -230,22 +233,22 @@
 
     <script src="https://code.jquery.com/jquery-3.2.0.min.js" integrity="sha256-JAW99MJVpJBGcbzEuXk4Az05s/XyDdBomFqNlM3ic+I=" crossorigin="anonymous"></script>
     <!-- Bootstrap tether Core JavaScript -->
-    <script type="text/javascript" src="{% static '/assets/plugins/bootstrap/js/tether.min.js' %}"></script>
-    <script type="text/javascript" src="{% static '/assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/plugins/bootstrap/js/tether.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
     <!-- slimscrollbar scrollbar JavaScript -->
-    <script type="text/javascript" src="{% static '/js/jquery.slimscroll.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.slimscroll.js' %}"></script>
     <!--Wave Effects -->
-    <script type="text/javascript" src="{% static '/js/waves.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/waves.js' %}"></script>
     <!--Menu sidebar -->
-    <script type="text/javascript" src="{% static '/js/sidebarmenu.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sidebarmenu.js' %}"></script>
     <!--stickey kit -->
-    <script type="text/javascript" src="{% static '/js/sticky-kit.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sticky-kit.min.js' %}"></script>
     <!--Custom JavaScript -->
-    <script type="text/javascript" src="{% static '/js/custom.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/custom.min.js' %}"></script>
     <!-- ============================================================== -->
     <!-- Style switcher -->
     <!-- ============================================================== -->
-    <script src="{% static '/assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
+    <script src="{% static 'assets/plugins/styleswitcher/jQuery.style.switcher.js' %}"></script>
     
     {% block static %}
         

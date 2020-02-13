@@ -6,12 +6,13 @@
 {% block head %}
 
     <!-- Footable CSS -->
-    <link href="{% static '/assets/plugins/footable/css/footable.core.css' %}" rel="stylesheet">
+    <link href="{% static 'js/footable/css/footable.core.css' %}" rel="stylesheet">
+
     <!--alerts CSS -->
-    <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
     <!--This page css - Morris CSS -->
-    <link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
 {% endblock head %}
     
@@ -103,8 +104,8 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="ti-close" aria-hidden="true"></i></a>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-original-title="Editar"><i class="ti-pencil" aria-hidden="true"></i></a>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
@@ -139,7 +140,7 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Localização das igrejas</h4>
+                <h4 class="card-title">Localização dos prédios</h4>
                 <div id="gmaps-simple" class="gmaps"></div>
             </div>
         </div>
@@ -157,14 +158,14 @@
 
 <!-- Footable -->
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
-<script src="{% static '/assets/plugins/footable/js/footable.all.min.js' %}"></script>
+<script src="{% static 'js/footable/js/footable.all.min.js' %}"></script>
     <!--FooTable init-->
-    <script src="{% static '/js/footable-init.js' %}"></script>
+    <script src="{% static 'js/footable-init.js' %}"></script>
     <!-- Sweet-Alert  -->
-    <script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+    <script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
     <!--Morris JavaScript -->
-    <script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
-    <script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+    <script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
+    <script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
 
     <script> 
         $('.remove').click(function() {
