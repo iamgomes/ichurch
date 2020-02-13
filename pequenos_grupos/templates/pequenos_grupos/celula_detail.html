@@ -5,10 +5,10 @@
 
 {% block head %}
     <!--This page css - Morris CSS -->
-    <link href="{% static '/assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
     <!--alerts CSS -->
-    <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
 
 {% endblock head %}
 
@@ -338,7 +338,7 @@
   
         <a class="btn buttons-botao btn-danger remove" tooltip="Excluir Célula" 
             data-id="{{ object.id }}" data-nome="{{ object.nome }}">
-            <i class="fa fa-times my-float"></i>
+            <i class="fa fa-trash-o my-float"></i>
         </a>
         
         <a href="{% url 'celula-update' object.id %}" class="buttons-botao btn-warning" tooltip="Editar Célula"><i class="fa fa-pencil my-float"></i></a>
@@ -353,13 +353,13 @@
 {% block static %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
-<script src="{% static '/assets/plugins/gmaps/gmaps.min.js' %}"></script>
-<script src="{% static '/assets/plugins/gmaps/jquery.gmaps.js' %}"></script>
+<script src="{% static 'assets/plugins/gmaps/gmaps.min.js' %}"></script>
+<script src="{% static 'assets/plugins/gmaps/jquery.gmaps.js' %}"></script>
 <!--Morris JavaScript -->
-<script src="{% static '/assets/plugins/raphael/raphael-min.js' %}"></script>
-<script src="{% static '/assets/plugins/morrisjs/morris.js' %}"></script>
+<script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
+<script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
 <!-- Sweet-Alert  -->
-<script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+<script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 
 <script>
     var latitude = JSON.parse('{{ object.geocoding.lat|safe }}');

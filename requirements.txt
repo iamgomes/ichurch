@@ -20,3 +20,5 @@ sweetify==2.0.0
 urllib3==1.25.7
 psycopg2
 gunicorn==20.0.4
+django-storages==1.9.1
+boto3

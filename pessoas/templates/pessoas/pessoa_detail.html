@@ -5,8 +5,8 @@
 
 {% block head %}
     <!--alerts CSS -->
-    <link href="{% static '/assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static '/css/botoes.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
 {% endblock head %}
 
 
@@ -26,7 +26,7 @@
 <div class="row">
     <!-- Column -->
     <div class="col-lg-4 col-xlg-3 col-md-5">
-        <div class="card"> <img class="card-img" src="{% static '/assets/images/background/socialbg.jpg' %}" alt="Card image">
+        <div class="card"> <img class="card-img" src="{% static 'assets/images/background/socialbg.jpg' %}" alt="Card image">
             <div class="card-img-overlay card-inverse social-profile d-flex ">
                 <div class="card-block">
                     <center class="m-t-30">
@@ -323,7 +323,7 @@
     <nav class="container-botao">
         <a class="btn buttons-botao btn-danger remove" tooltip="Excluir Pessoa" 
             data-id="{{ object.id }}" data-nome="{{ object.nome }}">
-            <i class="fa fa-times my-float"></i>
+            <i class="fa fa-trash-o my-float"></i>
         </a>   
 
         <a href="{% url 'pessoa-update' object.id %}" class="buttons-botao btn-warning" tooltip="Editar Pessoa"><i class="fa fa-pencil my-float"></i></a>
@@ -338,10 +338,10 @@
 {% block static %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
-<script src="{% static '/assets/plugins/gmaps/gmaps.min.js' %}"></script>
-<script src="{% static '/assets/plugins/gmaps/jquery.gmaps.js' %}"></script>
+<script src="{% static 'assets/plugins/gmaps/gmaps.min.js' %}"></script>
+<script src="{% static 'assets/plugins/gmaps/jquery.gmaps.js' %}"></script>
 <!-- Sweet-Alert  -->
-<script src="{% static '/assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
+<script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 
 <script>
     var latitude = JSON.parse('{{ object.lat|safe }}');
