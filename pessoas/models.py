@@ -83,12 +83,6 @@ class Pessoa(models.Model):
         return self.nome
 
     def save(self, *args, **kwargs):
-        if self.foto_perfil:
-            nome = self.nome.split(' ')[0]
-            cpf = self.num_cpf
-            extensao = self.foto_perfil.name.split('.')[1] # Pegando a extensão da img
-            self.foto_perfil.name = '{}-{}.{}'.format(nome,cpf, extensao)
-            super(Pessoa, self).save(*args, **kwargs)
 
         if self._state.adding is True:
             data = {'pessoa': self.nome, 'predio': self.predio.nome, 'username': self.user.username, 
@@ -138,7 +132,7 @@ class Pessoa(models.Model):
             return u'Criança'
         elif self.idade >= 12 and self.idade < 18:
             return u'Adolescente'
-        elif self.idade >= 18 and self.idade < 30:
+        elif self.idade >= 18 and self.idade < 31:
             return u'Jovem'
         elif self.idade >= 31 and self.idade < 60:
             return u'Adulto'
