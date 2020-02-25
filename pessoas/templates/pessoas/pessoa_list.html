@@ -13,6 +13,11 @@
 <!--This page css - Morris CSS -->
 <link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
+<style>
+    #mytable_filter {
+        display: none
+    };
+</style>
 
 {% endblock head %}
 
@@ -34,6 +39,8 @@
     </div>
 </div>
 {% endif %}
+
+{% if object_list %}
 
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
@@ -62,78 +69,92 @@
     </div>
 </div>
 
+<!-- sample modal content -->
+<div class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myLargeModalLabel">Busca Avançada</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            </div>
+            <div class="modal-body">
+                {% include 'pessoa_filtering.html' %}
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<div class="row">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-block">
+                <input type="search" class="column_filter form-control" placeholder="Pesquisa rápida"
+                    id="col0_filter">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+            <div class="card-block">
+                <button type="button" class="btn btn-block btn-info" data-toggle="modal"
+                    data-target=".bs-example-modal-lg"><i class="fa fa-search"></i> Busca Avançada</button>
+        </div>
+    </div>
+</div>
+
 <div class="card">
     <div class="card-block">
-        <table id="demo-foo-addrow2" class="table table-bordered table-hover toggle-circle" data-page-size="10">
-            <thead>
-                <tr>
-                    <th data-sort-initial="true" data-toggle="true">Nome</th>
-                    <th data-hide="phone, tablet">Celular</th>
-                    <th data-hide="phone, tablet">Tipo Pessoa</th>
-                    <th data-hide="phone, tablet">Prédio</th>
-                    <th data-hide="phone, tablet">Situação</th>
-                    <th data-sort-ignore="true" class="min-width">Ação</th>
-                </tr>
-            </thead>
-            <div class="m-t-10">
-                <div class="d-flex">
+        <table id="mytable" class="display nowrap table table-hover table-striped table-bordered"
+                        cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th data-sort-initial="true" data-toggle="true">Nome</th>
+                                <th>Celular</th>
+                                <th>Tipo Pessoa</th>
+                                <th>Prédio</th>
+                                <th>Situação</th>
+                                <th class="text-nowrap">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in object_list  %}
+                            <tr id="{{ p.id }}">
+                                <td>
+                                    <a href="{% url 'pessoa-perfil' p.id %}">
+                                        {% if p.foto_perfil %}
+                                        <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40"
+                                            class="img-circle" />
+                                        {% else %}
+                                        <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                                        {% endif %}
+                                        <span>{{ p.nome }}</span>
+                                    </a>
+                                </td>
+                                <td>{{ p.celular }}</td>
+                                <td>{{ p.get_tipo_pessoa_display }}</td>
+                                <td>{{ p.predio.nome }}</td>
 
-                    <div class="ml-auto">
-                        <div class="form-group">
-                            <input id="demo-input-search2" type="text" placeholder="Pesquisar" class="form-control"
-                                autocomplete="off">
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% if object_list %}
-            <tbody>
-                {% for p in object_list  %}
-                <tr id="{{ p.id }}">
-                    <td>
-                        <a href="{% url 'pessoa-perfil' p.id %}">
-                            {% if p.foto_perfil %}
-                            <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40" class="img-circle" />
-                            {% else %}
-                            <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
-                            {% endif %}
-                            <span>{{ p.nome }}</span>
-                        </a>
-                    </td>
-                    <td>{{ p.celular }}</td>
-                    <td>{{ p.get_tipo_pessoa_display }}</td>
-                    <td>{{ p.predio.nome }}</td>
+                                <td>
+                                    {% if p.situacao == 'A' %}
+                                    <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                                    {% else %}
+                                    <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                                    {% endif %}
+                                </td>
 
-                    <td>
-                        {% if p.situacao == 'A' %}
-                        <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
-                        {% else %}
-                        <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
-                        {% endif %}
-                    </td>
-
-                    <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
-                            href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil"
-                                aria-hidden="true"></i></a>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}"><i
-                            class="fa fa-trash-o" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            {% endif %}
-            <tfoot>
-                <tr>
-                    <td colspan="6">
-                        <div class="text-right">
-                            <ul class="pagination">
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+                                <td>
+                                    <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
+                                        href="{% url 'pessoa-update' p.id %}" data-original-title="Editar"><i
+                                            class="fa fa-pencil" aria-hidden="true"></i></a>
+                                    <a class="btn btn-sm btn-icon btn-pure btn-outline remove"
+                                        data-nome="{{ p.nome }}"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
     </div>
 </div>
 
@@ -159,6 +180,16 @@
     </div>
 </div>
 
+{% else %}
+
+<div class="alert alert-info">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"></button>
+    <h3 class="text-info"><i class="fa fa-exclamation-circle"></i> Informação</h3>
+    Nenhuma pessoas foi encontrada!
+</div>
+
+{% endif %}
+
 <div class="row">
     <nav class="container-botao">
 
@@ -173,14 +204,61 @@
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
 <!-- Footable -->
 <script src="{% static 'js/footable/js/footable.all.min.js' %}"></script>
-<script src="{% static 'assets/plugins/bootstrap-select/bootstrap-select.min.js' %}" type="text/javascript"></script>
-<!--FooTable init-->
-<script src="{% static 'js/footable-init.js' %}"></script>
 <!-- Sweet-Alert  -->
 <script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
-    <!--Morris JavaScript -->
-    <script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
-    <script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
+<!--Morris JavaScript -->
+<script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
+<script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
+<!-- This is data table -->
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
+
+
+<script type='text/javascript'>
+    function filterColumn(i) {
+        $('#mytable').DataTable().column(i).search(
+            $('#col0_filter').val()
+        ).draw();
+    }
+    $(document).ready(function () {
+        $('#mytable').DataTable({
+            "order": [[1, "asc"]],
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Exibindo de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Exibindo de 0 até 0 de 0 registros",
+                "sInfoFiltered": "",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar pessoas: ",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf'
+            ]
+        });
+
+        $('input.column_filter').on('keyup click', function () {
+            filterColumn(0);
+        });
+    });
+</script>
 
 <script> 
     $('.remove').click(function() {
