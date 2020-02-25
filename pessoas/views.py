@@ -24,19 +24,46 @@ class PessoaList(LoginRequiredMixin,ListView):
     model = Pessoa
     ordering = ['nome']
 
+    def get_queryset(self):
+        queryset = self.model.objects.all()
+        nome = self.request.GET.get('nome_contains', None)
+        tipo = self.request.GET.get('tipo_exact', None)
+        sexo = self.request.GET.get('sexo_exact', None)
+        situacao = self.request.GET.get('situacao_exact', None)
+        predio = self.request.GET.get('predio_exact', None)
+
+        if nome != '' and nome is not None:
+            queryset = queryset.filter(nome__icontains=nome)
+
+        elif tipo != '' and tipo is not None:
+            queryset = queryset.filter(tipo_pessoa=tipo)
+
+        if sexo != '' and sexo is not None:
+            queryset = queryset.filter(sexo=sexo)
+
+        if situacao != '' and situacao is not None:
+            queryset = queryset.filter(situacao=situacao)
+
+        if predio != '' and predio is not None:
+            queryset = queryset.filter(predio=predio)
+
+        return queryset
+
     def get_context_data(self, **kwargs):
         """ get_context_data let you fill the template context """
         context = super(PessoaList, self).get_context_data(**kwargs)
-        context['total_ativos'] = Pessoa.objects.filter(situacao='A').count()
-        context['total_inativos'] = Pessoa.objects.filter(situacao='I').count()
+
+        context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
+        context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
 
         # calcula a quantidade de pessoas por tipo
-        qtde_tipo_pessoa = Pessoa.objects.values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
+        qtde_tipo_pessoa = self.get_queryset().values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
         # aplica o get_display no campo tipo_pessoa
         choices = dict(Pessoa._meta.get_field('tipo_pessoa').flatchoices)
         for entry in qtde_tipo_pessoa:
             entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
         context['qtde_tipo_pessoa'] = qtde_tipo_pessoa
+
         return context
 
 class PessoaPerfil(LoginRequiredMixin,DetailView):
