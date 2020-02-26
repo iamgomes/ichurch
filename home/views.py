@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+import datetime
 from pessoas.models import Pessoa
 from predios.models import Predio
 from pequenos_grupos.models import Celula
@@ -23,7 +24,6 @@ def home(request):
     for entry in qtde_tipo_pessoa:
         entry['sexo'] = force_text(choices[entry['sexo']], strings_only=True)
 
-
     #extrai dados para gráfico novas pessoas utilizando property do model mes e ano
     mes_ano = [p.mes_ano for p in Pessoa.objects.all()]
     totais_mes_ano = {x:mes_ano.count(x) for x in set(mes_ano)}
@@ -38,6 +38,10 @@ def home(request):
         .annotate(frequentador=Count('id', filter=Q(tipo_pessoa='F')))\
         .annotate(membro=Count('id', filter=Q(tipo_pessoa='M')))
 
+    hoje = datetime.date.today()
+    aniversariantes = Pessoa.objects.filter(data_nascimento__month=hoje.month).filter(data_nascimento__day=hoje.day).\
+        order_by('nome')
+
     context = {
         'total_pessoas':total_pessoas,
         'total_predios':total_predios,
@@ -46,7 +50,8 @@ def home(request):
         'qtde_tipo_pessoa':qtde_tipo_pessoa,
         'predio_pessoas':predio_pessoas,
         'totais_mes_ano':totais_mes_ano,
-        'totais_grupo_idade':totais_grupo_idade
+        'totais_grupo_idade':totais_grupo_idade,
+        'aniversariantes':aniversariantes
     }
 
     return render(request, 'home.html', context)
