@@ -1,56 +1,55 @@
 
-                <form class="form-horizontal m-t-40">
-                    <div class="form-group">
-                        <input type="search" class="form-control" placeholder="Nome" name="nome_contains">
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <select class="custom-select col-12" name="tipo_exact">
-                                    <option value="" disabled selected>Tipo Pessoa</option>
-                                    <option value="V">Visitante</option>
-                                    <option value="F">Frequentador</option>
-                                    <option value="M">Membro</option>  
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <select class="custom-select col-12" name="sexo_exact">
-                                    <option value="" disabled selected>Sexo</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Feminino</option>  
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <select class="custom-select col-12" name="predio_exact">
-                                    <option value="" disabled selected>Prédio</option>
-                                    {% regroup object_list by predio as predio_list %}
+<form class="form-horizontal m-t-10">
+    <div class="form-group">
+        <input type="search" class="form-control" placeholder="Nome" name="nome_contains">
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <select class="custom-select col-12" name="tipo_exact">
+                    <option value="" disabled selected>Tipo Pessoa</option>
+                    <option value="V">Visitante</option>
+                    <option value="F">Frequentador</option>
+                    <option value="M">Membro</option>  
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <select class="custom-select col-12" name="sexo_exact">
+                    <option value="" disabled selected>Sexo</option>
+                    <option value="M">Masculino</option>
+                    <option value="F">Feminino</option>  
+                </select>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <select class="custom-select col-12" name="predio_exact">
+                    <option value="" disabled selected>Prédio</option>
 
-                                    {% for p in predio_list  %}
-                                        
-                                        <option value="{{ p.grouper.id }}">{{ p.grouper }}</option>
+                    {% for p in predios  %}
+                        
+                        <option value="{{ p.id }}">{{ p.nome }}</option>
 
-                                    {% endfor %}
-                                        
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <select class="custom-select col-12" name="situacao_exact">
-                                    <option value="" disabled selected>Situação</option>
-                                    <option value="A">Ativo</option>
-                                    <option value="I">Inativo</option>  
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-info waves-effect waves-light m-t-10"><i class="fa fa-search"></i> Buscar</button>
-                    <button type="button" class="btn btn-inverse waves-effect waves-light m-t-10" onclick="window.location.href='../list'">Limpar Filtro</button>
-                </form>
+                    {% endfor %}
+                        
+                </select>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <select class="custom-select col-12" name="situacao_exact">
+                    <option value="" disabled selected>Situação</option>
+                    <option value="A">Ativo</option>
+                    <option value="I">Inativo</option>  
+                </select>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-info waves-effect waves-light m-t-10"><i class="fa fa-search"></i> Buscar</button>
+    <button type="button" class="btn btn-inverse waves-effect waves-light m-t-10" onclick="window.location.href='../list'">Limpar Filtro</button>
+</form>
     

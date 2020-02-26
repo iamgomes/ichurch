@@ -6,6 +6,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView, FormView
 from django.db.models import F, Q, Count, Sum
 from .models import Pessoa, FuncaoLideranca
+from predios.models import Predio
 from .forms import PessoaForm
 from django.urls import reverse_lazy, reverse
 from django.contrib.messages.views import SuccessMessageMixin
@@ -55,6 +56,8 @@ class PessoaList(LoginRequiredMixin,ListView):
 
         context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
         context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
+
+        context['predios'] = Predio.objects.all()
 
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_pessoa = self.get_queryset().values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
@@ -121,7 +124,7 @@ class PessoaCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
         firstname = f.nome.split(' ')[0]
         lastname = f.nome.split(' ')[-1]
         senha = make_password('12345senha')
-        email = f.email or 0
+        email = f.email or 'email@email.com'
         f.user = User.objects.create(username=username, first_name=firstname, password=senha,\
             email=email, last_name=lastname)
         f.save()
@@ -134,23 +137,30 @@ def pessoa_delete(request, pk):
     pessoa.delete()
     return redirect('pessoa-list')
 
+@login_required
+@csrf_exempt
+def pessoa_inativa(request, pk):
+    Pessoa.objects.filter(pk=pk).update(situacao='I')
+    User.objects.filter(pessoa=pk).update(is_active=False)
+    return redirect('pessoa-list')
+
 class LiderancaList(LoginRequiredMixin,ListView):
     model = Pessoa
     ordering = ['nome']
     template_name = 'pessoas/lideranca_list.html'
 
     def get_queryset(self):
-        queryset = Pessoa.objects.filter(funcao_lideranca__isnull=False)
+        queryset = self.model.objects.filter(funcao_lideranca__isnull=False)
         return queryset
 
     def get_context_data(self, **kwargs):
         """ get_context_data let you fill the template context """
         context = super(LiderancaList, self).get_context_data(**kwargs)
-        context['total_ativos'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).filter(situacao='A').count()
-        context['total_inativos'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).filter(situacao='I').count()
+        context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
+        context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
         
         # calcula a quantidade de pessoas por tipo
-        qtde_tipo_lideranca = Pessoa.objects.filter(funcao_lideranca__isnull=False).\
+        qtde_tipo_lideranca = self.get_queryset().\
             values('funcao_lideranca__categoria').annotate(qtdeliderancas=Count('id'))
     # aplica o get_display no campo tipo_pessoa
         choices = dict(FuncaoLideranca._meta.get_field('categoria').flatchoices)

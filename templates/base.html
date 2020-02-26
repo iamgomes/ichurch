@@ -14,6 +14,8 @@
     <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'css/style-unminify.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
+
     <!-- You can change the theme colors from here -->
     <link href="{% static 'css/colors/blue.css' %}" id="theme" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -89,6 +91,43 @@
                         <!-- This is  -->
                         <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
                         <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="icon-arrow-left-circle"></i></a> </li>
+
+                        
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" id="2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-gift"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
+                            <div class="dropdown-menu mailbox animated bounceInDown" aria-labelledby="2">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">Aniversariantes do dia {% now 'd/m/y'%}</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center">
+                                            
+                                            {% for a in aniversariantes  %}
+                                                
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="user-img">
+                                                    {% if a.foto_perfil %}
+                                                    <img src="{{ a.foto_perfil_url }}" alt="user" class="img-circle" />
+                                                    {% else %}
+                                                    <img src="{% static 'img/perfil.png' %}" alt="user" class="img-circle" />
+                                                    {% endif %}
+                                                </div>
+                                                <div class="mail-contnet">
+                                                    <h5>{{ a.nome }}</h5> <span class="mail-desc">{{ a.predio }}</span> <span class="time">{{ a.idade }} anos</span> </div>
+                                            </a>
+
+                                            {% endfor %}
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </li>
+
                     </ul>
                     <!-- ============================================================== -->
                     <!-- User profile and search -->
@@ -241,6 +280,8 @@
     <script type="text/javascript" src="{% static 'js/sticky-kit.min.js' %}"></script>
     <!--Custom JavaScript -->
     <script type="text/javascript" src="{% static 'js/custom.min.js' %}"></script>
+    <!-- jQuery file upload -->
+    <script src="{% static 'assets/plugins/dropify/dist/js/dropify.min.js' %}"></script>
     
     {% block static %}
         
