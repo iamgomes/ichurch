@@ -5,8 +5,6 @@
 
 {% block head %}
 
-<!-- Footable CSS -->
-<link href="{% static 'js/footable/css/footable.core.css' %}" rel="stylesheet">
 <!--alerts CSS -->
 <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
@@ -90,6 +88,19 @@
 
 <div class="card">
     <div class="card-block">
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input id="col0_filter" type="text" placeholder="Pesquisa rápida pelo nome..." class="column_filter form-control form-control-lg">
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button type="button" class="btn btn-info pull-right" data-toggle="modal"
+                    data-target=".bs-example-modal-lg"><i class="fa fa-search"></i> Busca Avançada</button>
+                </div>
+            </div>
+        </div>
         <table id="mytable" class="display nowrap table table-hover table-striped table-bordered"
                         cellspacing="0" width="100%">
                         <thead>
@@ -102,19 +113,6 @@
                                 <th class="text-nowrap">Ação</th>
                             </tr>
                         </thead>
-                        <div class="row">
-                            <div class="col-10">
-                                <div class="form-group">
-                                    <input id="col0_filter" type="text" placeholder="Pesquisa rápida..." class="column_filter form-control form-control-lg">
-                                </div>
-                            </div>
-                            <div class="col-2">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-info pull-right" data-toggle="modal"
-                                    data-target=".bs-example-modal-lg"><i class="fa fa-search"></i> Busca Avançada</button>
-                                </div>
-                            </div>
-                        </div>
                         <tbody>
                             {% for p in object_list  %}
                             <tr id="{{ p.id }}">
@@ -189,7 +187,6 @@
 </div>
 <button type="button" class="btn btn-inverse waves-effect waves-light m-t-10" onclick="window.location.href='../list'">Voltar</button>
 
-
 {% endif %}
 
 <div class="row">
@@ -233,6 +230,7 @@
     $(document).ready(function () {
         $('#mytable').DataTable({
             "order": [[0, "asc"]],
+            "displayLength": 10,
             "oLanguage": {
                 "sProcessing": "Processando...",
                 "sLengthMenu": "Mostrar _MENU_ registros",
@@ -250,6 +248,7 @@
                     "sLast": "Último"
                 }
             },
+            responsive: true,
             dom: 'Bfrtip',
             buttons: [
                 'csv', 'excel', 'pdf'

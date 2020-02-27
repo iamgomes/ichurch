@@ -106,7 +106,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -122,8 +121,8 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGOUT_REDIRECT_URL = 'login'
 
-#SESSION_EXPIRE_SECONDS = 300  # 300 seconds = 5 minutes
-#SESSION_EXPIRE_AFTER_LAST_ACTIVITY  =  True
+SESSION_EXPIRE_SECONDS = 300  # 300 seconds = 5 minutes
+SESSION_EXPIRE_AFTER_LAST_ACTIVITY  =  True
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.sendgrid.net'

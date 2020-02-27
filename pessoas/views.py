@@ -36,11 +36,11 @@ class PessoaList(LoginRequiredMixin,ListView):
         if nome != '' and nome is not None:
             queryset = queryset.filter(nome__icontains=nome)
 
-        elif tipo != '' and tipo is not None:
-            queryset = queryset.filter(tipo_pessoa=tipo)
-
-        if sexo != '' and sexo is not None:
+        elif sexo != '' and sexo is not None:
             queryset = queryset.filter(sexo=sexo)
+
+        if tipo != '' and tipo is not None:
+            queryset = queryset.filter(tipo_pessoa=tipo)
 
         if situacao != '' and situacao is not None:
             queryset = queryset.filter(situacao=situacao)
@@ -57,8 +57,6 @@ class PessoaList(LoginRequiredMixin,ListView):
         context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
         context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
 
-        context['predios'] = Predio.objects.all()
-
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_pessoa = self.get_queryset().values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
         # aplica o get_display no campo tipo_pessoa
@@ -66,6 +64,8 @@ class PessoaList(LoginRequiredMixin,ListView):
         for entry in qtde_tipo_pessoa:
             entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
         context['qtde_tipo_pessoa'] = qtde_tipo_pessoa
+
+        context['predios'] = self.get_queryset().values('predio__id','predio__nome').distinct()
 
         return context
 
@@ -151,6 +151,27 @@ class LiderancaList(LoginRequiredMixin,ListView):
 
     def get_queryset(self):
         queryset = self.model.objects.filter(funcao_lideranca__isnull=False)
+        nome = self.request.GET.get('nome_contains', None)
+        sexo = self.request.GET.get('sexo_exact', None)
+        funcao = self.request.GET.get('funcao_exact', None)
+        situacao = self.request.GET.get('situacao_exact', None)
+        predio = self.request.GET.get('predio_exact', None)
+
+        if nome != '' and nome is not None:
+            queryset = queryset.filter(nome__icontains=nome)
+
+        elif sexo != '' and sexo is not None:
+            queryset = queryset.filter(sexo=sexo)
+
+        if funcao != '' and funcao is not None:
+            queryset = queryset.filter(funcao_lideranca=funcao)
+
+        if situacao != '' and situacao is not None:
+            queryset = queryset.filter(situacao=situacao)
+
+        if predio != '' and predio is not None:
+            queryset = queryset.filter(predio=predio)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -162,11 +183,16 @@ class LiderancaList(LoginRequiredMixin,ListView):
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_lideranca = self.get_queryset().\
             values('funcao_lideranca__categoria').annotate(qtdeliderancas=Count('id'))
-    # aplica o get_display no campo tipo_pessoa
+        # aplica o get_display no campo tipo_pessoa
         choices = dict(FuncaoLideranca._meta.get_field('categoria').flatchoices)
         for entry in qtde_tipo_lideranca:
             entry['funcao_lideranca__categoria'] = force_text(choices[entry['funcao_lideranca__categoria']], strings_only=True)
         context['qtde_tipo_lideranca'] = qtde_tipo_lideranca
+
+        context['categorias'] = self.get_queryset().values('funcao_lideranca__id','funcao_lideranca__categoria').distinct()
+        context['funcoes'] = self.get_queryset().values('funcao_lideranca__id','funcao_lideranca__descricao').distinct()
+        context['predios'] = self.get_queryset().values('predio__id','predio__nome').distinct()
+
         return context
 
 class PessoaAutoCompleteView(LoginRequiredMixin,FormView):
