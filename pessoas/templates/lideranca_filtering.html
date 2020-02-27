@@ -15,11 +15,13 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <select class="custom-select col-12" name="tipo_exact">
-                    <option value="" disabled selected>Tipo Pessoa</option>
-                    <option value="V">Visitante</option>
-                    <option value="F">Frequentador</option>
-                    <option value="M">Membro</option>  
+                <select class="custom-select col-12" name="funcao_exact">
+                    <option value="" disabled selected>Função</option>
+                    {% for p in funcoes  %}
+                        
+                        <option value="{{ p.funcao_lideranca__id }}">{{ p.funcao_lideranca__descricao }}</option>
+
+                    {% endfor %} 
                 </select>
             </div>
         </div>
@@ -29,13 +31,11 @@
             <div class="form-group">
                 <select class="custom-select col-12" name="predio_exact">
                     <option value="" disabled selected>Prédio</option>
-
                     {% for p in predios  %}
                         
                         <option value="{{ p.predio__id }}">{{ p.predio__nome }}</option>
 
                     {% endfor %}
-                        
                 </select>
             </div>
         </div>
@@ -50,6 +50,6 @@
         </div>
     </div>
     <button type="submit" class="btn btn-info waves-effect waves-light m-t-10"><i class="fa fa-search"></i> Buscar</button>
-    <button type="button" class="btn btn-inverse waves-effect waves-light m-t-10" onclick="window.location.href='../list'">Limpar Filtro</button>
+    <button type="button" class="btn btn-inverse waves-effect waves-light m-t-10" onclick="window.location.href='../lideranca_list'">Limpar Filtro</button>
 </form>
     
