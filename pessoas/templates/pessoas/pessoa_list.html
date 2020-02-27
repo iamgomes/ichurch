@@ -101,58 +101,60 @@
                 </div>
             </div>
         </div>
-        <table id="mytable" class="display nowrap table table-hover table-striped table-bordered"
-                        cellspacing="0" width="100%">
-                        <thead>
-                            <tr>
-                                <th data-sort-initial="true" data-toggle="true">Nome</th>
-                                <th>Celular</th>
-                                <th>Tipo Pessoa</th>
-                                <th>Prédio</th>
-                                <th>Situação</th>
-                                <th class="text-nowrap">Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for p in object_list  %}
-                            <tr id="{{ p.id }}">
-                                <td>
-                                    <a href="{% url 'pessoa-perfil' p.id %}">
-                                        {% if p.foto_perfil %}
-                                        <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40"
-                                            class="img-circle" />
-                                        {% else %}
-                                        <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
-                                        {% endif %}
-                                        <span>{{ p.nome }}</span>
-                                    </a>
-                                </td>
-                                <td>{{ p.celular }}</td>
-                                <td>{{ p.get_tipo_pessoa_display }}</td>
-                                <td>{{ p.predio.nome }}</td>
+        <div class="table-responsive m-t-20">
+            <table id="mytable" class="display nowrap table table-hover table-striped table-bordered dataTable">
+                <thead>
+                    <tr>
+                        <th data-sort-initial="true" data-toggle="true">Nome</th>
+                        <th>Celular</th>
+                        <th>Tipo Pessoa</th>
+                        <th>Prédio</th>
+                        <th>Situação</th>
+                        <th class="text-nowrap">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in object_list  %}
+                    <tr id="{{ p.id }}">
+                        <td>
+                            <a href="{% url 'pessoa-perfil' p.id %}">
+                                {% if p.foto_perfil %}
+                                <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40"
+                                    class="img-circle" />
+                                {% else %}
+                                <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                                {% endif %}
+                                <span>{{ p.nome }}</span>
+                            </a>
+                        </td>
+                        <td>{{ p.celular }}</td>
+                        <td>{{ p.get_tipo_pessoa_display }}</td>
+                        <td>{{ p.predio.nome }}</td>
 
-                                <td>
-                                    {% if p.situacao == 'A' %}
-                                    <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
-                                    {% else %}
-                                    <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
-                                    {% endif %}
-                                </td>
+                        <td>
+                            {% if p.situacao == 'A' %}
+                            <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                            {% else %}
+                            <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                            {% endif %}
+                        </td>
 
-                                <td>
-                                    <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
-                                        href="{% url 'pessoa-update' p.id %}" data-toggle="tooltip" title="Editar"><i
-                                            class="fa fa-pencil"></i></a>
-                                    <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn"
-                                    href="{% url 'pessoa-inativa' p.id %}" data-toggle="tooltip" title="Inativar"><i
-                                        class="fa fa-lock"></i></a>
-                                    <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-toggle="tooltip" title="Excluir"
-                                        data-nome="{{ p.nome }}"><i class="fa fa-trash-o"></i></a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                        <td>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1"                            "
+                                href="{% url 'pessoa-update' p.id %}" data-toggle="tooltip" title="Editar">
+                                <i class="fa fa-pencil"></i></a>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1"
+                                href="{% url 'pessoa-inativa' p.id %}" data-toggle="tooltip" title="Inativar">
+                                <i class="fa fa-ban"></i></a>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1" data-toggle="tooltip" title="Excluir"
+                                data-nome="{{ p.nome }}">
+                                <i class="fa fa-trash-o"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
