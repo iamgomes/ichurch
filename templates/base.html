@@ -14,8 +14,6 @@
     <link href="{% static 'assets/plugins/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{% static 'css/style-unminify.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="{% static 'css/themify-icons.css' %}">
-
     <!-- You can change the theme colors from here -->
     <link href="{% static 'css/colors/blue.css' %}" id="theme" rel="stylesheet">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
@@ -89,7 +87,7 @@
                     <!-- ============================================================== -->
                     <ul class="navbar-nav mr-auto mt-md-0 ">
                         <!-- This is  -->
-                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="fa fa-navicon"></i></a> </li>
                         <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="icon-arrow-left-circle"></i></a> </li>
 
                         
@@ -283,9 +281,7 @@
     <!--stickey kit -->
     <script type="text/javascript" src="{% static 'js/sticky-kit.min.js' %}"></script>
     <!--Custom JavaScript -->
-    <script type="text/javascript" src="{% static 'js/custom.min.js' %}"></script>
-    <!-- jQuery file upload -->
-    <script src="{% static 'assets/plugins/dropify/dist/js/dropify.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/custom.js' %}"></script>
     
     {% block static %}
         

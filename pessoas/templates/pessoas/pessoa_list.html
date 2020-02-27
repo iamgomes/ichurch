@@ -140,13 +140,13 @@
                         </td>
 
                         <td>
-                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1"                            "
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1"
                                 href="{% url 'pessoa-update' p.id %}" data-toggle="tooltip" title="Editar">
                                 <i class="fa fa-pencil"></i></a>
                             <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1"
                                 href="{% url 'pessoa-inativa' p.id %}" data-toggle="tooltip" title="Inativar">
                                 <i class="fa fa-ban"></i></a>
-                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1" data-toggle="tooltip" title="Excluir"
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline remove col-sm-1" data-toggle="tooltip" title="Excluir"
                                 data-nome="{{ p.nome }}">
                                 <i class="fa fa-trash-o"></i></a>
                         </td>
@@ -195,7 +195,7 @@
     <nav class="container-botao">
 
         <a href="{% url 'search-cpf' %}" class="buttons-botao btn-success" tooltip="Add Pessoa"><i class="fa fa-plus my-float"></i></a>
-        
+
       </nav>
 </div>
 
@@ -203,8 +203,6 @@
 {% block static %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
-<!-- Footable -->
-<script src="{% static 'js/footable/js/footable.all.min.js' %}"></script>
 <!-- Sweet-Alert  -->
 <script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 <!--Morris JavaScript -->
