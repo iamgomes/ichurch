@@ -156,6 +156,7 @@ class LiderancaList(LoginRequiredMixin,ListView):
         funcao = self.request.GET.get('funcao_exact', None)
         situacao = self.request.GET.get('situacao_exact', None)
         predio = self.request.GET.get('predio_exact', None)
+        sem_celula = self.request.GET.get('sem-celula', None)
 
         if nome != '' and nome is not None:
             queryset = queryset.filter(nome__icontains=nome)
@@ -172,6 +173,9 @@ class LiderancaList(LoginRequiredMixin,ListView):
         if predio != '' and predio is not None:
             queryset = queryset.filter(predio=predio)
 
+        if sem_celula == 'on':
+            queryset = queryset.filter(Líder__isnull=True)
+
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -183,7 +187,7 @@ class LiderancaList(LoginRequiredMixin,ListView):
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_lideranca = self.get_queryset().\
             values('funcao_lideranca__categoria').annotate(qtdeliderancas=Count('id'))
-        # aplica o get_display no campo tipo_pessoa
+        # aplica o get_display no campo categoria
         choices = dict(FuncaoLideranca._meta.get_field('categoria').flatchoices)
         for entry in qtde_tipo_lideranca:
             entry['funcao_lideranca__categoria'] = force_text(choices[entry['funcao_lideranca__categoria']], strings_only=True)

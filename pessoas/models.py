@@ -14,10 +14,10 @@ from django.dispatch import receiver
 class FuncaoLideranca(models.Model):
     CATEGORIA_CHOICES = (
         ('A','Apóstolo'),
-        ('D','Discipulador'),
-        ('L','Líder'),
         ('P','Pastor'),
         ('O','Obreiro'),
+        ('D','Discipulador'),
+        ('L','Líder')
     )
 
     categoria = models.CharField(max_length=1, choices=CATEGORIA_CHOICES)
