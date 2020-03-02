@@ -65,13 +65,14 @@ class PessoaList(LoginRequiredMixin,ListView):
             entry['tipo_pessoa'] = force_text(choices[entry['tipo_pessoa']], strings_only=True)
         context['qtde_tipo_pessoa'] = qtde_tipo_pessoa
 
-        context['predios'] = self.get_queryset().values('predio__id','predio__nome').distinct()
+        context['predios'] = Pessoa.objects.values('predio__id','predio__nome').distinct()
 
         return context
 
 class PessoaPerfil(LoginRequiredMixin,DetailView):
     model = Pessoa
 
+# Não está sendo utilizado. Só está aqui para eu não me esquecer de como faz!!!
 class PessoaDelete(SuccessMessageMixin, DeleteView):
     model = Pessoa
     success_url = reverse_lazy('pessoa-list')
@@ -133,8 +134,7 @@ class PessoaCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
 @login_required
 @csrf_exempt
 def pessoa_delete(request, pk):
-    pessoa = get_object_or_404(Pessoa, pk=pk)
-    pessoa.delete()
+    User.objects.filter(pessoa=pk).delete() #apaga o usuário da pessoa que autamaticamente apaga a pessoa
     return redirect('pessoa-list')
 
 @login_required
@@ -172,9 +172,10 @@ class LiderancaList(LoginRequiredMixin,ListView):
 
         if predio != '' and predio is not None:
             queryset = queryset.filter(predio=predio)
-
+        
+        #verifica se o campo lider OU discipulador OU supervisor estao nulos
         if sem_celula == 'on':
-            queryset = queryset.filter(Líder__isnull=True)
+            queryset = queryset.filter(Líder__isnull=True, Discipulador__isnull=True, Supervisor__isnull=True)
 
         return queryset
 
@@ -193,20 +194,21 @@ class LiderancaList(LoginRequiredMixin,ListView):
             entry['funcao_lideranca__categoria'] = force_text(choices[entry['funcao_lideranca__categoria']], strings_only=True)
         context['qtde_tipo_lideranca'] = qtde_tipo_lideranca
 
-        context['categorias'] = self.get_queryset().values('funcao_lideranca__id','funcao_lideranca__categoria').distinct()
-        context['funcoes'] = self.get_queryset().values('funcao_lideranca__id','funcao_lideranca__descricao').distinct()
-        context['predios'] = self.get_queryset().values('predio__id','predio__nome').distinct()
+        context['categorias'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).values('funcao_lideranca__id','funcao_lideranca__categoria').distinct()
+        context['funcoes'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).values('funcao_lideranca__id','funcao_lideranca__descricao').distinct()
+        context['predios'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).values('predio__id','predio__nome').distinct()
 
         return context
 
 class PessoaAutoCompleteView(LoginRequiredMixin,FormView):
     def get(self,request,*args,**kwargs):
-        data = request.GET
-        nome = data.get("term")
+        queryset = Pessoa.objects.filter(situacao='A')
+        nome = request.GET.get("term")
+
         if nome:
-            pessoas = Pessoa.objects.filter(nome__icontains=nome)
+            pessoas = queryset.filter(nome__icontains=nome)
         else:
-            pessoas = Pessoa.objects.all()
+            pessoas = queryset
 
         results = []
         for p in pessoas:

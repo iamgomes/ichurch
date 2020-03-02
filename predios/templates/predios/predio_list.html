@@ -5,8 +5,6 @@
 
 {% block head %}
 
-    <!-- Footable CSS -->
-    <link href="{% static 'js/footable/css/footable.core.css' %}" rel="stylesheet">
     <!--alerts CSS -->
     <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
@@ -39,13 +37,13 @@
 </div>
 {% endif %}
 
-{% if object_list %}
-
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
         <h3 class="text-themecolor m-b-0 m-t-0">Lista de Prédios</h3>
     </div>
 </div>
+
+{% if object_list %}
 
 <div class="row">
     <!-- Column -->

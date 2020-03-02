@@ -106,16 +106,31 @@ class PredioCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(cleaned_data, nome=self.object.nome)
 
+    #filtra a lista retornada da ForeignKey dentro do field do form
+    def get_form(self, form_class=None):    
+        form = super(PredioCreate, self).get_form(form_class)
+        form.fields["pastor"].queryset = Pessoa.objects.filter(Q(funcao_lideranca__categoria='O')\
+            | Q(funcao_lideranca__categoria='P'))
+
+        return form
+
 class PredioUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Predio
     fields = ['num_cnpj','nome','data_abertura', 'telefone', 'email', 'cep', 'rua', 'numero',
     'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_igreja', 'pastor','situacao',] 
-    template_name = 'predios/predio_form.html'
     success_url = reverse_lazy('predio-list')
     success_message = 'Prédio "%(nome)s" atualizado com sucesso.'
 
     def get_success_message(self, cleaned_data):
         return self.success_message % dict(cleaned_data, nome=self.object.nome)
+
+    #filtra a lista retornada da ForeignKey dentro do field do form
+    def get_form(self, form_class=None):    
+        form = super(PredioUpdate, self).get_form(form_class)
+        form.fields["pastor"].queryset = Pessoa.objects.filter(Q(funcao_lideranca__categoria='O')\
+            | Q(funcao_lideranca__categoria='P'))
+
+        return form
 
 @login_required
 @csrf_exempt

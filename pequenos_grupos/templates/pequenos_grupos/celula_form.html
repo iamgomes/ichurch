@@ -9,10 +9,12 @@
 
 {% block head %}
 
-    <!-- Page plugins css -->
-    <link href="{% static 'js/clockpicker/jquery-clockpicker.min.css' %}" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- Page plugins css -->
+<link href="{% static 'js/clockpicker/jquery-clockpicker.min.css' %}" rel="stylesheet">
+<link href="{% static 'css/select2.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/multi-select.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" />
 
 <style>
     .errorlist {
@@ -29,6 +31,12 @@
 
 {% block content %}
 
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Formulário de Células</h3>
+    </div>
+</div>
+
 {% if form.errors and not form.non_field_errors %}
 <div class="row">
     <div class="col-md-12 col-12 align-self-center">
@@ -42,160 +50,194 @@
 </div>
 {% endif %}
 
+<form method="POST" class="form" enctype='multipart/form-data'>
+{% csrf_token %}
 <div class="row">
     <div class="col-12">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Formulário de Células</h4>
-                <h6 class="card-subtitle">Formulário para cadastro de células.</h6>
-                <form method="POST" class="form-material m-t-40" enctype='multipart/form-data'>
-                    {% csrf_token %}
-                    <h2 class="card-title">Informações da Célula</h2>
-                    <hr>
-                    </br>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.nome.id_for_label }}"><strong>Nome da Célula</strong></label>
-                                {% render_field form.nome type="text" class="form-control form-control-line" %}
-                                {{ form.nome.errors }}
-                            </div>
+                <h2 class="card-title">Informações da Célula</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.nome.id_for_label }}"><strong>Nome da Célula</strong></label>
+                            {% render_field form.nome type="text" class="form-control form-control-line" %}
+                            {{ form.nome.errors }}
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.tipo_celula.id_for_label }}"><strong>Tipo Célula</strong></label>
-                                {% render_field form.tipo_celula class="form-control" %}
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.tipo_celula.id_for_label }}"><strong>Tipo Célula</strong></label>
+                            {% render_field form.tipo_celula class="selectpicker form-control" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.dia_semana_reuniao.id_for_label }}"><strong>Dia semana da
+                                    Reunião</strong></label>
+                            {% render_field form.dia_semana_reuniao class="selectpicker form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.hora_reuniao.id_for_label }}"><strong>Horário da reunião</strong></label>
+                            <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
+                                {% render_field form.hora_reuniao class="form-control" %}
+                                <span class="input-group-addon"> <span class="fa fa-clock-o"></span></span>
                             </div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.dia_semana_reuniao.id_for_label }}"><strong>Dia semana da
-                                        Reunião</strong></label>
-                                {% render_field form.dia_semana_reuniao class="form-control" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.hora_reuniao.id_for_label }}"><strong>Horário da reunião</strong></label>
-                                <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
-                                    {% render_field form.hora_reuniao class="form-control" %}
-                                    <span class="input-group-addon"> <span class="fa fa-clock-o"></span></span>
-                                </div>
-                            </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.predio.id_for_label }}"><strong>Prédio</strong></label>
+                            {% render_field form.predio type="text" class="selectpicker form-control" %}
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="{{ form.predio.id_for_label }}"><strong>Prédio</strong></label>
-                        {% render_field form.predio class="form-control" %}
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.lider.id_for_label }}"><strong>Líder da Célula</strong></label>
-                                <input id="id_lider" type="text" class="hide" name="lider"/>
-                                <input id="lider_autocomplete" type="text" class="form-control"/>
-                                {{ form.lider.errors }}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.discipulador.id_for_label }}"><strong>Discipulador</strong></label>
-                                <input id="id_discipulador" type="text" class="hide" name="discipulador"/>
-                                <input id="discipulador_autocomplete" type="text" class="form-control"/>
-                                {{ form.discipulador.errors }}                            
-                            </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.situacao.id_for_label }}"><strong>Situação</strong></label>
+                            {% render_field form.situacao type="text" class="selectpicker form-control" %}
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.supervisor.id_for_label }}"><strong>Supervisor</strong></label>
-                                <input id="id_supervisor" type="text" class="hide" name="supervisor"/>
-                                <input id="supervisor_autocomplete" type="text" class="form-control"/>
-                                {{ form.supervisor.errors }}                            
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.situacao.id_for_label }}"><strong>Situação</strong></label>
-                                {% render_field form.situacao type="text" class="form-control" %}
-                            </div>
-                        </div>
-                    </div>
-
-                    </br>
-                    <h2 class="card-title">Endereço</h2>
-                    <hr>
-                    </br>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.cep.id_for_label }}">CEP</label>
-                                {% render_field form.cep type="text" id="cep" onblur="pesquisacep(this.value)" class="cep form-control" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.rua.id_for_label }}">Rua</label>
-                                {% render_field form.rua type="text" id="rua" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.numero.id_for_label }}">Número</label>
-                                {% render_field form.numero type="number" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.complemento.id_for_label }}">Complemento</label>
-                                {% render_field form.complemento type="text" id="complemento" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.bairro.id_for_label }}">Bairro</label>
-                                {% render_field form.bairro type="text" id="bairro" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.cidade.id_for_label }}">Cidade</label>
-                                {% render_field form.cidade type="text" id="cidade" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.uf.id_for_label }}">UF</label>
-                                {% render_field form.uf type="text" id="uf" size="2" class="form-control form-control-line" %}
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="{{ form.pais.id_for_label }}">País</label>
-                                {% render_field form.pais type="text" class="form-control form-control-line" value="Brasil" %}
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-actions">
-                        <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Salvar</button>
-                        <button type="button" class="btn btn-inverse" onclick="window.history.back();">Cancelar</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <h2 class="card-title">Liderança da Célula</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.lider.id_for_label }}"><strong>Líder da Célula</strong></label>
+                            {% render_field form.lider type="text" class="form-control select2" %}
+                            {{ form.lider.errors }}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.discipulador.id_for_label }}"><strong>Discipulador</strong></label>
+                            {% render_field form.discipulador type="text" class="select2 form-control" %}
+                            {{ form.discipulador.errors }}                            
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="{{ form.supervisor.id_for_label }}"><strong>Supervisor</strong></label>
+                    {% render_field form.supervisor type="text" class="select2 form-control" %}
+                    {{ form.supervisor.errors }}                            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <h2 class="card-title">Participantes da Célula</h2>
+                <hr>
+                <div class="form-group">
+                    <label for="{{ form.participantes.id_for_label }}">Participantes</label>
+                    {% render_field form.participantes type="text" class="select2 select2-multiple form-control" data-placeholder="Pesquise e selecione os participantes desta célula..." %}
+                    {{ form.participantes.errors }} 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <h2 class="card-title">Endereço da Célula</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.cep.id_for_label }}">CEP</label>
+                            {% render_field form.cep type="text" id="cep" onblur="pesquisacep(this.value)" class="cep form-control" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.rua.id_for_label }}">Rua</label>
+                            {% render_field form.rua type="text" id="rua" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.numero.id_for_label }}">Número</label>
+                            {% render_field form.numero type="number" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.complemento.id_for_label }}">Complemento</label>
+                            {% render_field form.complemento type="text" id="complemento" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.bairro.id_for_label }}">Bairro</label>
+                            {% render_field form.bairro type="text" id="bairro" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.cidade.id_for_label }}">Cidade</label>
+                            {% render_field form.cidade type="text" id="cidade" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.uf.id_for_label }}">UF</label>
+                            {% render_field form.uf type="text" id="uf" size="2" class="form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.pais.id_for_label }}">País</label>
+                            {% render_field form.pais type="text" class="form-control form-control-line" value="Brasil" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-block">
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success"> <i class="fa fa-check"></i> Salvar</button>
+                    <button type="button" class="btn btn-inverse" onclick="window.history.back();">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
 
 
 {% block static %}
@@ -207,6 +249,17 @@
 <script src="{% static 'js/pesquisacep.js' %}"></script>
 <!-- Clock Plugin JavaScript -->
 <script src="{% static 'js/clockpicker/jquery-clockpicker.min.js' %}"></script>
+<script src="{% static 'js/bootstrap-select.min.js' %}"></script>
+<script src="{% static 'js/select2.full.min.js' %}"></script>
+<script src="{% static 'js/jquery.multi-select.js' %}"></script>
+<script src="{% static 'js/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+
+<script>
+jQuery(document).ready(function() {
+    // For select 2
+    $(".select2").select2();
+});
+</script>
 
 <script type="text/javascript">
     $('.estado').mask('AA');
@@ -243,38 +296,6 @@
         mode: 'gradient'
     });
 </script>
-
-<script type="text/javascript">
-    var pessoas = "{% url 'pessoa-autocomplete' %}";
-  
-    $("#lider_autocomplete").autocomplete({
-      minLength: 2,
-      delay: 50,
-      autoFocus: true,
-      source: pessoas,
-      select: function(event, ui) {
-        $('#id_lider').val(ui.item.id);
-      },
-    });
-    $("#discipulador_autocomplete").autocomplete({
-      minLength: 2,
-      delay: 50,
-      autoFocus: true,
-      source: pessoas,
-      select: function(event, ui) {
-        $('#id_discipulador').val(ui.item.id);
-      },
-    });
-    $("#supervisor_autocomplete").autocomplete({
-      minLength: 2,
-      delay: 50,
-      autoFocus: true,
-      source: pessoas,
-      select: function(event, ui) {
-        $('#id_supervisor').val(ui.item.id);
-      },
-    });
-  </script>
 
 {% endblock static %}
 
