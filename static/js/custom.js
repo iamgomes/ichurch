@@ -124,7 +124,6 @@ $(function () {
     $('.message-center').slimScroll({
         position: 'right'
         , size: "5px"
-        
         , color: '#dcdcdc'
      });
     

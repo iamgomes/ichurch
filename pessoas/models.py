@@ -17,7 +17,8 @@ class FuncaoLideranca(models.Model):
         ('P','Pastor'),
         ('O','Obreiro'),
         ('D','Discipulador'),
-        ('L','Líder')
+        ('L','Líder'),
+        ('T','Treinamento')
     )
 
     categoria = models.CharField(max_length=1, choices=CATEGORIA_CHOICES)
@@ -26,7 +27,6 @@ class FuncaoLideranca(models.Model):
 
     class Meta:
         verbose_name_plural = 'Função Liderança'
-
 
     def __str__(self):
         return self.descricao
@@ -142,8 +142,12 @@ class Pessoa(models.Model):
     def geocoding(self):
         address = (str(self.rua) + str(self.numero) + str(self.bairro) + str(self.cidade) + str(self.uf)) or 0
         gmaps = googlemaps.Client(key='AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE')
-        geocode_result = gmaps.geocode(address)
-        codigo = geocode_result[0]['geometry']['location']
+        try:
+            geocode_result = gmaps.geocode(address)
+            codigo = geocode_result[0]['geometry']['location']
+        except:
+            codigo = ''
+            
         return codigo
 
 @receiver(post_save, sender=Pessoa)

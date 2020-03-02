@@ -5,25 +5,33 @@
 
 {% block head %}
 
-    <!-- Footable CSS -->
-    <link href="{% static 'js/footable/css/footable.core.css' %}" rel="stylesheet">
     <!--alerts CSS -->
     <link href="{% static 'assets/plugins/sweetalert/sweetalert.css' %}" rel="stylesheet" type="text/css">
     <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
     <!--This page css - Morris CSS -->
-<link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+    <link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
 
+    <style>
+        #mytable_filter {
+            display: none
+        };
+    </style>
 
 {% endblock head %}
     
 
 {% block content %}
 
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Lista de Células</h3>
+    </div>
+</div>
+
 {% if messages %}
 <div class="row page-titles">
     <div class="col-md-12 col-12 align-self-center">
     {% for message in messages %}
-
         <div class="alert alert-success">
         <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
         <h3 class="text-success"><i class="fa fa-check-circle"></i> Sucesso</h3> {{ message }}
@@ -35,12 +43,6 @@
 {% endif %}
 
 {% if object_list %}
-
-<div class="row page-titles">
-    <div class="col-md-6 col-8 align-self-center">
-        <h3 class="text-themecolor m-b-0 m-t-0">Lista de Células</h3>
-    </div>
-</div>
 
 <div class="row">
     <!-- Column -->
@@ -65,58 +67,56 @@
 
 <div class="card">
     <div class="card-block">
-        <table id="demo-foo-addrow2" class="table table-bordered table-hover toggle-circle" data-page-size="10">
-            <thead>
-                <tr>
-                    <th data-sort-initial="true" data-toggle="true">Nome</th>
-                    <th data-hide="phone, tablet">Tipo</th>
-                    <th data-hide="phone, tablet">Líder</th>
-                    <th data-hide="phone, tablet">Prédio</th>
-                    <th data-hide="phone, tablet">Situação</th>
-                    <th data-sort-ignore="true" class="min-width">Ação</th>
-                </tr>
-            </thead>
-            <div class="m-t-10">
-                <div class="d-flex">
-                    <div class="ml-auto">
-                        <div class="form-group">
-                            <input id="demo-input-search2" type="text" placeholder="Pesquisar" class="form-control" autocomplete="off">
-                        </div>
-                    </div>
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input id="col0_filter" type="text" placeholder="Pesquisa rápida pelo nome..." class="column_filter form-control form-control-lg">
                 </div>
             </div>
-            <tbody>
-                {% for p in object_list  %}
-                <tr id="{{ p.id }}">
-                    <td><a href="{% url 'celula-perfil' p.id %}">{{ p.nome }}</a></td>
-                    <td>{{ p.get_tipo_celula_display }}</td>
-                    <td>{{ p.lider.nome }}</td>
-                    <td>{{ p.predio.nome }}</td>
-                    <td>
-                        {% if p.situacao == 'A' %}
-                        <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
-                        {% else %}
-                        <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'celula-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                        <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td colspan="6">
-                        <div class="text-right">
-                            <ul class="pagination">
-                            </ul>
-                        </div>
-                    </td>
-                </tr>
-            </tfoot>
-        </table>
+            <!--
+            <div class="col-md-2">
+                <div class="form-group">
+                    <button type="button" class="btn btn-info pull-right" data-toggle="modal"
+                    data-target=".bs-example-modal-lg"><i class="fa fa-search"></i> Busca Avançada</button>
+                </div>
+            </div>
+        -->
+        </div>
+        <div class="table-responsive m-t-20">
+            <table id="mytable" class="display nowrap table table-hover table-striped table-bordered dataTable">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Líder</th>
+                        <th>Prédio</th>
+                        <th>Situação</th>
+                        <th class="text-nowrap">Ação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for p in object_list  %}
+                    <tr id="{{ p.id }}">
+                        <td><a href="{% url 'celula-perfil' p.id %}">{{ p.nome }}</a></td>
+                        <td>{{ p.get_tipo_celula_display }}</td>
+                        <td>{{ p.lider.nome }}</td>
+                        <td>{{ p.predio.nome }}</td>
+                        <td>
+                            {% if p.situacao == 'A' %}
+                            <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                            {% else %}
+                            <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'celula-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
@@ -164,15 +164,62 @@
 {% block static %}
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDVFn3_PX9ZXlp4Xxm7Fpj6KdBkCruc7YE"></script>
-<!-- Footable -->
-<script src="{% static 'js/footable/js/footable.all.min.js' %}"></script>
-<!--FooTable init-->
-<script src="{% static 'js/footable-init.js' %}"></script>
 <!-- Sweet-Alert  -->
 <script src="{% static 'assets/plugins/sweetalert/sweetalert.min.js' %}"></script>
 <!--Morris JavaScript -->
 <script src="{% static 'assets/plugins/raphael/raphael-min.js' %}"></script>
 <script src="{% static 'assets/plugins/morrisjs/morris.js' %}"></script>
+<!-- This is data table -->
+<script src="//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+<!-- start - This is for export functionality only -->
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>
+<script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
+<!-- end - This is for export functionality only -->
+
+<script type='text/javascript'>
+    function filterColumn(i) {
+        $('#mytable').DataTable().column(i).search(
+            $('#col0_filter').val()
+        ).draw();
+    }
+    $(document).ready(function () {
+        $('#mytable').DataTable({
+            "order": [[0, "asc"]],
+            "displayLength": 10,
+            "oLanguage": {
+                "sProcessing": "Processando...",
+                "sLengthMenu": "Mostrar _MENU_ registros",
+                "sZeroRecords": "Não foram encontrados resultados",
+                "sInfo": "Exibindo de _START_ até _END_ de _TOTAL_ registros",
+                "sInfoEmpty": "Exibindo de 0 até 0 de 0 registros",
+                "sInfoFiltered": "",
+                "sInfoPostFix": "",
+                "sSearch": "Buscar pessoas: ",
+                "sUrl": "",
+                "oPaginate": {
+                    "sFirst": "Primeiro",
+                    "sPrevious": "Anterior",
+                    "sNext": "Próximo",
+                    "sLast": "Último"
+                }
+            },
+            responsive: true,
+            dom: 'Bfrtip',
+            buttons: [
+                'csv', 'excel', 'pdf'
+            ]
+        });
+
+        $('input.column_filter').on('keyup click', function () {
+            filterColumn(0);
+        });
+    });
+</script>
 
     <script> 
         $('.remove').click(function() {
@@ -194,7 +241,7 @@
           cancelButtonText: "Cancelar"
         }, function() {
           $.ajax({
-            url: '/predios/delete/' + id,
+            url: '/grupos/delete/' + id,
             type: "POST"
           })
           .done(function(data) {
@@ -203,7 +250,7 @@
                 text: "O cadastro de " + nome + " foi apagado!", 
                 type: "success"
             },function() {
-                location.href = "/predios/list/";
+                location.href = "/grupos/list/";
             });
           })
           .fail(function(xhr, ajaxOptions, thrownError) {

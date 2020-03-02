@@ -23,132 +23,79 @@
 <!-- Row -->
 <div class="row page-titles">
     <div class="col-md-6 col-8 align-self-center">
-        <h3 class="text-themecolor m-b-0 m-t-0">Perfil de Célula</h3>
+        <h3 class="text-themecolor m-b-0 m-t-0">Perfil da Célula</h3>
+        <h1 class="text-themecolor m-b-0 m-t-0">{{ object.nome }}</h3>
     </div>
 </div>
 
 
 <div class="row">
 
-    <!-- Column -->
-    <div class="col-lg-4 col-xlg-3 col-md-5">
-        <div class="card">
-            <div class="card-block">
-                <div class="alert alert-info">
-                    <h6 class="text-muted"><i class="mdi mdi-google-circles-extended"></i> Nome da Célula</h6>
-                    <h5>{{ object.nome }}</h5>
+<!-- Column -->
+<div class="col-lg-4 col-xlg-3 col-md-5">
+    <div class="card">
+        <div class="card-block">
+            <h4 class="card-title">Liderança da Célula</h4>
+                <div class="message-box">
+                    <div class="message-widget">
+                        <a href="{% url 'pessoa-perfil' object.lider.id %}">
+                            <div class="user-img"> 
+                                {% if object.lider.foto_perfil_url %}
+                                <img src="{{ object.lider.foto_perfil_url }}" alt="user" width="40" height="40"
+                                    class="img-circle" />
+                                {% else %}
+                                <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                            {% endif %}
+                            </div>
+                            <div class="mail-contnet">
+                                <h5>{{ object.lider }}</h5> 
+                                <span class="mail-desc">{{ object.lider.funcao_lideranca.descricao }}</div>
+                        </a>
+                        <a href="{% url 'pessoa-perfil' object.discipulador.id %}">
+                            <div class="user-img"> 
+                                {% if object.discipulador.foto_perfil_url %}
+                                <img src="{{ object.discipulador.foto_perfil_url }}" alt="user" width="40" height="40"
+                                    class="img-circle" />
+                                {% else %}
+                                <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                            {% endif %}
+                            </div>
+                            <div class="mail-contnet">
+                                <h5>{{ object.discipulador }}</h5> 
+                                <span class="mail-desc">{{ object.discipulador.funcao_lideranca.descricao }}</div>
+                        </a>
+                        <a href="{% url 'pessoa-perfil' object.supervisor.id %}">
+                            <div class="user-img"> 
+                                {% if object.supervisor.foto_perfil_url %}
+                                <img src="{{ object.supervisor.foto_perfil_url }}" alt="user" width="40" height="40"
+                                    class="img-circle" />
+                                {% else %}
+                                <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                            {% endif %}
+                            </div>
+                            <div class="mail-contnet">
+                                <h5>{{ object.supervisor }}</h5> 
+                                <span class="mail-desc">{{ object.supervisor.funcao_lideranca.descricao }}</span>
+                            </div>
+                        </a>
+                    </div>
                 </div>
-                <small class="text-muted p-t-30 db">Líder da Célula</small>
-                <h6>{{ object.lider }}</h6> 
-                <small class="text-muted p-t-30 db">Discipulador</small>
-                <h6>{{ object.discipulador }}</h6>
-                <small class="text-muted p-t-30 db">Supervisor</small>
-                <h6>{{ object.supervisor }}</h6>
-            </div>
         </div>
     </div>
-    <!-- Column -->
+</div>
+<!-- Column -->
 
     <!-- Column -->
     <div class="col-lg-8 col-xlg-9 col-md-7">
         <div class="card">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs profile-tab" role="tablist">
-                <!--<li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#home" role="tab">Timeline</a> </li>-->
                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" href="#profile" role="tab">Dados
                         da Célula</a> </li>
-                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#settings" role="tab">Settings</a>
-                </li>
+                <li class="nav-item"> <a class="nav-link" data-toggle="tab" href="#endereco" role="tab">Endereço</a></li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content">
-                <div class="tab-pane" id="home" role="tabpanel">
-                    <div class="card-block">
-                        <div class="profiletimeline">
-                            <div class="sl-item">
-                                <div class="sl-left"> <img src="../assets/images/users/1.jpg" alt="user"
-                                        class="img-circle" /> </div>
-                                <div class="sl-right">
-                                    <div><a href="#" class="link">John Doe</a> <span class="sl-date">5 minutes
-                                            ago</span>
-                                        <p>assign a new task <a href="#"> Design weblayout</a></p>
-                                        <div class="row">
-                                            <div class="col-lg-3 col-md-6 m-b-20"><img
-                                                    src="../assets/images/big/img1.jpg" class="img-responsive radius" />
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 m-b-20"><img
-                                                    src="../assets/images/big/img2.jpg" class="img-responsive radius" />
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 m-b-20"><img
-                                                    src="../assets/images/big/img3.jpg" class="img-responsive radius" />
-                                            </div>
-                                            <div class="col-lg-3 col-md-6 m-b-20"><img
-                                                    src="../assets/images/big/img4.jpg" class="img-responsive radius" />
-                                            </div>
-                                        </div>
-                                        <div class="like-comm"> <a href="javascript:void(0)" class="link m-r-10">2
-                                                comment</a> <a href="javascript:void(0)" class="link m-r-10"><i
-                                                    class="fa fa-heart text-danger"></i> 5 Love</a> </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="sl-item">
-                                <div class="sl-left"> <img src="../assets/images/users/2.jpg" alt="user"
-                                        class="img-circle" /> </div>
-                                <div class="sl-right">
-                                    <div> <a href="#" class="link">John Doe</a> <span class="sl-date">5 minutes
-                                            ago</span>
-                                        <div class="m-t-20 row">
-                                            <div class="col-md-3 col-xs-12"><img src="../assets/images/big/img1.jpg"
-                                                    alt="user" class="img-responsive radius" /></div>
-                                            <div class="col-md-9 col-xs-12">
-                                                <p> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec
-                                                    odio. Praesent libero. Sed cursus ante dapibus diam. </p> <a
-                                                    href="#" class="btn btn-success"> Design weblayout</a>
-                                            </div>
-                                        </div>
-                                        <div class="like-comm m-t-20"> <a href="javascript:void(0)"
-                                                class="link m-r-10">2 comment</a> <a href="javascript:void(0)"
-                                                class="link m-r-10"><i class="fa fa-heart text-danger"></i> 5 Love</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="sl-item">
-                                <div class="sl-left"> <img src="../assets/images/users/3.jpg" alt="user"
-                                        class="img-circle" /> </div>
-                                <div class="sl-right">
-                                    <div><a href="#" class="link">John Doe</a> <span class="sl-date">5 minutes
-                                            ago</span>
-                                        <p class="m-t-10"> Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                                            Integer nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi.
-                                            Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent
-                                            mauris. Fusce nec tellus sed augue semper </p>
-                                    </div>
-                                    <div class="like-comm m-t-20"> <a href="javascript:void(0)" class="link m-r-10">2
-                                            comment</a> <a href="javascript:void(0)" class="link m-r-10"><i
-                                                class="fa fa-heart text-danger"></i> 5 Love</a> </div>
-                                </div>
-                            </div>
-                            <hr>
-                            <div class="sl-item">
-                                <div class="sl-left"> <img src="../assets/images/users/4.jpg" alt="user"
-                                        class="img-circle" /> </div>
-                                <div class="sl-right">
-                                    <div><a href="#" class="link">John Doe</a> <span class="sl-date">5 minutes
-                                            ago</span>
-                                        <blockquote class="m-t-10">
-                                            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                            tempor incididunt
-                                        </blockquote>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <!--second tab-->
                 <div class="tab-pane active" id="profile" role="tabpanel">
                     <div class="card-block">
@@ -188,11 +135,11 @@
                                 <p class="text-muted">{{ object.formata_data_cadastro }}</p>
                             </div>
                         </div>
-
-                        <hr>
-
-                        <h3 class="box-title">Endereço</h3>
-                        <hr class="m-t-0 m-b-40">
+                        
+                    </div>
+                </div>
+                <div class="tab-pane" id="endereco" role="tabpanel">
+                    <div class="card-block">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group row">
@@ -257,62 +204,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="settings" role="tabpanel">
-                    <div class="card-block">
-                        <form class="form-horizontal form-material">
-                            <div class="form-group">
-                                <label class="col-md-12">Full Name</label>
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="Johnathan Doe"
-                                        class="form-control form-control-line">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="example-email" class="col-md-12">Email</label>
-                                <div class="col-md-12">
-                                    <input type="email" placeholder="johnathan@admin.com"
-                                        class="form-control form-control-line" name="example-email" id="example-email">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Password</label>
-                                <div class="col-md-12">
-                                    <input type="password" value="password" class="form-control form-control-line">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Phone No</label>
-                                <div class="col-md-12">
-                                    <input type="text" placeholder="123 456 7890"
-                                        class="form-control form-control-line">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-12">Message</label>
-                                <div class="col-md-12">
-                                    <textarea rows="5" class="form-control form-control-line"></textarea>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-12">Select Country</label>
-                                <div class="col-sm-12">
-                                    <select class="form-control form-control-line">
-                                        <option>London</option>
-                                        <option>India</option>
-                                        <option>Usa</option>
-                                        <option>Canada</option>
-                                        <option>Thailand</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-sm-12">
-                                    <button class="btn btn-success">Update Profile</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -323,7 +214,50 @@
 
 
 <div class="row">
-    <div class="col-12">
+    <!-- Column -->
+    <div class="col-lg-8">
+        <div class="card" >
+            <div class="card-block">
+                <h4 class="card-title">Participantes da Célula - {{ object.participantes.all.count }} pessoas</h4>
+                    <div class="message-box">
+                        <div class="message-widget message-center">
+                            
+                            {% for p in object.participantes.all %}
+                                                                
+                            <a href="{% url 'pessoa-perfil' p.id %}">
+                                <div class="user-img"> 
+                                    {% if p.foto_perfil_url %}
+                                    <img src="{{ p.foto_perfil_url }}" alt="user" width="40" height="40"
+                                        class="img-circle" />
+                                    {% else %}
+                                    <img src="{% static 'img/perfil.png' %}" width="40" class="img-circle" />
+                                {% endif %}
+                                </div>
+                                <div class="mail-contnet">
+                                    <h5>{{ p.nome }}</h5>
+                                    
+                                    {% if p.funcao_lideranca %}
+
+                                        <span class="mail-desc">{{ p.funcao_lideranca.descricao }}</span>
+                                        
+                                    {% else %}
+                                    
+                                        <span class="mail-desc">{{ p.get_tipo_pessoa_display }}</span>
+
+                                    {% endif %}
+                                        
+                                </div>
+                            </a>
+
+                            {% endfor %}
+
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
         <div class="card">
             <div class="card-block">
                 <h4 class="card-title">Mapa</h4>
@@ -404,7 +338,7 @@
       cancelButtonText: "Cancelar"
     }, function() {
       $.ajax({
-        url: '/predios/delete/' + id,
+        url: '/grupos/delete/' + id,
         type: "POST"
       })
       .done(function(data) {
@@ -413,7 +347,7 @@
             text: "O cadastro de " + nome + " foi apagado!", 
             type: "success"
         },function() {
-            location.href = "/predios/list/";
+            location.href = "/grupos/list/";
         });
       })
       .fail(function(xhr, ajaxOptions, thrownError) {

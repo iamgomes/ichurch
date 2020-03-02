@@ -118,10 +118,14 @@
                                                     {% endif %}
                                                 </div>
                                                 <div class="mail-contnet">
-                                                    <h5>{{ a.nome }}</h5> <span class="mail-desc">{{ a.predio }}</span> <span class="time">{{ a.idade }} anos</span> </div>
+                                                    <h5>{{ a.nome }}</h5> 
+                                                    <span class="mail-desc">{{ a.predio }}</span> 
+                                                    <span class="time">{{ a.idade }} anos</span> 
+                                                </div>
                                             </a>
 
                                             {% endfor %}
+
                                         </div>
                                     </li>
                                     
@@ -216,7 +220,8 @@
                                     <a class="has-arrow " href="#" aria-expanded="false">Células</a>
                                     <ul aria-expanded="false" class="collapse">
                                         <li><a href="{% url 'celula-list' %}">Lista de Células</a></li>
-                                <li><a href="{% url 'celula-create' %}">Cadastrar nova Célula</a></li>
+                                        <li><a href="{% url 'celula-create' %}">Cadastrar nova Célula</a></li>
+                                        <li><a href="{% url 'lideranca-list' %}">Lista de Lideranças</a></li>
                                     </ul>
                                 </li>
                                 
@@ -277,6 +282,7 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script type="text/javascript" src="{% static 'assets/plugins/bootstrap/js/tether.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'assets/plugins/bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.slimscroll.js' %}"></script>
     <!--Menu sidebar -->
     <script type="text/javascript" src="{% static 'js/sidebarmenu.js' %}"></script>
     <!--stickey kit -->
