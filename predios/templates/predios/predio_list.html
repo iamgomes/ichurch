@@ -107,10 +107,10 @@
                         <td>{{ p.get_tipo_igreja_display }}</td>
                         <td>{{ p.idade }} anos</td>
                         <td>
-                            {% if p.situacao == 'A' %}
-                            <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                            {% if p.ativo == True %}
+                            <div class="label label-table label-success">Ativo</div>
                             {% else %}
-                            <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                            <div class="label label-table label-danger">Inativo</div>
                             {% endif %}
                         </td>
                         <td>

@@ -20,8 +20,8 @@ class CelulaList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         """ get_context_data let you fill the template context """
         context = super(CelulaList, self).get_context_data(**kwargs)
-        context['total_ativos'] = self.model.objects.filter(situacao='A').count()
-        context['total_inativos'] = self.model.objects.filter(situacao='I').count()
+        context['total_ativos'] = self.model.objects.filter(ativo=True).count()
+        context['total_inativos'] = self.model.objects.filter(ativo=False).count()
 
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_celula = self.model.objects.values('tipo_celula').annotate(qtdecelulas=Count('id'))
@@ -61,7 +61,7 @@ class CelulaCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
 class CelulaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Celula
     fields = ['nome', 'tipo_celula', 'dia_semana_reuniao', 'hora_reuniao', 'predio', 'lider', 'discipulador', 
-    'supervisor', 'situacao', 'participantes','cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf', 'pais',] 
+    'supervisor', 'ativo', 'participantes','cep', 'rua', 'numero', 'complemento', 'bairro', 'cidade', 'uf', 'pais',] 
     success_url = reverse_lazy('celula-list')
     success_message = 'Célula "%(nome)s" atualizada com sucesso.'
 

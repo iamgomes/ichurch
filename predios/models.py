@@ -12,11 +12,6 @@ class Predio(models.Model):
         ('A','Associada'),
     )
 
-    SITUACAO_CHOICES = (
-        ('A','Ativo'),
-        ('I','Inativo'),
-    )
-
     num_cnpj = models.CharField(max_length=18, blank=True, null=True)
     nome = models.CharField(max_length=100)
     data_abertura = models.DateField(u'Data Abertura',blank=True, null=True, auto_now=False, auto_now_add=False)
@@ -33,9 +28,9 @@ class Predio(models.Model):
     lat = models.CharField(max_length=20, null=True,blank=True)
     lng = models.CharField(max_length=20, null=True,blank=True)
     tipo_igreja = models.CharField(max_length=1, choices=TIPOIGREJA_CHOICES, default='P')
-    situacao = models.CharField(max_length=1, choices=SITUACAO_CHOICES, default='A')
     pastor = models.OneToOneField(to='pessoas.Pessoa', 
             on_delete=models.SET_NULL, related_name='pastor_do_predio', blank=True, null=True)
+    ativo = models.BooleanField(default=True, null=False)
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
     updated = models.DateField(u'Data Atualização', auto_now=True, auto_now_add=False)
 

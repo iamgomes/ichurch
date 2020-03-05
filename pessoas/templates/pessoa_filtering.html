@@ -1,4 +1,3 @@
-
 <form class="form-horizontal m-t-10">
     <div class="form-group">
         <input type="search" class="form-control" placeholder="Nome" name="nome_contains">
@@ -41,11 +40,9 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <select class="custom-select col-12" name="situacao_exact">
-                    <option value="" disabled selected>Situação</option>
-                    <option value="A">Ativo</option>
-                    <option value="I">Inativo</option>  
-                </select>
+                <input type="checkbox" class="js-switch" data-color="#f62d51" data-secondary-color="#55ce63" 
+                name='inativo'>
+                <span class="custom-control-description"> Situação</span>
             </div>
         </div>
     </div>

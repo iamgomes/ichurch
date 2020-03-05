@@ -206,10 +206,10 @@
                             </div>
                             <div class="col-md-3 col-xs-6"> <strong>Situação</strong>
                                 <br>
-                                {% if object.situacao == 'A' %}
-                                <div class="label label-table label-success">{{ object.get_situacao_display }}</div>
+                                {% if object.ativo == True %}
+                                <div class="label label-table label-success">Ativo</div>
                                 {% else %}
-                                <div class="label label-table label-danger">{{ object.get_situacao_display }}</div>
+                                <div class="label label-table label-danger">Inativo</div>
                                 {% endif %}
                             </div>
                         </div>
@@ -528,7 +528,7 @@
     {% endfor %}
         ]
         , resize: true
-        , colors: ['#009efb', '#55ce63', '#2f3d4a','#7460ee','#ffbc34']
+        , colors: ['#009efb','#55ce63','#2f3d4a','#7460ee','#ffbc34','#f62d51']
     });
 
 </script>
