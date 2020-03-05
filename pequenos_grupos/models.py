@@ -25,11 +25,6 @@ class Celula(models.Model):
         ('7','Sábado'),
     )
 
-    SITUACAO_CHOICES = (
-        ('A','Ativo'),
-        ('I','Inativo'),
-    )
-
     nome = models.CharField(max_length=100)
     tipo_celula = models.CharField(max_length=1, choices=TIPOCELULA_CHOICES)
     dia_semana_reuniao = models.CharField(max_length=1, choices=DIASEMANA_CHOICES)
@@ -38,7 +33,6 @@ class Celula(models.Model):
     lider = models.ForeignKey(Pessoa, on_delete=models.PROTECT, related_name='Líder')
     discipulador = models.ForeignKey(Pessoa, on_delete=models.PROTECT, related_name='Discipulador')
     supervisor = models.ForeignKey(Pessoa, on_delete=models.PROTECT, related_name='Supervisor')
-    situacao = models.CharField(max_length=1, choices=SITUACAO_CHOICES, default='A')
     cep = models.CharField(max_length=9, blank=True, null=True)
     rua = models.CharField(max_length=200, blank=True, null=True)
     numero = models.IntegerField(blank=True, null=True)
@@ -50,6 +44,7 @@ class Celula(models.Model):
     lat = models.CharField(max_length=20, null=True,blank=True)
     lng = models.CharField(max_length=20, null=True,blank=True)
     participantes = models.ManyToManyField(Pessoa)
+    ativo = models.BooleanField(default=True, null=False)
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
     updated = models.DateField(u'Data Atualização', auto_now=True, auto_now_add=False)
 

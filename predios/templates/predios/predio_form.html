@@ -16,7 +16,8 @@
 <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" />
 <link href="{% static 'css/multi-select.css' %}" rel="stylesheet" type="text/css" />
-<link href="{% static 'css/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/switchery.min.css' %}" rel="stylesheet" />
+
 
 <style>
 .errorlist
@@ -61,21 +62,36 @@
             <div class="card-block">
                 <h2 class="card-title">Informações do Prédio</h2>
                 <hr>
-                <div class="form-group">
-                    <label for="{{ form.num_cnpj.id_for_label }}">Número CNPJ</label>
-                    {% render_field form.num_cnpj type="text" class="cnpj form-control form-control-line" %}
-                </div>
-                <div class="form-group">
-                    <label for="{{ form.nome.id_for_label }}"><strong>Nome</strong></label>
-                    {% render_field form.nome type="text" class="form-control form-control-line" %}
-                    {{ form.nome.errors }}
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.num_cnpj.id_for_label }}">Número CNPJ</label>
+                            {% render_field form.num_cnpj type="text" class="cnpj form-control form-control-line" %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.nome.id_for_label }}"><strong>Nome</strong></label>
+                            {% render_field form.nome type="text" class="form-control" %}
+                            {{ form.nome.errors }}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.ativo.id_for_label }}"><strong>Situação</strong></label>
+                            <br>
+                            {% render_field form.ativo type="checkbox" class="js-switch" data-color="#55ce63" data-secondary-color="#f62d51" %}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
-                        <label for="{{ form.tipo_igreja.id_for_label }}"><strong>Tipo Igreja</strong></label>
-                        {% render_field form.tipo_igreja class="selectpicker form-control" data-style="form-control btn-secondary" %}  
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.tipo_igreja.id_for_label }}"><strong>Tipo Igreja</strong></label>
+                            {% render_field form.tipo_igreja class="selectpicker form-control" data-style="form-control btn-secondary" %}  
+                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.data_abertura.id_for_label }}">Data de abertura</label>
                             <div class="input-group">
@@ -84,34 +100,25 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.telefone.id_for_label }}">Telefone </label>
                             {% render_field form.telefone type="text" class="telefone form-control form-control-line" %}
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="{{ form.email.id_for_label }}">E-mail </label>
-                            {% render_field form.email type="email" class="form-control form-control-line" %}
+                            {% render_field form.email type="email" class="form-control form-control-line" %}</div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="{{ form.pastor.id_for_label }}">Pastor</label>
+                            {% render_field form.pastor type="text" class="select2 form-control" %}
+                            {{ form.pastor.errors }} 
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                <div class="col-md-6">
-                <div class="form-group">
-                    <label for="{{ form.pastor.id_for_label }}">Pastor</label>
-                    {% render_field form.pastor type="text" class="select2 form-control" %}
-                    {{ form.pastor.errors }}
-                </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="{{ form.situacao.id_for_label }}">Situação</label>
-                        {% render_field form.situacao type="text" class="selectpicker form-control" data-style="form-control btn-secondary" %}
-                    </div>
                     </div>
                 </div>
             </div>
@@ -215,12 +222,20 @@
 <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
 <script src="{% static 'js/select2.full.min.js' %}"></script>
 <script src="{% static 'js/jquery.multi-select.js' %}"></script>
-<script src="{% static 'js/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/switchery.min.js' %}"></script>
+<script src="{% static 'js/jQuery.style.switcher.js' %}"></script>
+
 
 <script>
     jQuery(document).ready(function() {
+        // Switchery
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        $('.js-switch').each(function() {
+            new Switchery($(this)[0], $(this).data());
+        });
         // For select 2
         $(".select2").select2();
+        $('.selectpicker').selectpicker();
     });
 </script>
 

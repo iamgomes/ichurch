@@ -44,11 +44,6 @@ class Pessoa(models.Model):
         ('M','Membro'),
     )
 
-    SITUACAO_CHOICES = (
-        ('A','Ativo'),
-        ('I','Inativo'),
-    )
-
     num_cpf = models.CharField(max_length=14, unique=True)
     nome = models.CharField(max_length=150)
     sexo = models.CharField(max_length=1, choices=SEXO_CHOICES)
@@ -67,12 +62,12 @@ class Pessoa(models.Model):
     lat = models.CharField(max_length=20, null=True,blank=True)
     lng = models.CharField(max_length=20, null=True,blank=True)
     tipo_pessoa = models.CharField(max_length=1, choices=TIPOPESSOA_CHOICES, default='M')
-    situacao = models.CharField(max_length=1, choices=SITUACAO_CHOICES, default='A')
     foto_perfil = models.FileField(upload_to='foto_perfil', blank=True, null=True)
     predio = models.ForeignKey(Predio, on_delete=models.PROTECT, verbose_name='Prédio')
     user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True, null=True)
     funcao_lideranca = models.ForeignKey(FuncaoLideranca, 
             on_delete=models.PROTECT, verbose_name='Função Liderança', blank=True, null=True)
+    ativo = models.BooleanField(default=True, null=False)
     created = models.DateField(u'Data Cadastro', auto_now=False, auto_now_add=True)
     updated = models.DateField(u'Data Atualização', auto_now=True, auto_now_add=False)
 

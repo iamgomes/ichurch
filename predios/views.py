@@ -21,8 +21,8 @@ class PredioList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         """ get_context_data let you fill the template context """
         context = super(PredioList, self).get_context_data(**kwargs)
-        context['total_ativos'] = Predio.objects.filter(situacao='A').count()
-        context['total_inativos'] = Predio.objects.filter(situacao='I').count()
+        context['total_ativos'] = Predio.objects.filter(ativo=True).count()
+        context['total_inativos'] = Predio.objects.filter(ativo=False).count()
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_igreja = Predio.objects.values('tipo_igreja').annotate(qtdepredios=Count('id'))
         # aplica o get_display no campo tipo_pessoa
@@ -117,7 +117,7 @@ class PredioCreate(LoginRequiredMixin,SuccessMessageMixin, CreateView):
 class PredioUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Predio
     fields = ['num_cnpj','nome','data_abertura', 'telefone', 'email', 'cep', 'rua', 'numero',
-    'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_igreja', 'pastor','situacao',] 
+    'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_igreja', 'pastor','ativo',] 
     success_url = reverse_lazy('predio-list')
     success_message = 'Prédio "%(nome)s" atualizado com sucesso.'
 

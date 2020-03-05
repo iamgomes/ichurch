@@ -30,7 +30,7 @@ class PessoaList(LoginRequiredMixin,ListView):
         nome = self.request.GET.get('nome_contains', None)
         tipo = self.request.GET.get('tipo_exact', None)
         sexo = self.request.GET.get('sexo_exact', None)
-        situacao = self.request.GET.get('situacao_exact', None)
+        inativo = self.request.GET.get('inativo', None)
         predio = self.request.GET.get('predio_exact', None)
 
         if nome != '' and nome is not None:
@@ -42,8 +42,8 @@ class PessoaList(LoginRequiredMixin,ListView):
         if tipo != '' and tipo is not None:
             queryset = queryset.filter(tipo_pessoa=tipo)
 
-        if situacao != '' and situacao is not None:
-            queryset = queryset.filter(situacao=situacao)
+        if inativo == 'on':
+            queryset = queryset.filter(ativo=False)
 
         if predio != '' and predio is not None:
             queryset = queryset.filter(predio=predio)
@@ -54,8 +54,8 @@ class PessoaList(LoginRequiredMixin,ListView):
         """ get_context_data let you fill the template context """
         context = super(PessoaList, self).get_context_data(**kwargs)
 
-        context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
-        context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
+        context['total_ativos'] = self.get_queryset().filter(ativo=True).count()
+        context['total_inativos'] = self.get_queryset().filter(ativo=False).count()
 
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_pessoa = self.get_queryset().values('tipo_pessoa').annotate(qtdepessoas=Count('id'))
@@ -86,7 +86,7 @@ class PessoaDelete(SuccessMessageMixin, DeleteView):
 class PessoaUpdate(LoginRequiredMixin,SuccessMessageMixin, UpdateView):
     model = Pessoa
     fields = ['num_cpf','nome','sexo', 'data_nascimento', 'telefone', 'celular', 'email', 'cep', 'rua', 'numero',
-    'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_pessoa', 'situacao', 'foto_perfil', 'predio',
+    'complemento', 'bairro', 'cidade', 'uf', 'pais', 'tipo_pessoa', 'ativo', 'foto_perfil', 'predio',
     'funcao_lideranca']
     template_name = 'pessoas/pessoa_update_form.html'
     success_url = reverse_lazy('pessoa-list')
@@ -140,7 +140,7 @@ def pessoa_delete(request, pk):
 @login_required
 @csrf_exempt
 def pessoa_inativa(request, pk):
-    Pessoa.objects.filter(pk=pk).update(situacao='I')
+    Pessoa.objects.filter(pk=pk).update(ativo=False)
     User.objects.filter(pessoa=pk).update(is_active=False)
     return redirect('pessoa-list')
 
@@ -182,8 +182,8 @@ class LiderancaList(LoginRequiredMixin,ListView):
     def get_context_data(self, **kwargs):
         """ get_context_data let you fill the template context """
         context = super(LiderancaList, self).get_context_data(**kwargs)
-        context['total_ativos'] = self.get_queryset().filter(situacao='A').count()
-        context['total_inativos'] = self.get_queryset().filter(situacao='I').count()
+        context['total_ativos'] = self.get_queryset().filter(ativo=True).count()
+        context['total_inativos'] = self.get_queryset().filter(ativo=False).count()
         
         # calcula a quantidade de pessoas por tipo
         qtde_tipo_lideranca = self.get_queryset().\
@@ -199,25 +199,3 @@ class LiderancaList(LoginRequiredMixin,ListView):
         context['predios'] = Pessoa.objects.filter(funcao_lideranca__isnull=False).values('predio__id','predio__nome').distinct()
 
         return context
-
-class PessoaAutoCompleteView(LoginRequiredMixin,FormView):
-    def get(self,request,*args,**kwargs):
-        queryset = Pessoa.objects.filter(situacao='A')
-        nome = request.GET.get("term")
-
-        if nome:
-            pessoas = queryset.filter(nome__icontains=nome)
-        else:
-            pessoas = queryset
-
-        results = []
-        for p in pessoas:
-            p_json = {}
-            p_json['id'] = p.id
-            p_json['label'] = p.nome
-            p_json['value'] = p.nome
-            results.append(p_json)
-        data = json.dumps(results)
-        mimetype = 'application/json'
-
-        return HttpResponse(data, mimetype)

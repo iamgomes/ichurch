@@ -14,7 +14,7 @@
 <link href="{% static 'css/select2.min.css' %}" rel="stylesheet" type="text/css" />
 <link href="{% static 'css/bootstrap-select.min.css' %}" rel="stylesheet" />
 <link href="{% static 'css/multi-select.css' %}" rel="stylesheet" type="text/css" />
-<link href="{% static 'css/jquery.bootstrap-touchspin.min.css' %}" rel="stylesheet" />
+<link href="{% static 'css/switchery.min.css' %}" rel="stylesheet" />
 
 <style>
     .errorlist {
@@ -24,6 +24,7 @@
         padding: 0px;
         font-weight: bolder;
     }
+
 </style>
 
 {% endblock head %}
@@ -59,29 +60,36 @@
                 <h2 class="card-title">Informações da Célula</h2>
                 <hr>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.nome.id_for_label }}"><strong>Nome da Célula</strong></label>
-                            {% render_field form.nome type="text" class="form-control form-control-line" %}
+                            {% render_field form.nome type="text" class="form-control" %}
                             {{ form.nome.errors }}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.tipo_celula.id_for_label }}"><strong>Tipo Célula</strong></label>
                             {% render_field form.tipo_celula class="selectpicker form-control" %}
                         </div>
                     </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="{{ form.ativo.id_for_label }}"><strong>Situação</strong></label>
+                            <br>
+                            {% render_field form.ativo type="checkbox" class="js-switch" data-color="#55ce63" data-secondary-color="#f62d51" %}
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.dia_semana_reuniao.id_for_label }}"><strong>Dia semana da
                                     Reunião</strong></label>
                             {% render_field form.dia_semana_reuniao class="selectpicker form-control" %}
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.hora_reuniao.id_for_label }}"><strong>Horário da reunião</strong></label>
                             <div class="input-group clockpicker " data-placement="bottom" data-align="top" data-autoclose="true">
@@ -90,18 +98,10 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="{{ form.predio.id_for_label }}"><strong>Prédio</strong></label>
                             {% render_field form.predio type="text" class="selectpicker form-control" %}
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="{{ form.situacao.id_for_label }}"><strong>Situação</strong></label>
-                            {% render_field form.situacao type="text" class="selectpicker form-control" %}
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@
                 <h2 class="card-title">Participantes da Célula</h2>
                 <hr>
                 <div class="form-group">
-                    <label for="{{ form.participantes.id_for_label }}">Participantes</label>
+                    <label for="{{ form.participantes.id_for_label }}"><strong>Participantes</strong></label>
                     {% render_field form.participantes type="text" class="select2 select2-multiple form-control" data-placeholder="Pesquise e selecione os participantes desta célula..." %}
                     {{ form.participantes.errors }} 
                 </div>
@@ -248,17 +248,25 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
 <script src="{% static 'js/pesquisacep.js' %}"></script>
 <!-- Clock Plugin JavaScript -->
-<script src="{% static 'js/clockpicker/jquery-clockpicker.min.js' %}"></script>
 <script src="{% static 'js/bootstrap-select.min.js' %}"></script>
 <script src="{% static 'js/select2.full.min.js' %}"></script>
 <script src="{% static 'js/jquery.multi-select.js' %}"></script>
-<script src="{% static 'js/jquery.bootstrap-touchspin.min.js' %}" type="text/javascript"></script>
+<script src="{% static 'js/switchery.min.js' %}"></script>
+<script src="{% static 'js/jQuery.style.switcher.js' %}"></script>
+
+<script src="{% static 'js/clockpicker/jquery-clockpicker.min.js' %}"></script>
 
 <script>
-jQuery(document).ready(function() {
-    // For select 2
-    $(".select2").select2();
-});
+    jQuery(document).ready(function() {
+        // Switchery
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        $('.js-switch').each(function() {
+            new Switchery($(this)[0], $(this).data());
+        });
+        // For select 2
+        $(".select2").select2();
+        $('.selectpicker').selectpicker();
+    });
 </script>
 
 <script type="text/javascript">
@@ -284,9 +292,6 @@ jQuery(document).ready(function() {
         e.stopPropagation();
         input.clockpicker('show').clockpicker('toggleView', 'minutes');
     });
-    if (/mobile/i.test(navigator.userAgent)) {
-        $('input').prop('readOnly', true);
-    }
     // Colorpicker
     $(".colorpicker").asColorPicker();
     $(".complex-colorpicker").asColorPicker({
@@ -296,7 +301,6 @@ jQuery(document).ready(function() {
         mode: 'gradient'
     });
 </script>
-
 {% endblock static %}
 
 

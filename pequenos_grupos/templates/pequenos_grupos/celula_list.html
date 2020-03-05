@@ -102,10 +102,10 @@
                         <td>{{ p.lider.nome }}</td>
                         <td>{{ p.predio.nome }}</td>
                         <td>
-                            {% if p.situacao == 'A' %}
-                            <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                            {% if p.ativo == True %}
+                            <div class="label label-table label-success">Ativo</div>
                             {% else %}
-                            <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                            <div class="label label-table label-danger">Inativo</div>
                             {% endif %}
                         </td>
                         <td>
@@ -135,7 +135,7 @@
     <div class="col-lg-8">
         <div class="card">
             <div class="card-block">
-                <h4 class="card-title">Localização das pessoas</h4>
+                <h4 class="card-title">Localização das células</h4>
                 <div id="gmaps-simple" class="gmaps"></div>
             </div>
         </div>

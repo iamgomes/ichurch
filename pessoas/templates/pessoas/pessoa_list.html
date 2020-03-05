@@ -10,6 +10,7 @@
 <link href="{% static 'css/botoes.css' %}" rel="stylesheet">
 <!--This page css - Morris CSS -->
 <link href="{% static 'assets/plugins/morrisjs/morris.css' %}" rel="stylesheet">
+<link href="{% static 'css/switchery.min.css' %}" rel="stylesheet" />
 
 <style>
     #mytable_filter {
@@ -132,10 +133,10 @@
                         <td>{{ p.predio.nome }}</td>
 
                         <td>
-                            {% if p.situacao == 'A' %}
-                            <div class="label label-table label-success">{{ p.get_situacao_display }}</div>
+                            {% if p.ativo == True %}
+                            <div class="label label-table label-success">Ativo</div>
                             {% else %}
-                            <div class="label label-table label-danger">{{ p.get_situacao_display }}</div>
+                            <div class="label label-table label-danger">Inativo</div>
                             {% endif %}
                         </td>
 
@@ -218,7 +219,21 @@
 <script src="https://cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.print.min.js"></script>
-<!-- end - This is for export functionality only -->
+<script src="{% static 'js/switchery.min.js' %}"></script>
+<script src="{% static 'js/jQuery.style.switcher.js' %}"></script>
+
+<script>
+    jQuery(document).ready(function() {
+        // Switchery
+        var elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+        $('.js-switch').each(function() {
+            new Switchery($(this)[0], $(this).data());
+        });
+        // For select 2
+        $(".select2").select2();
+        $('.selectpicker').selectpicker();
+    });
+</script>
 
 
 <script type='text/javascript'>
