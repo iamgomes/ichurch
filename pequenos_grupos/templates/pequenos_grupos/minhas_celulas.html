@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% load static %}
+
+{% block title %} Minhas Células {% endblock title %}
+
+
+{% block head %}
+
+<link href="{% static 'css/css-chart.css' %}" rel="stylesheet">
+
+{% endblock head %}
+
+
+{% block content %}
+
+<div class="row page-titles">
+    <div class="col-md-6 col-8 align-self-center">
+        <h3 class="text-themecolor m-b-0 m-t-0">Minhas Células</h3>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ membros }}</h1>
+                        <h6 class="text-muted">Membros</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div data-label="{{ perc_membros }}%" class="css-bar m-b-0 css-bar-success css-bar-{{ perc_membros }}">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ frequentadores }}</h1>
+                        <h6 class="text-muted">Frequentadores</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div data-label="{{ perc_frequentadores }}%" class="css-bar m-b-0 css-bar-info css-bar-{{ perc_frequentadores }}">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+    <!-- Column -->
+    <div class="col-lg-4 col-md-6">
+        <div class="card">
+            <div class="card-block">
+                <div class="row p-t-10 p-b-10">
+                    <!-- Column -->
+                    <div class="col p-r-0">
+                        <h1 class="font-light">{{ visitantes }}</h1>
+                        <h6 class="text-muted">Visitantes</h6>
+                    </div>
+                    <!-- Column -->
+                    <div class="col text-right align-self-center">
+                        <div data-label="{{ perc_visitantes }}%" class="css-bar m-b-0 css-bar-inverse css-bar-{{ perc_visitantes }}">
+                            <i class="fa fa-users"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Column -->
+</div>
+
+<div class="row">
+    <!-- Column -->
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-block">
+                <h4 class="card-title">{{ object_list.count }} Células</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Líder</th>
+                                <th>Discipulador</th>
+                                <th>Supervisor</th>
+                                <th>Situação</th>
+                                <th class="text-nowrap">Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            {% for p in object_list  %}
+                                                                
+                            <tr>
+                                <td><a href="{% url 'celula-perfil' p.id %}">{{ p.nome }}</a></td>
+                                <td>{{ p.lider }}</td>
+                                <td>{{ p.discipulador }}</td>
+                                <td>{{ p.supervisor }}</td>
+                                <td>
+                                    {% if p.ativo == True %}
+                                    <div class="label label-table label-success">Ativo</div>
+                                    {% else %}
+                                    <div class="label label-table label-danger">Inativo</div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1" href="#" data-toggle="tooltip" title="Criar reunião">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn col-sm-1" href="{% url 'celula-update' p.id %}" data-toggle="tooltip" title="Editar">
+                                        <i class="fa fa-pencil" aria-hidden="true"></i>
+                                    </a>
+                                    <a class="btn btn-sm btn-icon btn-pure btn-outline col-sm-1 remove" data-nome="{{ p.nome }}" data-toggle="tooltip" title="Apagar">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

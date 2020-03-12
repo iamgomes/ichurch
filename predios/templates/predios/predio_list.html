@@ -114,8 +114,12 @@
                             {% endif %}
                         </td>
                         <td>
-                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-original-title="Editar"><i class="fa fa-pencil" aria-hidden="true"></i></a>
-                            <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-original-title="Apagar"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline edit-row-btn" href="{% url 'predio-update' p.id %}" data-toggle="tooltip" title="Editar">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </a>
+                            <a class="btn btn-sm btn-icon btn-pure btn-outline remove" data-nome="{{ p.nome }}" data-toggle="tooltip" title="Apagar">
+                                <i class="fa fa-trash-o" aria-hidden="true"></i>
+                            </a>
                         </td>
                     </tr>
                     {% endfor %}

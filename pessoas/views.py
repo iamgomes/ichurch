@@ -154,7 +154,6 @@ class LiderancaList(LoginRequiredMixin,ListView):
         nome = self.request.GET.get('nome_contains', None)
         sexo = self.request.GET.get('sexo_exact', None)
         funcao = self.request.GET.get('funcao_exact', None)
-        situacao = self.request.GET.get('situacao_exact', None)
         predio = self.request.GET.get('predio_exact', None)
         sem_celula = self.request.GET.get('sem-celula', None)
 
@@ -166,9 +165,6 @@ class LiderancaList(LoginRequiredMixin,ListView):
 
         if funcao != '' and funcao is not None:
             queryset = queryset.filter(funcao_lideranca=funcao)
-
-        if situacao != '' and situacao is not None:
-            queryset = queryset.filter(situacao=situacao)
 
         if predio != '' and predio is not None:
             queryset = queryset.filter(predio=predio)

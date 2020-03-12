@@ -66,6 +66,16 @@ class Celula(models.Model):
 
         return codigo
 
+class ReuniaoCelula(models.Model):
+    tema = models.CharField(max_length=100)
+    data = models.DateField(auto_now=False, auto_now_add=False)
+    foto_reuniao_celula = models.ImageField(upload_to='foto_reuniao_celula', blank=True, null=True)
+    celula = models.ForeignKey(Celula, on_delete=models.CASCADE, verbose_name='Celula')
+    realizada = models.BooleanField(default=False, null=False)
+
+    def __str__(self):
+        return self.tema
+
 @receiver(post_save, sender=Celula)
 def update_geocoding(sender, instance, **kwargs):
     codigo = instance.geocoding()
