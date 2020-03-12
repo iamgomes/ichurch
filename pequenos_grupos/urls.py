@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import CelulaList, CelulaCreate, CelulaUpdate, CelulaPerfil, celula_delete
+from .views import CelulaList, CelulaCreate, CelulaUpdate, CelulaPerfil, celula_delete, MinhasCelulasList
 
 urlpatterns = [
     path('list/', CelulaList.as_view(), name='celula-list'),
@@ -7,4 +7,6 @@ urlpatterns = [
     path('update/<int:pk>', CelulaUpdate.as_view(), name='celula-update'),
     path('perfil/<int:pk>', CelulaPerfil.as_view(), name='celula-perfil'),
     path('delete/<int:pk>', celula_delete, name='celula-delete'),
+    path('minhas_celulas_list/', MinhasCelulasList.as_view(), name='minhas-celulas-list'),
+
 ]

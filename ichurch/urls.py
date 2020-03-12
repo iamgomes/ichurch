@@ -23,7 +23,6 @@ from pessoas import urls as pessoas_urls
 from predios import urls as predios_urls
 from pequenos_grupos import urls as grupos_urls
 
-
 urlpatterns = [
     path('', include(home_urls)),
     path('admin/', admin.site.urls),

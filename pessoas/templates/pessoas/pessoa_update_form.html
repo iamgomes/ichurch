@@ -87,24 +87,7 @@
                         <div class="col-md-4">
                             <div class="form-group">
                                 <label for="{{ form.sexo.id_for_label }}"><strong>Sexo</strong></label>
-                                <select name="sexo" id="id_sexo" class="form-control selectpicker" data-style="form-control btn-secondary" required>
-                                    {% if result_cpf.0.IND_SEXO %}
-                                        {% if result_cpf.0.IND_SEXO == 'M' %}
-                                        <option value="{{ result_cpf.0.IND_SEXO }}" selected>Masculino</option>
-                                        <option value="F">Feminino</option>
-                                        {% endif %}
-    
-                                        {% if result_cpf.0.IND_SEXO == 'F' %}
-                                        <option value="{{ result_cpf.0.IND_SEXO }}" selected>Feminino</option>
-                                        <option value="M">Masculino</option>
-                                        {% endif %}
-    
-                                    {% else %}
-                                    <option value="" selected>---------</option>
-                                    <option value="M">Masculino</option>
-                                    <option value="F">Feminino</option>
-                                    {% endif %}                            
-                                </select>
+                                {% render_field form.sexo type="text" class="form-control selectpicker" data-style="form-control btn-secondary" %}
                             </div>
                         </div>
                         <div class="col-md-4">
