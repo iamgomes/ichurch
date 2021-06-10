@@ -3,7 +3,7 @@ certifi==2019.11.28
 chardet==3.0.4
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==3.0.1
+Django==3.1.12
 django-aggregate-if==0.5
 django-session-timeout==0.0.4
 django-widget-tweaks==1.4.5
